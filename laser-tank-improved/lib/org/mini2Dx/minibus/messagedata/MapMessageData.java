@@ -1,0 +1,130 @@
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2016 See AUTHORS file
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package org.mini2Dx.minibus.messagedata;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.mini2Dx.minibus.MessageData;
+import org.mini2Dx.minibus.pool.MessageDataPool;
+import org.mini2Dx.minibus.pool.OptionallyPooledMessageData;
+import org.mini2Dx.minibus.pool.PooledMessageData;
+
+/**
+ * A {@link MessageData} instance that also implements the {@link Map}
+ * interface, backed by a {@link Map} instance.
+ */
+public class MapMessageData<K, V> extends OptionallyPooledMessageData implements Map<K, V> {
+    private final Map<K, V> hashMap;
+
+    /**
+     * Constructs a non-pooled {@link MapMessageData} instance backed by a
+     * {@link HashMap}
+     */
+    public MapMessageData() {
+	this(new HashMap<K, V>());
+    }
+
+    /**
+     * Constructs a non-pooled {@link MapMessageData} instance
+     *
+     * @param hashMap The backing {@link Map} instance
+     */
+    public MapMessageData(final Map<K, V> hashMap) {
+	super();
+	this.hashMap = hashMap;
+    }
+
+    /**
+     * Constructs a pooled {@link MapMessageData} instance
+     *
+     * @param pool The {@link MessageDataPool} managing this instance
+     */
+    public MapMessageData(final MessageDataPool<PooledMessageData> pool) {
+	super(pool);
+	this.hashMap = new HashMap<>();
+    }
+
+    @Override
+    public int size() {
+	return this.hashMap.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+	return this.hashMap.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(final Object key) {
+	return this.hashMap.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(final Object value) {
+	return this.hashMap.containsValue(value);
+    }
+
+    @Override
+    public V get(final Object key) {
+	return this.hashMap.get(key);
+    }
+
+    @Override
+    public V put(final K key, final V value) {
+	return this.hashMap.put(key, value);
+    }
+
+    @Override
+    public V remove(final Object key) {
+	return this.hashMap.remove(key);
+    }
+
+    @Override
+    public void putAll(final Map<? extends K, ? extends V> m) {
+	this.hashMap.putAll(m);
+    }
+
+    @Override
+    public void clear() {
+	this.hashMap.clear();
+    }
+
+    @Override
+    public Set<K> keySet() {
+	return this.hashMap.keySet();
+    }
+
+    @Override
+    public Collection<V> values() {
+	return this.hashMap.values();
+    }
+
+    @Override
+    public Set<java.util.Map.Entry<K, V>> entrySet() {
+	return this.hashMap.entrySet();
+    }
+}
