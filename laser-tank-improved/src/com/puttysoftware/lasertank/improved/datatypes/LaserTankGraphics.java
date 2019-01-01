@@ -49,20 +49,20 @@ public class LaserTankGraphics {
 	return this.graphics;
     }
 
-    public static LaserTankGraphics loadFromLTGFile(final File file) throws IOException {
+    public static LaserTankGraphics loadFromFile(final File file) throws IOException {
 	try (FileInputStream fs = new FileInputStream(file)) {
-	    return LaserTankGraphics.loadFromLTG(fs);
+	    return LaserTankGraphics.loadFromStream(fs);
 	}
     }
 
-    public static LaserTankGraphics loadFromLTGResource(final String resource) throws IOException {
+    public static LaserTankGraphics loadFromResource(final String resource) throws IOException {
 	try (InputStream fs = LaserTankGraphics.class.getResourceAsStream(resource)) {
-	    return LaserTankGraphics.loadFromLTG(fs);
+	    return LaserTankGraphics.loadFromStream(fs);
 	}
     }
 
     // Internal stuff
-    private static LaserTankGraphics loadFromLTG(final InputStream fs) throws IOException {
+    private static LaserTankGraphics loadFromStream(final InputStream fs) throws IOException {
 	// Load file ID
 	byte[] fileIdData = new byte[LaserTankGraphics.FILE_ID_LEN];
 	fs.read(fileIdData);
