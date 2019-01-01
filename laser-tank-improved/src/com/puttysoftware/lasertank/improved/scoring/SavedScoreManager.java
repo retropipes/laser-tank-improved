@@ -60,6 +60,17 @@ public class SavedScoreManager extends ScoreManager {
 	return success;
     }
 
+    @Override
+    public boolean addScore(final long[] newScore, final String newName) {
+	final boolean success = super.addScore(newScore, newName);
+	try {
+	    this.writeScoresFile();
+	} catch (final IOException io) {
+	    // Do nothing
+	}
+	return success;
+    }
+
     private void readScoresFile() throws IOException {
 	try (XMLFileReader xdr = new XMLFileReader(this.scoresFilename, "scores")) {
 	    this.table = SortedScoreTable.readSortedScoreTable(xdr);
