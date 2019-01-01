@@ -12,12 +12,12 @@ public abstract class SoundFactory extends Thread {
     private static SoundExceptionHandler meh = new SoundExceptionHandler();
 
     // Factories
-    public static SoundFactory getNonLoopingFile(final String file) {
+    public static SoundFactory loadFile(final String file) {
 	return SoundFactory
 		.provisionMedia(new SoundFile(SoundFactory.MEDIA_GROUP, file, SoundFactory.ACTIVE_MEDIA_COUNT));
     }
 
-    public static SoundFactory getNonLoopingResource(final URL resource) {
+    public static SoundFactory loadResource(final URL resource) {
 	return SoundFactory
 		.provisionMedia(new SoundResource(SoundFactory.MEDIA_GROUP, resource, SoundFactory.ACTIVE_MEDIA_COUNT));
     }
