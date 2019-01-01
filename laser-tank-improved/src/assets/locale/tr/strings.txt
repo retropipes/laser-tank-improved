@@ -1,0 +1,405 @@
+##### LTank32 Language File 4.0 ###########
+#                                         #
+# Language : English - ( Example )        #
+# Author   : Jim Kindley                  #
+# Date     : 10 July 2002 - v  1.0        #
+#                                         #
+###########################################
+
+##### IMPORTANT NOTE TO THE TRANSLATORS #################
+#                                                       #
+# You have to translate all the lines except those      #
+# beginning with a pound sign. ( # )                    #
+#                                                       #
+# No lines must be removed or added.                    #                  
+#                                                       #
+# All lines must stay at their original position.       #                  
+#                                                       #
+# In some cases changing the length of a message can    #
+# produce strange results. You will have to make tests. #
+#                                                       #
+#########################################################
+
+##### MAIN BUTONS  ( 9 lines) #########
+#Undo
+Geri Al
+#Save Position
+Pozisyonu Kaydet
+#Restore Position
+Pozisyonu Geri Al
+#New
+Yeni
+#<< Level
+<< Bölüm
+#Level >>
+Bölüm >>
+#Hint
+Ýpucu
+#Restart
+Tekrar
+#Load Level
+Bölüm Yükle
+
+##### MESSAGES  ( 44 lines ) ###########
+#The Level file can not be found\nPlease select a new one
+Bölüm dosyasý bulunamadý\nLütfen yeni bir tane seçin
+#Level Files (*.LVL)
+Bölüm Dosyalarý (*.LVL)
+#Pick LaserTank Level File
+LaserTank Bölüm Dosyasýný Seç
+#Playback Files (*.LPB)
+Playback Dosyalarý (*.LPB)
+#Save Playback File
+Playback Dosyasýný Kaydet
+#LaserTank Error
+LaserTank Hatasý
+#Old High Score > M:
+Eski Puanlar > M:
+#M: 
+M: 
+# S: 
+ S: 
+# I: 
+ I: 
+#Congratulation's You beat it !!
+Tebrikler Yendiniz !!
+#Playback Level : 
+Bölümü Oynat : 
+#\nRecorded by 
+\nKaydeden 
+#\nCan Not be found in the current level file\n< 
+\nÞimdiki bölüm dosyasý bulunamadý\n< 
+#Do You want to Continue Recording ?
+Kaydetmeye devam etmek istiyormusunuz ?
+#&Play
+&Oynat
+#&Pause
+&Duraklat
+#Out of Memory - Undo Roll Over
+Bellek dýþý - Geri al
+#Open Playback file
+Playback dosyasýný aç
+#LaserTank Hint
+LaserTank Ýpucu
+#Level NOT Saved, Save Data ?
+Bölüm kaydedilmedi, kaydetmek istermisiniz?
+# - Kids
+ - Çok Kolay
+# - Easy
+ - Kolay
+# - Medium
+ - Orta
+# - Hard
+ - Zor
+# - Deadly
+ - Çok Zor
+# - [Editor]
+ - [Editör]
+#LaserTank Editor
+LaserTank Editör
+#NOT a Valid LaserTank Graphics Set
+LaserTank Grafikleri geçerli deðil
+#game.bmp and/or mask.bmp Not Found
+game.bmp and/yada mask.bmp bulunamadý
+#Open Playback file for Resume
+Playback dosyasýný aç yada devam et
+#Return to Game
+Oyuna geri dön
+#< NO HINT SUBMITTED FOR THIS LEVEL >
+< BU BOLUM ICIN IPUCU KAYDEDILMEMIS >
+#LaserTank Level #
+LaserTank Bölüm #
+#Select LaserTank Graphics Directory
+LaserTank Grafik Klasörünü Seçin
+#Game in Progress ...
+Oyun iþleniyor ...
+#You will lose game data.\nDo you want to save the game ?
+Oyun bilgisini kaybedeceksiniz.\nOyunu kaydetmek istermisiniz?
+#Beat
+Geç
+#All
+Hepsi
+#Completed %d of %d levels
+%d-%d bölüm bitirildi
+#Difficulty Set = 
+Zorluk = 
+#KEMHD  (means: Kids, Easy, Medium, Hard, Deadly)
+KEMHD
+#LaserTank Graphics file Not Found !
+LaserTank Grafik Dosyasý Bulunamadý !
+# LaserTank *** RECORDING ***
+ LaserTank *** Kaydediliyor ***
+
+
+##### HELP SECTIONS : ( 4 lines) ########
+#Editor Instructions
+#Revisions
+#Writing Your Own Levels
+#LaserTank.hlp
+#####
+Editör Talimatlarý
+Düzenlemeler
+Kendi Bölümünü Oluþturma
+Language\LaserTank.hlp
+
+
+##### ABOUTBOX DIALOG : ( 4 lines) ########
+#About LaserTank
+#&Ok
+#By Jim Kindley
+#Version
+#####
+LaserTank Hakkýnda
+&Tamam
+By Jim Kindley
+Versiyon
+
+##### DEADBOX DIALOG :  ( 3 lines) ########
+#&Undo Last Move
+#YOU ARE DEAD ! ! !
+#&ReStart
+#####
+&Son Hareketi Geri Al
+YENILDINIZ ! ! !
+&Yeniden Baþlat
+
+##### DIFFBOX DIALOG :  ( 9 lines) ########
+#Game Difficulty
+#&Ok
+#&Kids
+#&Easy
+#&Medium
+#&Hard
+#&Deadly
+#&All
+#Select
+#####
+Game Difficulty
+&Tamam
+&Çok Kolay
+&Kolay
+&Orta
+&Zor
+&Çok Zor
+&Hepsi
+Seç
+
+##### GRAPHBOX DIALOG :  ( 9 lines) ######
+#Select Graphics Set
+#Select One
+#&Internal Graphics
+#&User Graphics 
+#&Close
+#Author :
+#LaserTank Graphic Set Description
+#&View Opening Screen 
+#Change &Directory
+#####
+Grafik Seç
+Birtane Seç
+&Kendi Grafikleri
+&Kullanýcý Grafikleri
+&Kapat
+Yaratýcý :
+LaserTank Grafik Set Açýklamasý
+&Açýlýþ Ekran bilgileri 
+Klasör Deðiþtir
+
+##### LOADLEV DIALOG :  ( 7 lines) ######
+#Pick Level to Load
+#&Cancel
+#&Filter
+#File:
+#- File Loading Error -
+#Lev#   Name                           Author
+#or Direct Level Number Entry >>
+#####      
+Yüklemek için bölüm seçin
+&Ýptal
+&Filitre
+Dosya:
+- Dosya Yükleme Hatasý -
+Lev#   Ýsim                           Yaratýcý
+yada doðrudan seviye numarasý giriþ >>
+
+
+#### HINTBOX DIALOG :  ( 3 lines) ######
+#Modify Hint
+#&Ok
+#&Cancel
+#####
+Ýpucu deðiþtir
+&Tamam
+&Ýptal
+
+#### SEARCH DIALOG :   ( 14 lines) ######
+#Filter Level Data
+#Enter Search String :
+#Search By
+#&Title
+#&Author
+#&Cancel
+#&Ok
+#&Only Unsolved Levels
+#&Filter by Difficulty
+#&Kids
+#&Easy
+#&Medium
+#&Hard
+#&Deadly
+#####
+Bölüm bilgisini filtrele
+Arama anahtarýný girin :
+Þöyle Ara
+&Baþlýk
+&Yaratýcý
+&Ýptal
+&Tamam
+&Sadece Çözülmemiþ Bölümler
+&Zorluk Derecesine Göre
+&Çok Kolay
+&Kolay
+&Orta
+&Zor
+&Çok Zor
+
+#### RETBOX DIALOG :   ( 1 line) ##########
+#&Return to Game
+#####
+&Oyuna Geri Dön
+
+
+#### WINBOX DIALOG :   ( 4 lines) #########
+#&Ok
+#You Won ! ! !
+#File :
+#- Error -
+#####
+&Tamam
+Yendiniz ! ! !
+Dosya :
+- Hata -
+
+#### LOADTID DIALOG :   ( 3 lines) ########
+#Pick Tunnel ID #
+#&Ok
+#Enter the ID Number for this Tunnel
+#####
+Tunnel ID gir #
+&Tamam
+Bu tünel için ID numarasý girin
+
+
+
+#### HIGHBOX DIALOG :   ( 9 lines) ########
+#! New High Score !
+#&Ok
+#Level Number :
+#Level Name :
+#Moves :
+#Shots :
+#Initials :
+#Global HS :
+#- No Data -
+#####
+! Yeni yüksek puan !
+&Tamam
+Bölüm Numarasý :
+Bölüm Adý :
+Hareket :
+Ateþ :
+Initials :
+Genel HS :
+- Veri yok -
+
+#### HIGHLIST DIALOG :   ( 4 lines) #######
+#High Scores
+#&Ok
+#- File Loading Error -
+#Lev#  Name                          Moves  Shots  Initials
+#####
+Yüksel Puanlar
+&Tamam
+- Dosya Yükleme Hatasý -
+Lev#  Ýsim                          Hareket  Ateþ  Initials
+
+
+#### GHIGHLIST DIALOG :   ( 7 lines) #######
+#Global High Scores
+#&Ok
+#Lev#  Name                             H      A   Init   H     A  Init
+#Global
+#Local
+#- No Data -
+#&Beat
+#####
+Genel Yüksek Puanlar
+&Tamam
+Lev#  Ýsim                             H      A   Init   H     A  Init
+Genel
+Yerel
+- Veri yok -
+&Geç
+
+#### RECBOX DIALOG :   ( 3 lines) #######
+#Recording Game
+#Please Enter Your Name
+#&Ok
+#####
+Kayýtlý Oyun
+Lütfen ismini girin
+&Tamam
+
+#### PLAYBOX DIALOG :   ( 10 lines) ######
+#Playback Game
+#&Close
+#&Play
+#&Reset
+#&Fast
+#&Slow
+#S&tep
+#Step :
+#of
+#Speed
+#####
+Oyunu oynat
+&Kapat
+&Oynat
+&Tekrar
+&Hýzlý
+&Yavaþ
+Adým
+Adým :
+of
+Hýz
+
+#### PICKLEVEL DIALOG :   ( 6 lines) ######
+#Save LaserTank Level
+#&Ok
+#Enter the Level Number to
+#Save :
+#= Add
+#&Clear High Score
+######
+LaserTank bölümünü kaydet
+&Tamam
+Bölüm numarasýný girin
+Kaydet :
+= Ekle
+&Yüksek puanlarý temizle
+
+
+##### ABOUTBOX MESSAGE : (14 lines Max, 300 bytes each max) ###
+LaserTanký ücretsiz oynayabilirsiniz.\n\n
+Oyunu oynayýp öðrendikten sonra size de Editör ile kendi bölümünüzü yapýp (LPB files) ile bize gönderebilrisiniz.\n\n
+Yeni yüklenen bölümleri indirebilirsiniz.
+"Kendi bölümüm oluþturma" ve "Kayýt ve oynat" yardým dosyalarýný okuyabilirsiniz.\n\n
+(Lütfen yaratýcý bir biçimde bölüm yapýn, var olanlarý taklit etmeyin).\n\n
+(LaserTank WEB sitesinde birçok bölüm bulunmaktadýr).\n\n
+Herhangi bir Yüksek puan yaparsanýz, en güncel yüksek puan tablosuna sahip olduðunuzu kontrol ettikten sonra yendiðiniz bölümün LaserTank.hs dosyasýný bize gönderin.\n\n
+Maillerinizi: lasertank@globetrotter.net adresine gönderebilirsiniz\n\n
+Daha çok bölüm için, farklý grafikler için ve en güncel Yüksek puanlar için
+LaserTankýn WEB sitesini : http://www.jccontrols.net/laser ziyaret edin\n\n
+Yardým veya daha fazla bilgi için Yahoo Group u ziyaret edin:\n
+   http://groups.yahoo.com/lasertank\n
+################ END ######################

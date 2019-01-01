@@ -1,0 +1,405 @@
+##### LTank32 Language File 4.0 ###########
+#                                         #
+# Language : Serbian                      #
+# Author   : Darko Maksimoviæ             #
+# Date     : 04 June 2008 - v  1.0        #
+#                                         #
+###########################################
+
+##### IMPORTANT NOTE TO THE TRANSLATORS #################
+#                                                       #
+# You have to translate all the lines except those      #
+# beginning with a pound sign. ( # )                    #
+#                                                       #
+# No lines must be removed or added.                    #                  
+#                                                       #
+# All lines must stay at their original position.       #                  
+#                                                       #
+# In some cases changing the length of a message can    #
+# produce strange results. You will have to make tests. #
+#                                                       #
+#########################################################
+
+##### MAIN BUTONS  ( 9 lines) #########
+#Undo
+Nazad
+#Save Position
+Saèuvaj poziciju
+#Restore Position
+Vrati poziciju
+#New
+Nova
+#<< Level
+<< Nivo
+#Level >>
+Nivo >>
+#Hint
+Savjet
+#Restart
+Ispoèetka
+#Load Level
+Izaberi nivo
+
+##### MESSAGES  ( 44 lines ) ###########
+#The Level file can not be found\nPlease select a new one
+Datoteka sa nivoima nije pronaðena\nMolimo izaberite novu
+#Level Files (*.LVL)
+Datoteke sa nivoima (*.LVL)
+#Pick LaserTank Level File
+Izaberite datoteku sa nivoima za LaserTank
+#Playback Files (*.LPB)
+Datoteke sa snimcima (*.LPB)
+#Save Playback File
+Saèuvaj snimak
+#LaserTank Error
+Greška u programu
+#Old High Score > M:
+Stari najbolji rezultat > K:
+#M: 
+K: 
+# S: 
+ P: 
+# I: 
+ I: 
+#Congratulation's You beat it !!
+Èestitke! Oborili ste rekord!!
+#Playback Level : 
+Pušta se snimak: 
+#\nRecorded by 
+\nSnimio 
+#\nCan Not be found in the current level file\n< 
+\nSnimak nije pronaðen u trenutnoj datoteci sa nivoima\n< 
+#Do You want to Continue Recording ?
+Da li želite da nastavite sa snimanjem?
+#&Play
+&Pusti
+#&Pause
+&Pauza
+#Out of Memory - Undo Roll Over
+Nedostatak memorije - pamæenje koraka poremeæeno
+#Open Playback file
+Otvori snimak
+#LaserTank Hint
+LaserTank savjet
+#Level NOT Saved, Save Data ?
+Nivo NIJE saèuvan. Da saèuvam?
+# - Kids
+ - Za djecu
+# - Easy
+ - Lako
+# - Medium
+ - Srednje
+# - Hard
+ - Teško
+# - Deadly
+ - Ubitaèno
+# - [Editor]
+ - [Editor]
+#LaserTank Editor
+LaserTank Editor
+#NOT a Valid LaserTank Graphics Set
+NEVALIDAN šablon za grafièki prikaz
+#game.bmp and/or mask.bmp Not Found
+game.bmp i/ili mask.bmp nisu pronaðeni
+#Open Playback file for Resume
+Otvori snimak za ponovno puštanje
+#Return to Game
+Povratak u igru
+#< NO HINT SUBMITTED FOR THIS LEVEL >
+< Nije dat savjet za ovaj nivo >
+#LaserTank Level #
+Broj nivoa #
+#Select LaserTank Graphics Directory
+Izaberi direktorijum sa grafièkim prikazima
+#Game in Progress ...
+Igra je u toku...
+#You will lose game data.\nDo you want to save the game ?
+Izgubiæete sve poteze.\nŽelite li da saèuvate partiju?
+#Beat
+Pobijeðene
+#All
+Sve
+#Completed %d of %d levels
+Završio %d od %d nivoa
+#Difficulty Set = 
+Nivoi po težini = 
+#KEMHD  (means: Kids, Easy, Medium, Hard, Deadly)
+DLSTU
+#LaserTank Graphics file Not Found !
+Nije pronaðena datoteka sa grafièkim prikazom za LaserTank!
+# LaserTank *** RECORDING ***
+ LaserTank *** SNIMA SE ***
+
+
+##### HELP SECTIONS : ( 4 lines) ########
+#Editor Instructions
+#Revisions
+#Writing Your Own Levels
+#LaserTank.hlp
+#####
+Pomoæ za editor
+Revizije
+Pisanje sopstvenih nivoa
+Language\LaserTankSE.hlp
+
+
+##### ABOUTBOX DIALOG : ( 4 lines) ########
+#About LaserTank
+#&Ok
+#By Jim Kindley
+#Version
+#####
+O programu LaserTank
+&U redu
+Autor: Džim Kindli
+Verzija
+
+##### DEADBOX DIALOG :  ( 3 lines) ########
+#&Undo Last Move
+#YOU ARE DEAD ! ! !
+#&ReStart
+#####
+&Korak nazad
+POGINUO SI ! ! !
+&Ispoèetka
+
+##### DIFFBOX DIALOG :  ( 9 lines) ########
+#Game Difficulty
+#&Ok
+#&Kids
+#&Easy
+#&Medium
+#&Hard
+#&Deadly
+#&All
+#Select
+#####
+Težina nivoa
+&U redu
+Za &djecu
+&Lako
+&Srednje
+&Teško
+&Ubitaèno
+&Sve
+Odaberite
+
+##### GRAPHBOX DIALOG :  ( 9 lines) ######
+#Select Graphics Set
+#Select One
+#&Internal Graphics
+#&User Graphics 
+#&Close
+#Author:
+#LaserTank Graphic Set Description
+#&View Opening Screen 
+#Change &Directory
+#####
+Izaberite grafièki prikaz
+Odaberite jedan
+&Ugraðeni prikazi
+&Lièni prikazi 
+&Zatvori
+Autor:
+Opis grafièkog prikaza za LaserTank
+&Prikaži poèetni ekran
+Promijeni &katalog
+
+##### LOADLEV DIALOG :  ( 7 lines) ######
+#Pick Level to Load
+#&Cancel
+#&Filter
+#File:
+#- File Loading Error -
+#Lev#   Name                           Author
+#or Direct Level Number Entry >>
+#####      
+Izaberite nivo
+&Otkaži
+&Filter
+Datoteka:
+- Greška pri uèitavanju datoteke -
+Niv#   Ime                           Autor
+ili direktno ukucajte broj nivoa >>
+
+
+#### HINTBOX DIALOG :  ( 3 lines) ######
+#Modify Hint
+#&Ok
+#&Cancel
+#####
+Promijenite savjet
+&U redu
+&Otkaži
+
+#### SEARCH DIALOG :   ( 14 lines) ######
+#Filter Level Data
+#Enter Search String :
+#Search By
+#&Title
+#&Author
+#&Cancel
+#&Ok
+#&Only Unsolved Levels
+#&Filter by Difficulty
+#&Kids
+#&Easy
+#&Medium
+#&Hard
+#&Deadly
+#####
+Prikaz nivoa po filteru
+Šta tražite:
+Pretražuj po
+&Naslovu
+&Autoru
+&Otkaži
+&U redu
+&Samo nezavršeni nivoi
+&Filtriraj po težini
+Za &djecu
+&Lako
+&Srednje
+&Teško
+&Ubitaèno
+
+#### RETBOX DIALOG :   ( 1 line) ##########
+#&Return to Game
+#####
+&Povratak u igru
+
+
+#### WINBOX DIALOG :   ( 4 lines) #########
+#&Ok
+#You Won ! ! !
+#File :
+#- Error -
+#####
+&U redu
+Pobijedili ste ! ! !
+Fajl:
+- Greška -
+
+#### LOADTID DIALOG :   ( 3 lines) ########
+#Pick Tunnel ID #
+#&Ok
+#Enter the ID Number for this Tunnel
+#####
+Izaberite ID tunela #
+&U redu
+Unesite ID broj za ovaj tunel
+
+
+
+#### HIGHBOX DIALOG :   ( 9 lines) ########
+#! New High Score !
+#&Ok
+#Level Number :
+#Level Name :
+#Moves :
+#Shots :
+#Initials :
+#Global HS :
+#- No Data -
+#####
+! Oboren rekord !
+&U redu
+Broj nivoa :
+Ime nivoa:
+Koraka:
+Pucnjeva:
+Inicijali:
+Globalni rekord:
+- Nije poznato -
+
+#### HIGHLIST DIALOG:   ( 4 lines) #######
+#High Scores
+#&Ok
+#- File Loading Error -
+#Lev#  Name                          Moves  Shots  Initials
+#####
+Najbolji rezultati
+&U redu
+- Greška pri uèitavanju datoteke -
+Niv#  Ime                          Koraka  Pucnjeva  Inicijala
+
+
+#### GHIGHLIST DIALOG:   ( 7 lines) #######
+#Global High Scores
+#&Ok
+#Lev#  Name                             M      S   Init   M     S  Init
+#Global
+#Local
+#- No Data -
+#&Beat
+#####
+Globalno najbolji rezultati
+&U redu
+Niv#  Ime                             K      P   Inic   K     P  Inic
+Globalno
+Lokalno
+- Nije poznato -
+&Oboreni
+
+#### RECBOX DIALOG :   ( 3 lines) #######
+#Recording Game
+#Please Enter Your Name
+#&Ok
+#####
+Snimanje igre
+Molimo unesite svoje ime
+&U redu
+
+#### PLAYBOX DIALOG :   ( 10 lines) ######
+#Playback Game
+#&Close
+#&Play
+#&Reset
+#&Fast
+#&Slow
+#S&tep
+#Step :
+#of
+#Speed
+#####
+Prikaz partije
+&Zatvori
+&Pusti
+P&oèetak
+&Brzo
+&Sporo
+&Korak
+Korak:
+od
+Brzina
+
+#### PICKLEVEL DIALOG :   ( 6 lines) ######
+#Save LaserTank Level
+#&Ok
+#Enter the Level Number to
+#Save :
+#= Add
+#&Clear High Score
+######
+Saèuvaj nivo
+&U redu
+Izaberite broj za novi
+nivo:
+= dodaj
+&Poèisti najbolje rezultate
+
+
+##### ABOUTBOX MESSAGE : (14 lines Max, 300 bytes each max) ###
+LaserTank je raèunarska igra èije autorsko pravo je definisano kao HelpWare, tako da ga možete besplatno koristiti.\n\n
+Nakon što postanete vješt igraè, možda æete htjeti da napravite jedan ili više novih nivoa, koristeæi editor nivoa, i da ga pošaljete nama, skupa sa snimkom odigrane partije u tom nivou (datoteka sa ekstenzijom LPB).\n\n
+Ažuriraæemo program s vremena na vrijeme i ubaciti sve dobre nivoe koje dotad primimo. 
+Pogledajte  "Pisanje sopstvenih nivoa" i "Snimanje i puštanje" u pomoænoj dokumentaciji.\n\n
+(Molimo vas, budite maštoviti i što manje koristite ideje iz nivoa koji veæ postoje).\n\n
+(Veæ postoji tako mnogo nivoa na veb sajtu ove igre).\n\n
+Ako oborite neki rekord, a imali ste najsvježiju listu globalnih najboljih rezultata, pošaljite nam zip arhivu sa snimcima nivoa èije ste rekorde oborili i svoju datoteku LaserTank.hs.\n\n
+Datoteke nam možete slati na adresu: lasertank@cgocable.ca\n\n
+Ako želite da naðete još nivoa, grafièkih prikaza i najsvježije globalne rezultate, posjetite\n
+veb sajt igre LaserTank: http://perso.cgocable.ca/lasertank/\n\n
+Za pomoæ ili više podataka o igri, ukljuèite se ili bacite pogled na našu Yahoo grupu na adresi:\n
+   http://groups.yahoo.com/lasertank\n
+################ END ######################
