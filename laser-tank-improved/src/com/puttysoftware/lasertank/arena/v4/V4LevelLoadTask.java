@@ -19,7 +19,6 @@ import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
-import com.puttysoftware.lasertank.resourcemanagers.MusicManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -67,7 +66,6 @@ public class V4LevelLoadTask extends Thread {
 	    app.getArenaManager().setLastUsedArena(lum);
 	    app.updateLevelInfoList();
 	    app.getEditor().arenaChanged();
-	    MusicManager.arenaChanged();
 	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		    StringConstants.DIALOG_STRING_ARENA_LOADING_SUCCESS));
 	    app.getArenaManager().handleDeferredSuccess(true);

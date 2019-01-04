@@ -19,7 +19,6 @@ import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.improved.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
-import com.puttysoftware.lasertank.resourcemanagers.MusicManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
@@ -116,7 +115,6 @@ public class LoadTask extends Thread {
 		app.getArenaManager().setLastUsedArena(lum);
 	    }
 	    app.getEditor().arenaChanged();
-	    MusicManager.arenaChanged();
 	    if (this.isSavedGame) {
 		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_GAME_LOADING_SUCCESS));

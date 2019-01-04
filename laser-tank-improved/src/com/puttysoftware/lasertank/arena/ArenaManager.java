@@ -20,7 +20,6 @@ import com.puttysoftware.lasertank.arena.v4.V4LevelLoadTask;
 import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.improved.fileio.FilenameChecker;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.resourcemanagers.MusicManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.CleanupTask;
@@ -71,7 +70,6 @@ public class ArenaManager {
 	}
 	this.setDirty(false);
 	LaserTank.getApplication().getEditor().arenaChanged();
-	MusicManager.arenaChanged();
 	LaserTank.getApplication().getMenuManager().checkFlags();
     }
 

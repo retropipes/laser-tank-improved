@@ -83,15 +83,13 @@ public class ArenaEditor implements MenuSection {
     private EditorUndoRedoEngine engine;
     private EditorLocationManager elMgr;
     private boolean arenaChanged;
-    private final ExternalMusicEditor eme;
     private int activePlayer;
     private JMenu editorTimeTravelSubMenu;
     JCheckBoxMenuItem editorEraDistantPast, editorEraPast, editorEraPresent, editorEraFuture, editorEraDistantFuture;
     private JMenuItem editorUndo, editorRedo, editorCutLevel, editorCopyLevel, editorPasteLevel,
 	    editorInsertLevelFromClipboard, editorClearHistory, editorGoToLevel, editorUpOneFloor, editorDownOneFloor,
 	    editorUpOneLevel, editorDownOneLevel, editorAddLevel, editorRemoveLevel, editorLevelPreferences,
-	    editorSetStartPoint, editorFillLevel, editorResizeLevel, editorSetMusic, editorChangeLayer,
-	    editorGlobalMoveShoot;
+	    editorSetStartPoint, editorFillLevel, editorResizeLevel, editorChangeLayer, editorGlobalMoveShoot;
     private static final int STACK_COUNT = 10;
     private static final String[] JUMP_LIST = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -109,18 +107,12 @@ public class ArenaEditor implements MenuSection {
 		PreferencesManager.getEditorShowAllObjects());
 	this.objectsEnabled = objectList.getObjectEnabledStatuses(ArenaConstants.LAYER_LOWER_GROUND);
 	this.arenaChanged = true;
-	this.eme = new ExternalMusicEditor();
 	this.activePlayer = 0;
     }
 
     public void activeLanguageChanged() {
 	EditorLayoutConstants.activeLanguageChanged();
 	this.updatePicker();
-    }
-
-    public void defineArenaMusic() {
-	this.hideOutput();
-	this.eme.edit();
     }
 
     void enableGlobalMoveShoot() {
@@ -133,10 +125,6 @@ public class ArenaEditor implements MenuSection {
 	LaserTank.getApplication().getArenaManager().getArena().setMoveShootAllowedGlobally(false);
 	this.editorGlobalMoveShoot.setText(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 		StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
-    }
-
-    public void setMusicFilename(final String fn) {
-	this.eme.setMusicFilename(fn);
     }
 
     public void arenaChanged() {
@@ -1506,10 +1494,6 @@ public class ArenaEditor implements MenuSection {
 		    // Set Start Point
 		    editor.editPlayerLocation();
 		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_SET_MUSIC))) {
-		    // Set Music
-		    editor.defineArenaMusic();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_CHANGE_LAYER))) {
 		    // Change Layer
 		    editor.changeLayer();
@@ -1616,7 +1600,6 @@ public class ArenaEditor implements MenuSection {
 	this.editorResizeLevel.setEnabled(true);
 	this.editorLevelPreferences.setEnabled(true);
 	this.editorSetStartPoint.setEnabled(true);
-	this.editorSetMusic.setEnabled(true);
 	this.editorChangeLayer.setEnabled(true);
 	this.editorGlobalMoveShoot.setEnabled(true);
 	this.editorEraDistantPast.setEnabled(true);
@@ -1646,7 +1629,6 @@ public class ArenaEditor implements MenuSection {
 	this.editorResizeLevel.setEnabled(false);
 	this.editorLevelPreferences.setEnabled(false);
 	this.editorSetStartPoint.setEnabled(false);
-	this.editorSetMusic.setEnabled(false);
 	this.editorChangeLayer.setEnabled(false);
 	this.editorGlobalMoveShoot.setEnabled(false);
 	this.editorEraDistantPast.setEnabled(false);
@@ -1702,8 +1684,6 @@ public class ArenaEditor implements MenuSection {
 		StringConstants.MENU_STRING_ITEM_LEVEL_PREFERENCES));
 	this.editorSetStartPoint = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 		StringConstants.MENU_STRING_ITEM_SET_START_POINT));
-	this.editorSetMusic = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_SET_MUSIC));
 	this.editorChangeLayer = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 		StringConstants.MENU_STRING_ITEM_CHANGE_LAYER));
 	this.editorGlobalMoveShoot = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
@@ -1738,7 +1718,6 @@ public class ArenaEditor implements MenuSection {
 	this.editorResizeLevel.addActionListener(menuHandler);
 	this.editorLevelPreferences.addActionListener(menuHandler);
 	this.editorSetStartPoint.addActionListener(menuHandler);
-	this.editorSetMusic.addActionListener(menuHandler);
 	this.editorChangeLayer.addActionListener(menuHandler);
 	this.editorGlobalMoveShoot.addActionListener(menuHandler);
 	this.editorEraDistantPast.addActionListener(menuHandler);
@@ -1769,7 +1748,6 @@ public class ArenaEditor implements MenuSection {
 	editorMenu.add(this.editorResizeLevel);
 	editorMenu.add(this.editorLevelPreferences);
 	editorMenu.add(this.editorSetStartPoint);
-	editorMenu.add(this.editorSetMusic);
 	editorMenu.add(this.editorChangeLayer);
 	editorMenu.add(this.editorGlobalMoveShoot);
 	editorMenu.add(this.editorTimeTravelSubMenu);

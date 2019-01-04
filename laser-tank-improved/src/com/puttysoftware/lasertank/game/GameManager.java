@@ -55,7 +55,6 @@ import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
-import com.puttysoftware.lasertank.resourcemanagers.MusicManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -1265,8 +1264,6 @@ public class GameManager implements MenuSection {
     }
 
     public void exitGame() {
-	// Stop music
-	MusicManager.stopMusic();
 	// Halt the animator
 	if (this.animator != null) {
 	    this.animator.stopAnimator();
@@ -1755,10 +1752,6 @@ public class GameManager implements MenuSection {
 		this.borderPane.add(this.scorePane, BorderLayout.NORTH);
 		this.borderPane.add(this.infoPane, BorderLayout.SOUTH);
 		this.showOutput();
-		// Start music
-		if (PreferencesManager.getMusicEnabled()) {
-		    MusicManager.playMusic();
-		}
 		app.getArenaManager().getArena().setDirtyFlags(this.plMgr.getPlayerLocationZ());
 		this.redrawArena();
 		this.updateScoreText();
