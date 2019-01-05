@@ -16,8 +16,8 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.Application;
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -32,8 +32,27 @@ public class LogoManager {
     private static final int LOGO_DRAW_HORZ_PCO = 4;
     private static final int LOGO_DRAW_VERT = 76;
 
-    private LogoManager() {
-	// Do nothing
+    public static Image getIconLogo() {
+	return LogoCache.getCachedLogo(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ICONLOGO),
+		false);
+    }
+
+    public static BufferedImageIcon getLogo() {
+	return LogoCache.getCachedLogo(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_LOGO), true);
+    }
+
+    public static BufferedImageIcon getMicroLogo() {
+	return LogoCache.getCachedLogo(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MICROLOGO),
+		false);
+    }
+
+    public static BufferedImageIcon getMiniatureLogo() {
+	return LogoCache.getCachedLogo(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MINILOGO),
+		false);
     }
 
     static BufferedImageIcon getUncachedLogo(final String name, final boolean drawing) {
@@ -74,26 +93,7 @@ public class LogoManager {
 	}
     }
 
-    public static BufferedImageIcon getLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_LOGO), true);
-    }
-
-    public static BufferedImageIcon getMiniatureLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MINILOGO),
-		false);
-    }
-
-    public static BufferedImageIcon getMicroLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MICROLOGO),
-		false);
-    }
-
-    public static Image getIconLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ICONLOGO),
-		false);
+    private LogoManager() {
+	// Do nothing
     }
 }

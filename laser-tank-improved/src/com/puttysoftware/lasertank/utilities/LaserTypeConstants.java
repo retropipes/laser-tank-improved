@@ -14,10 +14,6 @@ public class LaserTypeConstants {
     public static final int LASER_TYPE_DISRUPTOR = 65;
     public static final int LASER_TYPE_POWER = 129;
 
-    private LaserTypeConstants() {
-	// Do nothing
-    }
-
     public static final int getRangeTypeForLaserType(final int lt) {
 	switch (lt) {
 	case LASER_TYPE_STUNNER:
@@ -27,5 +23,9 @@ public class LaserTypeConstants {
 	default:
 	    return RangeTypeConstants.RANGE_TYPE_BOMB;
 	}
+    }
+
+    private LaserTypeConstants() {
+	// Do nothing
     }
 }

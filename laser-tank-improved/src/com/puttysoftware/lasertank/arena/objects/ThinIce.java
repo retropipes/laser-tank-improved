@@ -21,23 +21,6 @@ public class ThinIce extends AbstractGround {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
-	LaserTank.getApplication().getGameManager().remoteDelayedDecayTo(new Water());
-    }
-
-    @Override
-    public boolean pushIntoAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
-	LaserTank.getApplication().getGameManager().remoteDelayedDecayTo(new Water());
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 43;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -49,5 +32,22 @@ public class ThinIce extends AbstractGround {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 43;
+    }
+
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
+	LaserTank.getApplication().getGameManager().remoteDelayedDecayTo(new Water());
+    }
+
+    @Override
+    public boolean pushIntoAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
+	LaserTank.getApplication().getGameManager().remoteDelayedDecayTo(new Water());
+	return true;
     }
 }

@@ -22,6 +22,64 @@ import javax.swing.JTextField;
 import com.puttysoftware.lasertank.LaserTank;
 
 public abstract class GenericObjectEditor extends GenericEditor {
+    private class EventHandler implements ActionListener, FocusListener {
+	public EventHandler() {
+	    // Do nothing
+	}
+
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    final GenericObjectEditor ge = GenericObjectEditor.this;
+	    try {
+		final String cmd = e.getActionCommand().substring(0, ge.actionCmdLen);
+		final int num = Integer.parseInt(e.getActionCommand().substring(ge.actionCmdLen));
+		ge.handleButtonClick(cmd, num);
+		if (ge.autoStore) {
+		    if (ge.guiEntryType(num) == GenericObjectEditor.ENTRY_TYPE_LIST) {
+			final JComboBox<String> list = ge.getEntryList(num);
+			ge.autoStoreEntryListValue(list, num);
+		    } else if (ge.guiEntryType(num) == GenericObjectEditor.ENTRY_TYPE_TEXT) {
+			final JTextField entry = ge.getEntryField(num);
+			ge.autoStoreEntryFieldValue(entry, num);
+		    }
+		}
+	    } catch (final NumberFormatException nfe) {
+		// Ignore
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+
+	@Override
+	public void focusGained(final FocusEvent fe) {
+	    // Do nothing
+	}
+
+	@Override
+	public void focusLost(final FocusEvent fe) {
+	    final GenericObjectEditor ge = GenericObjectEditor.this;
+	    try {
+		final Component comp = fe.getComponent();
+		if (comp.getClass().equals(JTextField.class)) {
+		    final JTextField entry = (JTextField) comp;
+		    final int num = Integer.parseInt(entry.getName());
+		    ge.autoStoreEntryFieldValue(entry, num);
+		} else if (comp.getClass().equals(JComboBox.class)) {
+		    @SuppressWarnings("unchecked")
+		    final JComboBox<String> list = (JComboBox<String>) comp;
+		    final int num = Integer.parseInt(list.getName());
+		    ge.autoStoreEntryListValue(list, num);
+		}
+	    } catch (final NumberFormatException nfe) {
+		// Ignore
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+    }
+
+    public static final boolean ENTRY_TYPE_TEXT = false;
+    public static final boolean ENTRY_TYPE_LIST = true;
     // Fields
     final int actionCmdLen;
     private final int abRows;
@@ -32,8 +90,6 @@ public abstract class GenericObjectEditor extends GenericEditor {
     private JButton[][] actionButtons;
     boolean autoStore;
     private EventHandler handler;
-    public static final boolean ENTRY_TYPE_TEXT = false;
-    public static final boolean ENTRY_TYPE_LIST = true;
 
     protected GenericObjectEditor(final String newSource, final int actionCommandLength, final int actionButtonRows,
 	    final int actionButtonCols, final boolean autoStoreEnabled) {
@@ -42,6 +98,20 @@ public abstract class GenericObjectEditor extends GenericEditor {
 	this.abRows = actionButtonRows;
 	this.abCols = actionButtonCols;
 	this.autoStore = autoStoreEnabled;
+    }
+
+    protected abstract void autoStoreEntryFieldValue(JTextField entry, int num);
+
+    protected abstract void autoStoreEntryListValue(JComboBox<String> list, int num);
+
+    @Override
+    protected void borderPaneHook() {
+	// Do nothing
+    }
+
+    @Override
+    protected void editObjectChanged() {
+	// Do nothing
     }
 
     // Methods
@@ -53,11 +123,9 @@ public abstract class GenericObjectEditor extends GenericEditor {
 	return this.entryLists.get(num);
     }
 
-    protected abstract void handleButtonClick(String cmd, int num);
+    protected abstract String guiActionButtonActionCommand(int row, int col);
 
-    protected abstract void guiNameLabelProperties(JLabel nameLbl, int num);
-
-    protected abstract boolean guiEntryType(int num);
+    protected abstract void guiActionButtonProperties(JButton actBtn, int row, int col);
 
     protected abstract void guiEntryFieldProperties(JTextField entry, int num);
 
@@ -65,13 +133,21 @@ public abstract class GenericObjectEditor extends GenericEditor {
 
     protected abstract void guiEntryListProperties(JComboBox<String> list, int num);
 
-    protected abstract void guiActionButtonProperties(JButton actBtn, int row, int col);
+    protected abstract boolean guiEntryType(int num);
 
-    protected abstract String guiActionButtonActionCommand(int row, int col);
+    protected abstract void guiNameLabelProperties(JLabel nameLbl, int num);
 
-    protected abstract void autoStoreEntryFieldValue(JTextField entry, int num);
+    protected abstract void handleButtonClick(String cmd, int num);
 
-    protected abstract void autoStoreEntryListValue(JComboBox<String> list, int num);
+    @Override
+    public void redrawEditor() {
+	// Do nothing
+    }
+
+    @Override
+    protected void reSetUpGUIHook(final Container outputPane) {
+	this.setUpGUIHook(outputPane);
+    }
 
     @Override
     protected void setUpGUIHook(final Container outputPane) {
@@ -137,88 +213,12 @@ public abstract class GenericObjectEditor extends GenericEditor {
     }
 
     @Override
-    protected void reSetUpGUIHook(final Container outputPane) {
-	this.setUpGUIHook(outputPane);
-    }
-
-    @Override
-    protected void editObjectChanged() {
-	// Do nothing
-    }
-
-    @Override
-    protected void borderPaneHook() {
-	// Do nothing
-    }
-
-    @Override
-    public void redrawEditor() {
+    public void switchFromSubEditor() {
 	// Do nothing
     }
 
     @Override
     public void switchToSubEditor() {
 	// Do nothing
-    }
-
-    @Override
-    public void switchFromSubEditor() {
-	// Do nothing
-    }
-
-    private class EventHandler implements ActionListener, FocusListener {
-	public EventHandler() {
-	    // Do nothing
-	}
-
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    final GenericObjectEditor ge = GenericObjectEditor.this;
-	    try {
-		final String cmd = e.getActionCommand().substring(0, ge.actionCmdLen);
-		final int num = Integer.parseInt(e.getActionCommand().substring(ge.actionCmdLen));
-		ge.handleButtonClick(cmd, num);
-		if (ge.autoStore) {
-		    if (ge.guiEntryType(num) == GenericObjectEditor.ENTRY_TYPE_LIST) {
-			final JComboBox<String> list = ge.getEntryList(num);
-			ge.autoStoreEntryListValue(list, num);
-		    } else if (ge.guiEntryType(num) == GenericObjectEditor.ENTRY_TYPE_TEXT) {
-			final JTextField entry = ge.getEntryField(num);
-			ge.autoStoreEntryFieldValue(entry, num);
-		    }
-		}
-	    } catch (final NumberFormatException nfe) {
-		// Ignore
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-
-	@Override
-	public void focusGained(final FocusEvent fe) {
-	    // Do nothing
-	}
-
-	@Override
-	public void focusLost(final FocusEvent fe) {
-	    final GenericObjectEditor ge = GenericObjectEditor.this;
-	    try {
-		final Component comp = fe.getComponent();
-		if (comp.getClass().equals(JTextField.class)) {
-		    final JTextField entry = (JTextField) comp;
-		    final int num = Integer.parseInt(entry.getName());
-		    ge.autoStoreEntryFieldValue(entry, num);
-		} else if (comp.getClass().equals(JComboBox.class)) {
-		    @SuppressWarnings("unchecked")
-		    final JComboBox<String> list = (JComboBox<String>) comp;
-		    final int num = Integer.parseInt(list.getName());
-		    ge.autoStoreEntryListValue(list, num);
-		}
-	    } catch (final NumberFormatException nfe) {
-		// Ignore
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
     }
 }

@@ -30,6 +30,67 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.EditorLayoutConstants;
 
 class PreferencesGUIManager {
+    private class EventHandler implements ActionListener, WindowListener {
+	public EventHandler() {
+	    // Do nothing
+	}
+
+	// Handle buttons
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    try {
+		final PreferencesGUIManager pm = PreferencesGUIManager.this;
+		final String cmd = e.getActionCommand();
+		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		    pm.setPrefs();
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
+		    pm.hidePrefs();
+		}
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+
+	@Override
+	public void windowActivated(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowClosed(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowClosing(final WindowEvent e) {
+	    final PreferencesGUIManager pm = PreferencesGUIManager.this;
+	    pm.hidePrefs();
+	}
+
+	@Override
+	public void windowDeactivated(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowDeiconified(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowIconified(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowOpened(final WindowEvent e) {
+	    // Do nothing
+	}
+    }
+
+    private static final int GRID_LENGTH = 12;
     // Fields
     private JFrame prefFrame;
     private JCheckBox sounds;
@@ -41,7 +102,6 @@ class PreferencesGUIManager {
     private JComboBox<String> languageList;
     private JComboBox<String> editorLayoutList;
     private JCheckBox editorShowAllObjects;
-    private static final int GRID_LENGTH = 12;
 
     // Constructors
     PreferencesGUIManager() {
@@ -65,20 +125,6 @@ class PreferencesGUIManager {
 	    return this.prefFrame;
 	} else {
 	    return null;
-	}
-    }
-
-    public void showPrefs() {
-	final Application app = LaserTank.getApplication();
-	app.setInPrefs();
-	this.prefFrame.setVisible(true);
-	final int formerMode = app.getFormerMode();
-	if (formerMode == Application.STATUS_GUI) {
-	    app.getGUIManager().hideGUI();
-	} else if (formerMode == Application.STATUS_GAME) {
-	    app.getGameManager().hideOutput();
-	} else if (formerMode == Application.STATUS_EDITOR) {
-	    app.getEditor().hideOutput();
 	}
     }
 
@@ -108,6 +154,11 @@ class PreferencesGUIManager {
 	this.editorShowAllObjects.setSelected(PreferencesManager.getEditorShowAllObjects());
     }
 
+    private void setDefaultPrefs() {
+	PreferencesManager.readPrefs();
+	this.loadPrefs();
+    }
+
     void setPrefs() {
 	PreferencesManager.setEnableAnimation(this.enableAnimation.isSelected());
 	PreferencesManager.setSoundsEnabled(this.sounds.isSelected());
@@ -119,11 +170,6 @@ class PreferencesGUIManager {
 	PreferencesManager.setEditorLayoutID(this.editorLayoutList.getSelectedIndex());
 	PreferencesManager.setEditorShowAllObjects(this.editorShowAllObjects.isSelected());
 	this.hidePrefs();
-    }
-
-    private void setDefaultPrefs() {
-	PreferencesManager.readPrefs();
-	this.loadPrefs();
     }
 
     private void setUpGUI() {
@@ -196,63 +242,17 @@ class PreferencesGUIManager {
 	this.prefFrame.pack();
     }
 
-    private class EventHandler implements ActionListener, WindowListener {
-	public EventHandler() {
-	    // Do nothing
-	}
-
-	// Handle buttons
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final PreferencesGUIManager pm = PreferencesGUIManager.this;
-		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
-		    pm.setPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
-		    pm.hidePrefs();
-		}
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-
-	@Override
-	public void windowOpened(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowClosing(final WindowEvent e) {
-	    final PreferencesGUIManager pm = PreferencesGUIManager.this;
-	    pm.hidePrefs();
-	}
-
-	@Override
-	public void windowClosed(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowIconified(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowDeiconified(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowActivated(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowDeactivated(final WindowEvent e) {
-	    // Do nothing
+    public void showPrefs() {
+	final Application app = LaserTank.getApplication();
+	app.setInPrefs();
+	this.prefFrame.setVisible(true);
+	final int formerMode = app.getFormerMode();
+	if (formerMode == Application.STATUS_GUI) {
+	    app.getGUIManager().hideGUI();
+	} else if (formerMode == Application.STATUS_GAME) {
+	    app.getGameManager().hideOutput();
+	} else if (formerMode == Application.STATUS_EDITOR) {
+	    app.getEditor().hideOutput();
 	}
     }
 }

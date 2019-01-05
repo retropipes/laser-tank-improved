@@ -24,6 +24,25 @@ public class IcyWall extends AbstractWall {
     }
 
     @Override
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	switch (materialID) {
+	case MaterialConstants.MATERIAL_FIRE:
+	    if (this.hasPreviousState()) {
+		return this.getPreviousState();
+	    } else {
+		return new Wall();
+	    }
+	default:
+	    return this;
+	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 58;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	if (laserType == LaserTypeConstants.LASER_TYPE_DISRUPTOR) {
@@ -50,24 +69,5 @@ public class IcyWall extends AbstractWall {
 	    // Stop laser
 	    return super.laserEnteredAction(locX, locY, locZ, dirX, dirY, laserType, forceUnits);
 	}
-    }
-
-    @Override
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	switch (materialID) {
-	case MaterialConstants.MATERIAL_FIRE:
-	    if (this.hasPreviousState()) {
-		return this.getPreviousState();
-	    } else {
-		return new Wall();
-	    }
-	default:
-	    return this;
-	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 58;
     }
 }

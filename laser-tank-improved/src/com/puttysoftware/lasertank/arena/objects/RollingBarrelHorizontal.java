@@ -24,11 +24,6 @@ public class RollingBarrelHorizontal extends AbstractMovableObject {
     }
 
     @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_BALL_ROLL);
-    }
-
-    @Override
     public final int getStringBaseID() {
 	return 140;
     }
@@ -61,6 +56,11 @@ public class RollingBarrelHorizontal extends AbstractMovableObject {
 		return Direction.NONE;
 	    }
 	}
+    }
+
+    @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_BALL_ROLL);
     }
 
     @Override

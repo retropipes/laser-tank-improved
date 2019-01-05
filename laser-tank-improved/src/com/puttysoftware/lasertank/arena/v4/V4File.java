@@ -14,10 +14,6 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 class V4File {
-    private V4File() {
-	// Do nothing
-    }
-
     static void loadOldFile(final AbstractArena a, final FileInputStream file) throws InvalidArenaException {
 	CurrentArenaData t = null;
 	int levelCount = 0;
@@ -40,5 +36,9 @@ class V4File {
 		a.switchLevel(levelCount);
 	    }
 	} while (t != null);
+    }
+
+    private V4File() {
+	// Do nothing
     }
 }

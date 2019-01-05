@@ -7,20 +7,16 @@ package com.puttysoftware.lasertank.resourcemanagers;
 
 import java.net.URL;
 
-import com.puttysoftware.lasertank.improved.sound.SoundFactory;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.sound.SoundFactory;
 
 public class SoundManager {
     private static final String DEFAULT_LOAD_PATH = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 	    StringConstants.NOTL_STRING_SOUND_PATH);
     private static String LOAD_PATH = SoundManager.DEFAULT_LOAD_PATH;
     private static Class<?> LOAD_CLASS = SoundManager.class;
-
-    private SoundManager() {
-	// Do nothing
-    }
 
     private static SoundFactory getSound(final int soundID) {
 	try {
@@ -38,5 +34,9 @@ public class SoundManager {
 	if (PreferencesManager.getSoundsEnabled()) {
 	    SoundManager.getSound(soundID).start();
 	}
+    }
+
+    private SoundManager() {
+	// Do nothing
     }
 }

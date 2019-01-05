@@ -5,8 +5,8 @@
  */
 package com.puttysoftware.lasertank;
 
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.errors.ErrorLogger;
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.errors.ErrorLogger;
 //import com.puttysoftware.lasertank.improved.integration.NativeIntegration;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
@@ -14,10 +14,6 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class LaserTank {
-    private LaserTank() {
-	// Do nothing
-    }
-
     // Constants
     private static Application application;
     private static String PROGRAM_NAME = "LaserTank";
@@ -37,6 +33,14 @@ public class LaserTank {
 
     public static ErrorLogger getErrorLoggerDirectly() {
 	return LaserTank.errorLogger;
+    }
+
+    private static void initStrings() {
+	StringLoader.setDefaultLanguage();
+	LaserTank.ERROR_TITLE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		StringConstants.ERROR_STRING_ERROR_TITLE);
+	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		StringConstants.ERROR_STRING_ERROR_MESSAGE);
     }
 
     public static void mainDISABLED(final String[] args) {
@@ -85,11 +89,7 @@ public class LaserTank {
 	}
     }
 
-    private static void initStrings() {
-	StringLoader.setDefaultLanguage();
-	LaserTank.ERROR_TITLE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
-		StringConstants.ERROR_STRING_ERROR_TITLE);
-	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
-		StringConstants.ERROR_STRING_ERROR_MESSAGE);
+    private LaserTank() {
+	// Do nothing
     }
 }

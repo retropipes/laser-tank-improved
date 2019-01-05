@@ -9,8 +9,8 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class ColorResolver {
-    private ColorResolver() {
-	// Do nothing
+    public static String resolveColorConstantToImageName(final int dir) {
+	return StringLoader.loadString(StringConstants.COLOR_STRINGS_FILE, dir);
     }
 
     public static String resolveColorConstantToName(final int dir) {
@@ -43,7 +43,7 @@ public class ColorResolver {
 	return res;
     }
 
-    public static String resolveColorConstantToImageName(final int dir) {
-	return StringLoader.loadString(StringConstants.COLOR_STRINGS_FILE, dir);
+    private ColorResolver() {
+	// Do nothing
     }
 }

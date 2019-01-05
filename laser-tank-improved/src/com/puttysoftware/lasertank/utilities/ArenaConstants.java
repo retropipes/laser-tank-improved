@@ -26,10 +26,6 @@ public class ArenaConstants {
     public static final int PLAYER_DIMS = 3;
     public static final int NUM_PLAYERS = 9;
 
-    private ArenaConstants() {
-	// Do nothing
-    }
-
     public static void activeLanguageChanged() {
 	ArenaConstants.LAYER_LIST = new String[] {
 		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
@@ -48,12 +44,43 @@ public class ArenaConstants {
 		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE) };
     }
 
+    public static String[] getEraList() {
+	return ArenaConstants.ERA_LIST;
+    }
+
     public static String[] getLayerList() {
 	return ArenaConstants.LAYER_LIST;
     }
 
-    public static String[] getEraList() {
-	return ArenaConstants.ERA_LIST;
+    public static Direction nextDir(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.NORTHEAST;
+	case NORTHEAST:
+	    return Direction.EAST;
+	case EAST:
+	    return Direction.SOUTHEAST;
+	case SOUTHEAST:
+	    return Direction.SOUTH;
+	case SOUTH:
+	    return Direction.SOUTHWEST;
+	case SOUTHWEST:
+	    return Direction.WEST;
+	case WEST:
+	    return Direction.NORTHWEST;
+	case NORTHWEST:
+	    return Direction.NORTH;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
     }
 
     public static Direction nextDirOrtho(final Direction input) {
@@ -78,6 +105,37 @@ public class ArenaConstants {
 	    return Direction.NORTH;
 	case NORTHWEST:
 	    return Direction.NORTHEAST;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
+    }
+
+    public static Direction previousDir(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.NORTHWEST;
+	case NORTHEAST:
+	    return Direction.NORTH;
+	case EAST:
+	    return Direction.NORTHEAST;
+	case SOUTHEAST:
+	    return Direction.EAST;
+	case SOUTH:
+	    return Direction.SOUTHEAST;
+	case SOUTHWEST:
+	    return Direction.SOUTH;
+	case WEST:
+	    return Direction.SOUTHWEST;
+	case NORTHWEST:
+	    return Direction.WEST;
 	case HORIZONTAL:
 	    return Direction.VERTICAL;
 	case VERTICAL:
@@ -118,65 +176,7 @@ public class ArenaConstants {
 	}
     }
 
-    public static Direction nextDir(final Direction input) {
-	switch (input) {
-	case INVALID:
-	    return Direction.INVALID;
-	case NONE:
-	    return Direction.NONE;
-	case NORTH:
-	    return Direction.NORTHEAST;
-	case NORTHEAST:
-	    return Direction.EAST;
-	case EAST:
-	    return Direction.SOUTHEAST;
-	case SOUTHEAST:
-	    return Direction.SOUTH;
-	case SOUTH:
-	    return Direction.SOUTHWEST;
-	case SOUTHWEST:
-	    return Direction.WEST;
-	case WEST:
-	    return Direction.NORTHWEST;
-	case NORTHWEST:
-	    return Direction.NORTH;
-	case HORIZONTAL:
-	    return Direction.VERTICAL;
-	case VERTICAL:
-	    return Direction.HORIZONTAL;
-	default:
-	    return Direction.INVALID;
-	}
-    }
-
-    public static Direction previousDir(final Direction input) {
-	switch (input) {
-	case INVALID:
-	    return Direction.INVALID;
-	case NONE:
-	    return Direction.NONE;
-	case NORTH:
-	    return Direction.NORTHWEST;
-	case NORTHEAST:
-	    return Direction.NORTH;
-	case EAST:
-	    return Direction.NORTHEAST;
-	case SOUTHEAST:
-	    return Direction.EAST;
-	case SOUTH:
-	    return Direction.SOUTHEAST;
-	case SOUTHWEST:
-	    return Direction.SOUTH;
-	case WEST:
-	    return Direction.SOUTHWEST;
-	case NORTHWEST:
-	    return Direction.WEST;
-	case HORIZONTAL:
-	    return Direction.VERTICAL;
-	case VERTICAL:
-	    return Direction.HORIZONTAL;
-	default:
-	    return Direction.INVALID;
-	}
+    private ArenaConstants() {
+	// Do nothing
     }
 }

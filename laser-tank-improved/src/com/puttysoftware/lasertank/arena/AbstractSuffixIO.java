@@ -7,11 +7,11 @@ package com.puttysoftware.lasertank.arena;
 
 import java.io.IOException;
 
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 
 public interface AbstractSuffixIO {
-    public void writeSuffix(XMLFileWriter writer) throws IOException;
+    void readSuffix(XMLFileReader reader, int formatVersion) throws IOException;
 
-    public void readSuffix(XMLFileReader reader, int formatVersion) throws IOException;
+    void writeSuffix(XMLFileWriter writer) throws IOException;
 }

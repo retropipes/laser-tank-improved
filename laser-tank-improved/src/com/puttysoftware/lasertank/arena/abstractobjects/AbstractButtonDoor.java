@@ -18,16 +18,6 @@ public abstract class AbstractButtonDoor extends AbstractArenaObject {
     }
 
     @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_OBJECTS;
-    }
-
-    @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
-    }
-
-    @Override
     public void editorPlaceHook(final int x, final int y, final int z) {
 	final Application app = LaserTank.getApplication();
 	app.getArenaManager().getArena().fullScanButtonBind(x, y, z, this);
@@ -44,6 +34,16 @@ public abstract class AbstractButtonDoor extends AbstractArenaObject {
     @Override
     public int getCustomProperty(final int propID) {
 	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    }
+
+    @Override
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_OBJECTS;
+    }
+
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	// Do nothing
     }
 
     @Override

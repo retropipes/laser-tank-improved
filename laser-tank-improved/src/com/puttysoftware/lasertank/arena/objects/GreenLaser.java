@@ -14,12 +14,12 @@ public class GreenLaser extends AbstractTransientObject {
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 18;
+    public int getForceUnitsImbued() {
+	return 1;
     }
 
     @Override
-    public int getForceUnitsImbued() {
-	return 1;
+    public final int getStringBaseID() {
+	return 18;
     }
 }

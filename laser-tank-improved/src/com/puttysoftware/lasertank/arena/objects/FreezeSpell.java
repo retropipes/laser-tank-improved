@@ -16,16 +16,16 @@ public class FreezeSpell extends AbstractSpell {
 	super();
     }
 
+    @Override
+    public final int getStringBaseID() {
+	return 142;
+    }
+
     // Scriptability
     @Override
     public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
 	SoundManager.playSound(SoundConstants.SOUND_FREEZE_SPELL);
 	LaserTank.getApplication().getArenaManager().getArena().fullScanFreezeGround();
 	LaserTank.getApplication().getGameManager().morph(new Empty(), dirX, dirY, dirZ, this.getLayer());
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 142;
     }
 }

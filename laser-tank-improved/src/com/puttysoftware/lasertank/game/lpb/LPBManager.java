@@ -8,19 +8,57 @@ package com.puttysoftware.lasertank.game.lpb;
 import java.awt.FileDialog;
 import java.io.File;
 
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.fileio.FilenameChecker;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.fileio.FilenameChecker;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.Extension;
 
 public class LPBManager {
-    // Constructors
-    private LPBManager() {
-	// Do nothing
+    private static String getExtension(final String s) {
+	String ext = null;
+	final int i = s.lastIndexOf('.');
+	if (i > 0 && i < s.length() - 1) {
+	    ext = s.substring(i + 1).toLowerCase();
+	}
+	return ext;
+    }
+
+    private static String getFileNameOnly(final String s) {
+	String fno = null;
+	final int i = s.lastIndexOf(File.separatorChar);
+	if (i > 0 && i < s.length() - 1) {
+	    fno = s.substring(i + 1);
+	} else {
+	    fno = s;
+	}
+	return fno;
+    }
+
+    private static String getNameWithoutExtension(final String s) {
+	String ext = null;
+	final int i = s.lastIndexOf('.');
+	if (i > 0 && i < s.length() - 1) {
+	    ext = s.substring(0, i);
+	} else {
+	    ext = s;
+	}
+	return ext;
+    }
+
+    public static void loadFile(final String filename) {
+	if (!FilenameChecker.isFilenameOK(LPBManager.getNameWithoutExtension(LPBManager.getFileNameOnly(filename)))) {
+	    CommonDialogs.showErrorDialog(
+		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
+		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD));
+	} else {
+	    final LPBLoadTask lpblt = new LPBLoadTask(filename);
+	    lpblt.start();
+	}
     }
 
     // Methods
@@ -47,46 +85,8 @@ public class LPBManager {
 	}
     }
 
-    public static void loadFile(final String filename) {
-	if (!FilenameChecker.isFilenameOK(LPBManager.getNameWithoutExtension(LPBManager.getFileNameOnly(filename)))) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD));
-	} else {
-	    final LPBLoadTask lpblt = new LPBLoadTask(filename);
-	    lpblt.start();
-	}
-    }
-
-    private static String getExtension(final String s) {
-	String ext = null;
-	final int i = s.lastIndexOf('.');
-	if (i > 0 && i < s.length() - 1) {
-	    ext = s.substring(i + 1).toLowerCase();
-	}
-	return ext;
-    }
-
-    private static String getNameWithoutExtension(final String s) {
-	String ext = null;
-	final int i = s.lastIndexOf('.');
-	if (i > 0 && i < s.length() - 1) {
-	    ext = s.substring(0, i);
-	} else {
-	    ext = s;
-	}
-	return ext;
-    }
-
-    private static String getFileNameOnly(final String s) {
-	String fno = null;
-	final int i = s.lastIndexOf(File.separatorChar);
-	if (i > 0 && i < s.length() - 1) {
-	    fno = s.substring(i + 1);
-	} else {
-	    fno = s;
-	}
-	return fno;
+    // Constructors
+    private LPBManager() {
+	// Do nothing
     }
 }

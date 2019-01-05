@@ -11,15 +11,15 @@ import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.utilities.Direction;
 
 public class Tank extends AbstractCharacter {
+    public Tank(final Direction dir, final int number) {
+	super(number);
+	this.setDirection(dir);
+    }
+
     // Constructors
     public Tank(final int number) {
 	super(number);
 	this.setDirection(Direction.NORTH);
-    }
-
-    public Tank(final Direction dir, final int number) {
-	super(number);
-	this.setDirection(dir);
     }
 
     @Override

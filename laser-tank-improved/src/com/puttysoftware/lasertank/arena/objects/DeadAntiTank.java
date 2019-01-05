@@ -20,6 +20,11 @@ public class DeadAntiTank extends AbstractMovableObject {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 11;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	LaserTank.getApplication().getGameManager().haltMovingObjects();
@@ -36,10 +41,5 @@ public class DeadAntiTank extends AbstractMovableObject {
     @Override
     public void playSoundHook() {
 	// Do nothing
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 11;
     }
 }

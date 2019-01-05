@@ -16,7 +16,9 @@ public abstract class AbstractField extends AbstractArenaObject {
     }
 
     @Override
-    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    }
 
     @Override
     public int getLayer() {
@@ -24,9 +26,7 @@ public abstract class AbstractField extends AbstractArenaObject {
     }
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
-    }
+    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
 
     @Override
     public void setCustomProperty(final int propID, final int value) {

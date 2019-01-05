@@ -24,6 +24,16 @@ public class MetallicRotaryMirror extends AbstractReactionWall {
     }
 
     @Override
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 66;
+    }
+
+    @Override
     public Direction laserEnteredActionHook(final int locX, final int locY, final int locZ, final int dirX,
 	    final int dirY, final int laserType, final int forceUnits) {
 	final Direction dir = DirectionResolver.resolveRelativeDirectionInvert(dirX, dirY);
@@ -81,15 +91,5 @@ public class MetallicRotaryMirror extends AbstractReactionWall {
 	SoundManager.playSound(SoundConstants.SOUND_ROTATE);
 	LaserTank.getApplication().getArenaManager().getArena().markAsDirty(locX + dirX, locY + dirY, locZ);
 	return true;
-    }
-
-    @Override
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 66;
     }
 }

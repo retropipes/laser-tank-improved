@@ -10,7 +10,7 @@ public enum Direction {
     HORIZONTAL(8), VERTICAL(9);
     int internalValue;
 
-    Direction(int v) {
+    Direction(final int v) {
 	this.internalValue = v;
     }
 

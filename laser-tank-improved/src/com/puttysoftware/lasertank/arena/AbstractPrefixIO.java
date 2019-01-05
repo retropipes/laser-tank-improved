@@ -7,11 +7,11 @@ package com.puttysoftware.lasertank.arena;
 
 import java.io.IOException;
 
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 
 public interface AbstractPrefixIO {
-    public void writePrefix(XMLFileWriter writer) throws IOException;
+    int readPrefix(XMLFileReader reader) throws IOException;
 
-    public int readPrefix(XMLFileReader reader) throws IOException;
+    void writePrefix(XMLFileWriter writer) throws IOException;
 }

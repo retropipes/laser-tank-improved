@@ -22,6 +22,11 @@ public class MetallicBricks extends AbstractReactionWall {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 64;
+    }
+
+    @Override
     public Direction laserEnteredActionHook(final int locX, final int locY, final int locZ, final int dirX,
 	    final int dirY, final int laserType, final int forceUnits) {
 	SoundManager.playSound(SoundConstants.SOUND_BREAK_BRICKS);
@@ -41,10 +46,5 @@ public class MetallicBricks extends AbstractReactionWall {
 	SoundManager.playSound(SoundConstants.SOUND_BREAK_BRICKS);
 	LaserTank.getApplication().getGameManager().morph(new Empty(), locX + dirX, locY + dirY, locZ, this.getLayer());
 	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 64;
     }
 }

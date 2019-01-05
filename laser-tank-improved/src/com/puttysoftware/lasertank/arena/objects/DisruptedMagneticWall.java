@@ -13,9 +13,9 @@ import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class DisruptedMagneticWall extends AbstractDisruptedObject {
+    private static final int DISRUPTION_START = 20;
     // Fields
     private int disruptionLeft;
-    private static final int DISRUPTION_START = 20;
 
     // Constructors
     public DisruptedMagneticWall() {
@@ -24,6 +24,11 @@ public class DisruptedMagneticWall extends AbstractDisruptedObject {
 	this.disruptionLeft = DisruptedMagneticWall.DISRUPTION_START;
 	this.activateTimer(1);
 	this.setMaterial(MaterialConstants.MATERIAL_MAGNETIC);
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 50;
     }
 
     @Override
@@ -36,10 +41,5 @@ public class DisruptedMagneticWall extends AbstractDisruptedObject {
 	} else {
 	    this.activateTimer(1);
 	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 50;
     }
 }

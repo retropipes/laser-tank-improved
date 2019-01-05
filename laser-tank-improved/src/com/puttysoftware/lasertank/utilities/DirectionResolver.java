@@ -9,8 +9,8 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class DirectionResolver {
-    private DirectionResolver() {
-	// Do nothing
+    public static String resolveDirectionConstantToImageName(final Direction dir) {
+	return StringLoader.loadString(StringConstants.STRINGS_FILE, dir.getInternalValue());
     }
 
     public static Direction resolveRelativeDirection(final int dX, final int dY) {
@@ -26,6 +26,32 @@ public class DirectionResolver {
 	    return Direction.WEST;
 	} else if (dirX == 1 && dirY == 0) {
 	    return Direction.EAST;
+	} else if (dirX == 1 && dirY == 1) {
+	    return Direction.SOUTHEAST;
+	} else if (dirX == -1 && dirY == 1) {
+	    return Direction.SOUTHWEST;
+	} else if (dirX == -1 && dirY == -1) {
+	    return Direction.NORTHWEST;
+	} else if (dirX == 1 && dirY == -1) {
+	    return Direction.NORTHEAST;
+	} else {
+	    return Direction.INVALID;
+	}
+    }
+
+    public static Direction resolveRelativeDirectionHV(final int dX, final int dY) {
+	final int dirX = (int) Math.signum(dX);
+	final int dirY = (int) Math.signum(dY);
+	if (dirX == 0 && dirY == 0) {
+	    return Direction.NONE;
+	} else if (dirX == 0 && dirY == -1) {
+	    return Direction.VERTICAL;
+	} else if (dirX == 0 && dirY == 1) {
+	    return Direction.VERTICAL;
+	} else if (dirX == -1 && dirY == 0) {
+	    return Direction.HORIZONTAL;
+	} else if (dirX == 1 && dirY == 0) {
+	    return Direction.HORIZONTAL;
 	} else if (dirX == 1 && dirY == 1) {
 	    return Direction.SOUTHEAST;
 	} else if (dirX == -1 && dirY == 1) {
@@ -60,32 +86,6 @@ public class DirectionResolver {
 	    return Direction.SOUTHEAST;
 	} else if (dirX == 1 && dirY == -1) {
 	    return Direction.SOUTHWEST;
-	} else {
-	    return Direction.INVALID;
-	}
-    }
-
-    public static Direction resolveRelativeDirectionHV(final int dX, final int dY) {
-	final int dirX = (int) Math.signum(dX);
-	final int dirY = (int) Math.signum(dY);
-	if (dirX == 0 && dirY == 0) {
-	    return Direction.NONE;
-	} else if (dirX == 0 && dirY == -1) {
-	    return Direction.VERTICAL;
-	} else if (dirX == 0 && dirY == 1) {
-	    return Direction.VERTICAL;
-	} else if (dirX == -1 && dirY == 0) {
-	    return Direction.HORIZONTAL;
-	} else if (dirX == 1 && dirY == 0) {
-	    return Direction.HORIZONTAL;
-	} else if (dirX == 1 && dirY == 1) {
-	    return Direction.SOUTHEAST;
-	} else if (dirX == -1 && dirY == 1) {
-	    return Direction.SOUTHWEST;
-	} else if (dirX == -1 && dirY == -1) {
-	    return Direction.NORTHWEST;
-	} else if (dirX == 1 && dirY == -1) {
-	    return Direction.NORTHEAST;
 	} else {
 	    return Direction.INVALID;
 	}
@@ -126,7 +126,7 @@ public class DirectionResolver {
 	return res;
     }
 
-    public static String resolveDirectionConstantToImageName(final Direction dir) {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE, dir.getInternalValue());
+    private DirectionResolver() {
+	// Do nothing
     }
 }

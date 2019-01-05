@@ -3,21 +3,21 @@ package com.puttysoftware.lasertank;
 import javax.swing.JMenu;
 
 public interface MenuSection {
-    public void enableModeCommands();
+    void attachAccelerators(final Accelerators accel);
 
-    public void disableModeCommands();
+    JMenu createCommandsMenu();
 
-    public void setInitialState();
+    void disableDirtyCommands();
 
-    public JMenu createCommandsMenu();
+    void disableLoadedCommands();
 
-    public void attachAccelerators(final Accelerators accel);
+    void disableModeCommands();
 
-    public void enableLoadedCommands();
+    void enableDirtyCommands();
 
-    public void disableLoadedCommands();
+    void enableLoadedCommands();
 
-    public void enableDirtyCommands();
+    void enableModeCommands();
 
-    public void disableDirtyCommands();
+    void setInitialState();
 }

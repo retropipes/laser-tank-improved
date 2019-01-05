@@ -17,11 +17,6 @@ public class Ground extends AbstractGround {
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 19;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -33,5 +28,10 @@ public class Ground extends AbstractGround {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 19;
     }
 }

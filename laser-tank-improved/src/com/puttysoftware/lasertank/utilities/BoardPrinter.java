@@ -26,15 +26,11 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFrame;
 
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
+import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class BoardPrinter {
-    private BoardPrinter() {
-	// Do nothing
-    }
-
     public static void printBoard(final JFrame j) {
 	try {
 	    final Container c = j.getContentPane();
@@ -76,5 +72,9 @@ public class BoardPrinter {
 		    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
 	}
+    }
+
+    private BoardPrinter() {
+	// Do nothing
     }
 }

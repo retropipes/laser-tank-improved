@@ -17,21 +17,11 @@ public abstract class AbstractTunnel extends AbstractArenaObject {
     private final static boolean[] tunnelsFull = new boolean[ColorConstants.COLOR_COUNT];
     private final static int SCAN_RADIUS = 24;
 
-    // Constructors
-    protected AbstractTunnel() {
-	super(false, false, true);
-	this.type.set(TypeConstants.TYPE_TUNNEL);
-    }
-
     // Static methods
     public static void checkTunnels() {
 	for (int x = 0; x < ColorConstants.COLOR_COUNT; x++) {
 	    AbstractTunnel.checkTunnelsOfColor(x);
 	}
-    }
-
-    public static boolean tunnelsFull(final int color) {
-	return AbstractTunnel.tunnelsFull[color];
     }
 
     private static void checkTunnelsOfColor(final int color) {
@@ -45,6 +35,30 @@ public abstract class AbstractTunnel extends AbstractArenaObject {
 	} else {
 	    AbstractTunnel.tunnelsFull[color] = true;
 	}
+    }
+
+    private static AbstractTunnel getTunnelOfColor(final int color) {
+	return new Tunnel(color);
+    }
+
+    public static boolean tunnelsFull(final int color) {
+	return AbstractTunnel.tunnelsFull[color];
+    }
+
+    // Constructors
+    protected AbstractTunnel() {
+	super(false, false, true);
+	this.type.set(TypeConstants.TYPE_TUNNEL);
+    }
+
+    @Override
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    }
+
+    @Override
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_OBJECTS;
     }
 
     // Scriptability
@@ -80,21 +94,7 @@ public abstract class AbstractTunnel extends AbstractArenaObject {
     }
 
     @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_OBJECTS;
-    }
-
-    @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
-    }
-
-    @Override
     public void setCustomProperty(final int propID, final int value) {
 	// Do nothing
-    }
-
-    private static AbstractTunnel getTunnelOfColor(final int color) {
-	return new Tunnel(color);
     }
 }

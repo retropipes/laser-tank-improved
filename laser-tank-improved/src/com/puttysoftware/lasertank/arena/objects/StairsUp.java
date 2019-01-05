@@ -24,14 +24,14 @@ public class StairsUp extends AbstractTeleport {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 33;
+    }
+
+    @Override
     public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
 	final Application app = LaserTank.getApplication();
 	app.getGameManager().updatePositionAbsoluteNoEvents(this.getDestinationFloor());
 	SoundManager.playSound(SoundConstants.SOUND_UP);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 33;
     }
 }

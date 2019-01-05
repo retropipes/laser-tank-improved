@@ -14,12 +14,12 @@ public class PowerLaser extends AbstractTransientObject {
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 137;
+    public int getForceUnitsImbued() {
+	return 5;
     }
 
     @Override
-    public int getForceUnitsImbued() {
-	return 5;
+    public final int getStringBaseID() {
+	return 137;
     }
 }

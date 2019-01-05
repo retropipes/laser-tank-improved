@@ -21,16 +21,6 @@ public class JumpBox extends AbstractJumpObject {
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 123;
-    }
-
-    @Override
-    public final Color getCustomTextColor() {
-	return Color.black;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -42,5 +32,15 @@ public class JumpBox extends AbstractJumpObject {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final Color getCustomTextColor() {
+	return Color.black;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 123;
     }
 }

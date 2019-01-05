@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.BitSet;
 
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.objects.Empty;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -30,6 +30,29 @@ import com.puttysoftware.lasertank.utilities.TypeConstants;
 import com.puttysoftware.storage.CloneableObject;
 
 public abstract class AbstractArenaObject extends CloneableObject {
+    static final int DEFAULT_CUSTOM_VALUE = 0;
+    protected static final int CUSTOM_FORMAT_MANUAL_OVERRIDE = -1;
+    private static final int PLASTIC_MINIMUM_REACTION_FORCE = 0;
+    private static final int DEFAULT_MINIMUM_REACTION_FORCE = 1;
+    private static final int METAL_MINIMUM_REACTION_FORCE = 2;
+
+    public static final int getImbuedRangeForce(final int material) {
+	if (material == MaterialConstants.MATERIAL_PLASTIC) {
+	    return AbstractArenaObject.PLASTIC_MINIMUM_REACTION_FORCE;
+	} else if (material == MaterialConstants.MATERIAL_METALLIC) {
+	    return AbstractArenaObject.METAL_MINIMUM_REACTION_FORCE;
+	} else {
+	    return AbstractArenaObject.DEFAULT_MINIMUM_REACTION_FORCE;
+	}
+    }
+
+    public static boolean hitReflectiveSide(final Direction dir) {
+	Direction trigger1, trigger2;
+	trigger1 = ArenaConstants.previousDir(dir);
+	trigger2 = ArenaConstants.nextDir(dir);
+	return dir == trigger1 || dir == trigger2;
+    }
+
     // Properties
     private boolean solid;
     private boolean pushable;
@@ -44,13 +67,23 @@ public abstract class AbstractArenaObject extends CloneableObject {
     private int color;
     private int material;
     private boolean imageEnabled;
-    static final int DEFAULT_CUSTOM_VALUE = 0;
-    protected static final int CUSTOM_FORMAT_MANUAL_OVERRIDE = -1;
-    private static final int PLASTIC_MINIMUM_REACTION_FORCE = 0;
-    private static final int DEFAULT_MINIMUM_REACTION_FORCE = 1;
-    private static final int METAL_MINIMUM_REACTION_FORCE = 2;
     private AbstractArenaObject savedObject;
     private AbstractArenaObject previousState;
+
+    public AbstractArenaObject() {
+	this.solid = false;
+	this.pushable = false;
+	this.friction = true;
+	this.type = new BitSet(TypeConstants.TYPES_COUNT);
+	this.timerValue = 0;
+	this.timerActive = false;
+	this.frameNumber = 0;
+	this.direction = Direction.NONE;
+	this.diagonalOnly = false;
+	this.color = -1;
+	this.material = MaterialConstants.MATERIAL_DEFAULT;
+	this.imageEnabled = true;
+    }
 
     // Constructors
     AbstractArenaObject(final boolean isSolid) {
@@ -84,19 +117,40 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	this.imageEnabled = true;
     }
 
-    public AbstractArenaObject() {
-	this.solid = false;
-	this.pushable = false;
-	this.friction = true;
-	this.type = new BitSet(TypeConstants.TYPES_COUNT);
-	this.timerValue = 0;
-	this.timerActive = false;
-	this.frameNumber = 0;
-	this.direction = Direction.NONE;
-	this.diagonalOnly = false;
-	this.color = -1;
-	this.material = MaterialConstants.MATERIAL_DEFAULT;
-	this.imageEnabled = true;
+    /**
+     *
+     * @param actionType
+     * @return
+     */
+    public boolean acceptTick(final int actionType) {
+	return true;
+    }
+
+    public final void activateTimer(final int ticks) {
+	this.timerActive = true;
+	this.timerValue = ticks;
+	this.initialTimerValue = ticks;
+    }
+
+    public AbstractArenaObject attributeGameRenderHook() {
+	return null;
+    }
+
+    public boolean canMove() {
+	return false;
+    }
+
+    public boolean canShoot() {
+	return false;
+    }
+
+    /**
+     *
+     * @param materialID
+     * @return
+     */
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	return this;
     }
 
     // Methods
@@ -123,35 +177,69 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	} catch (final IllegalAccessException e) {
 	    LaserTank.getErrorLogger().logError(e);
 	    return null;
-	} catch (IllegalArgumentException e) {
+	} catch (final IllegalArgumentException e) {
 	    LaserTank.getErrorLogger().logError(e);
 	    return null;
-	} catch (InvocationTargetException e) {
+	} catch (final InvocationTargetException e) {
 	    LaserTank.getErrorLogger().logError(e);
 	    return null;
-	} catch (NoSuchMethodException e) {
+	} catch (final NoSuchMethodException e) {
 	    LaserTank.getErrorLogger().logError(e);
 	    return null;
-	} catch (SecurityException e) {
+	} catch (final SecurityException e) {
 	    LaserTank.getErrorLogger().logError(e);
 	    return null;
 	}
     }
 
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + (this.friction ? 1231 : 1237);
-	result = prime * result + this.initialTimerValue;
-	result = prime * result + (this.pushable ? 1231 : 1237);
-	result = prime * result + (this.solid ? 1231 : 1237);
-	result = prime * result + (this.timerActive ? 1231 : 1237);
-	result = prime * result + this.timerValue;
-	result = prime * result + (this.type == null ? 0 : this.type.hashCode());
-	result = prime * result + this.direction.hashCode();
-	result = prime * result + this.color;
-	return prime * result + this.material;
+    public boolean defersSetProperties() {
+	return false;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    public final void determineCurrentAppearance(final int x, final int y, final int z) {
+	// Do nothing
+    }
+
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    public void editorPlaceHook(final int x, final int y, final int z) {
+	// Do nothing
+    }
+
+    public AbstractArenaObject editorPropertiesHook() {
+	if (this.hasDirection()) {
+	    this.toggleDirection();
+	    return this;
+	} else if (this.hasColor()) {
+	    this.toggleColor();
+	    return this;
+	} else {
+	    return null;
+	}
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    public void editorRemoveHook(final int x, final int y, final int z) {
+	// Do nothing
     }
 
     @Override
@@ -197,118 +285,166 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return true;
     }
 
-    public boolean isEnabled() {
-	return this.imageEnabled;
+    public final String getBaseImageName() {
+	return StringLoader.loadString(StringConstants.IMAGE_STRINGS_FILE, this.getStringBaseID());
     }
 
-    public void setEnabled(final boolean value) {
-	this.imageEnabled = value;
+    public final String getBaseName() {
+	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
     }
 
-    public final AbstractArenaObject getSavedObject() {
-	return this.savedObject;
-    }
-
-    public final void setSavedObject(final AbstractArenaObject obj) {
-	this.savedObject = obj;
-    }
-
-    public final boolean hasPreviousState() {
-	return this.previousState != null;
-    }
-
-    public final AbstractArenaObject getPreviousState() {
-	return this.previousState;
-    }
-
-    public final void setPreviousState(final AbstractArenaObject obj) {
-	this.previousState = obj;
-    }
-
-    public final int getFrameNumber() {
-	return this.frameNumber;
-    }
-
-    public final void setFrameNumber(final int frame) {
-	this.frameNumber = frame;
-    }
-
-    public final void toggleFrameNumber() {
-	if (this.isAnimated()) {
-	    this.frameNumber++;
-	    if (this.frameNumber > 3) {
-		this.frameNumber = 1;
-	    }
-	}
-    }
-
-    private final boolean isAnimated() {
-	return this.frameNumber > 0;
-    }
-
-    public final Direction getDirection() {
-	return this.direction;
-    }
-
-    public final void toggleDirection() {
-	this.direction = ArenaConstants.nextDirOrtho(this.direction);
-    }
-
-    public static boolean hitReflectiveSide(final Direction dir) {
-	Direction trigger1, trigger2;
-	trigger1 = ArenaConstants.previousDir(dir);
-	trigger2 = ArenaConstants.nextDir(dir);
-	return dir == trigger1 || dir == trigger2;
-    }
-
-    public final void setDirection(final Direction dir) {
-	this.direction = dir;
-    }
-
-    private final boolean hasDirection() {
-	return this.direction != Direction.INVALID && this.direction != Direction.NONE;
-    }
-
-    public final int getMaterial() {
-	return this.material;
-    }
-
-    protected final void setMaterial(final int mat) {
-	this.material = mat;
-    }
-
-    /**
-     *
-     * @param materialID
-     * @return
-     */
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	return this;
+    public int getBlockHeight() {
+	return 1;
     }
 
     public final int getColor() {
 	return this.color;
     }
 
-    public final void setColor(final int col) {
-	this.color = col;
+    private final String getColorPrefix() {
+	if (this.hasColor()) {
+	    return ColorResolver.resolveColorConstantToImageName(this.color) + StringConstants.COMMON_STRING_SPACE;
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY;
+	}
     }
+
+    public int getCustomFormat() {
+	return 0;
+    }
+
+    abstract public int getCustomProperty(int propID);
+
+    public String getCustomText() {
+	return null;
+    }
+
+    public Color getCustomTextColor() {
+	return null;
+    }
+
+    public final String getDescription() {
+	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 2);
+    }
+
+    public final Direction getDirection() {
+	return this.direction;
+    }
+
+    private final String getDirectionSuffix() {
+	if (this.hasDirection()) {
+	    return StringConstants.COMMON_STRING_SPACE
+		    + DirectionResolver.resolveDirectionConstantToImageName(this.direction);
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY;
+	}
+    }
+
+    public final int getFrameNumber() {
+	return this.frameNumber;
+    }
+
+    private final String getFrameSuffix() {
+	if (this.isAnimated()) {
+	    return StringConstants.COMMON_STRING_SPACE + this.frameNumber;
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY;
+	}
+    }
+
+    private final String getIdentifier() {
+	return this.getBaseImageName();
+    }
+
+    public final String getIdentityName() {
+	return this.getLocalColorPrefix()
+		+ StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
+    }
+
+    public final String getImageName() {
+	return this.getColorPrefix() + this.getBaseImageName() + this.getDirectionSuffix() + this.getFrameSuffix();
+    }
+
+    abstract public int getLayer();
+
+    private final String getLocalColorPrefix() {
+	if (this.hasColor()) {
+	    return ColorResolver.resolveColorConstantToName(this.color) + StringConstants.COMMON_STRING_SPACE;
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY;
+	}
+    }
+
+    public final int getMaterial() {
+	return this.material;
+    }
+
+    public final int getMinimumReactionForce() {
+	if (this.material == MaterialConstants.MATERIAL_PLASTIC) {
+	    return AbstractArenaObject.PLASTIC_MINIMUM_REACTION_FORCE;
+	} else if (this.material == MaterialConstants.MATERIAL_METALLIC) {
+	    return AbstractArenaObject.METAL_MINIMUM_REACTION_FORCE;
+	} else {
+	    return AbstractArenaObject.DEFAULT_MINIMUM_REACTION_FORCE;
+	}
+    }
+
+    public final AbstractArenaObject getPreviousState() {
+	return this.previousState;
+    }
+
+    public final AbstractArenaObject getSavedObject() {
+	return this.savedObject;
+    }
+
+    abstract public int getStringBaseID();
 
     private final boolean hasColor() {
 	return this.color >= 0;
     }
 
-    private final void toggleColor() {
-	if (this.hasColor()) {
-	    this.color++;
-	    if (this.color >= ColorConstants.COLOR_COUNT) {
-		this.color = ColorConstants.COLOR_GRAY;
-	    }
-	}
+    private final boolean hasDirection() {
+	return this.direction != Direction.INVALID && this.direction != Direction.NONE;
     }
 
-    public final void setDiagonalOnly(final boolean value) {
-	this.diagonalOnly = value;
+    public final boolean hasFriction() {
+	return this.friction;
+    }
+
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + (this.friction ? 1231 : 1237);
+	result = prime * result + this.initialTimerValue;
+	result = prime * result + (this.pushable ? 1231 : 1237);
+	result = prime * result + (this.solid ? 1231 : 1237);
+	result = prime * result + (this.timerActive ? 1231 : 1237);
+	result = prime * result + this.timerValue;
+	result = prime * result + (this.type == null ? 0 : this.type.hashCode());
+	result = prime * result + this.direction.hashCode();
+	result = prime * result + this.color;
+	return prime * result + this.material;
+    }
+
+    public final boolean hasPreviousState() {
+	return this.previousState != null;
+    }
+
+    private final boolean isAnimated() {
+	return this.frameNumber > 0;
+    }
+
+    public boolean isConditionallySolid() {
+	return this.solid;
+    }
+
+    public boolean isEnabled() {
+	return this.imageEnabled;
+    }
+
+    public final boolean isOfType(final int testType) {
+	return this.type.get(testType);
     }
 
     public final boolean isPushable() {
@@ -319,203 +455,12 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return this.solid;
     }
 
-    public boolean isConditionallySolid() {
-	return this.solid;
-    }
-
-    public final boolean isOfType(final int testType) {
-	return this.type.get(testType);
-    }
-
-    public final boolean hasFriction() {
-	return this.friction;
-    }
-
-    // Scripting
-    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
-
-    /**
-     *
-     * @param locX
-     * @param locY
-     * @param locZ
-     */
-    public void moveFailedAction(final int locX, final int locY, final int locZ) {
-	SoundManager.playSound(SoundConstants.SOUND_BUMP_HEAD);
-    }
-
-    public AbstractArenaObject attributeGameRenderHook() {
-	return null;
-    }
-
-    /**
-     *
-     * @param x
-     * @param y
-     * @param z
-     */
-    public void editorPlaceHook(final int x, final int y, final int z) {
-	// Do nothing
-    }
-
-    /**
-     *
-     * @param x
-     * @param y
-     * @param z
-     */
-    public void editorRemoveHook(final int x, final int y, final int z) {
-	// Do nothing
-    }
-
-    public AbstractArenaObject editorPropertiesHook() {
-	if (this.hasDirection()) {
-	    this.toggleDirection();
-	    return this;
-	} else if (this.hasColor()) {
-	    this.toggleColor();
-	    return this;
-	} else {
-	    return null;
-	}
-    }
-
-    /**
-     *
-     * @param pushed
-     * @param x
-     * @param y
-     * @param z
-     * @return
-     */
-    public boolean pushIntoAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
-	// Do nothing
-	return true;
-    }
-
-    /**
-     *
-     * @param pushed
-     * @param x
-     * @param y
-     * @param z
-     * @return
-     */
-    public void pushCollideAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
-	// Do nothing
-    }
-
-    protected void pushCrushAction(final int x, final int y, final int z) {
-	// Object crushed
-	SoundManager.playSound(SoundConstants.SOUND_CRUSH);
-	LaserTank.getApplication().getGameManager().morph(new Empty(), x, y, z, this.getLayer());
-    }
-
-    /**
-     *
-     * @param pushed
-     * @param x
-     * @param y
-     * @param z
-     */
-    public void pushOutAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
-	// Do nothing
-    }
-
-    public final void activateTimer(final int ticks) {
-	this.timerActive = true;
-	this.timerValue = ticks;
-	this.initialTimerValue = ticks;
-    }
-
-    public final void tickTimer(final int dirX, final int dirY, final int actionType) {
-	if (this.timerActive) {
-	    if (this.acceptTick(actionType)) {
-		this.timerValue--;
-		if (this.timerValue == 0) {
-		    this.timerActive = false;
-		    this.initialTimerValue = 0;
-		    this.timerExpiredAction(dirX, dirY);
-		}
-	    }
-	}
-    }
-
-    /**
-     *
-     * @param actionType
-     * @return
-     */
-    public boolean acceptTick(final int actionType) {
-	return true;
-    }
-
-    /**
-     *
-     * @param dirX
-     * @param dirY
-     */
-    public void timerExpiredAction(final int dirX, final int dirY) {
-	// Do nothing
-    }
-
-    /**
-     *
-     * @param locX
-     * @param locY
-     * @param locZ
-     * @param dirX
-     * @param dirY
-     * @param rangeType
-     * @param forceUnits
-     * @return
-     */
-    public boolean rangeAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
-	    final int rangeType, final int forceUnits) {
-	if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
-		&& this.getMaterial() == MaterialConstants.MATERIAL_WOODEN
-		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
-	    // Burn wooden object
-	    SoundManager.playSound(SoundConstants.SOUND_WOOD_BURN);
-	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
-		    locX + dirX, locY + dirY, locZ, this.getLayer());
-	    return true;
-	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_ICE
-		&& (this.getMaterial() == MaterialConstants.MATERIAL_METALLIC
-			|| this.getMaterial() == MaterialConstants.MATERIAL_WOODEN
-			|| this.getMaterial() == MaterialConstants.MATERIAL_PLASTIC)
-		&& this.changesToOnExposure(MaterialConstants.MATERIAL_ICE) != null) {
-	    // Freeze metal, wooden, or plastic object
-	    SoundManager.playSound(SoundConstants.SOUND_FROZEN);
-	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_ICE),
-		    locX + dirX, locY + dirY, locZ, this.getLayer());
-	    return true;
-	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
-		&& this.getMaterial() == MaterialConstants.MATERIAL_ICE
-		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
-	    // Melt icy object
-	    SoundManager.playSound(SoundConstants.SOUND_DEFROST);
-	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
-		    locX + dirX, locY + dirY, locZ, this.getLayer());
-	    return true;
-	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_ICE
-		&& this.getMaterial() == MaterialConstants.MATERIAL_FIRE
-		&& this.changesToOnExposure(MaterialConstants.MATERIAL_ICE) != null) {
-	    // Cool hot object
-	    SoundManager.playSound(SoundConstants.SOUND_COOL_OFF);
-	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_ICE),
-		    locX + dirX, locY + dirY, locZ, this.getLayer());
-	    return true;
-	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
-		&& this.getMaterial() == MaterialConstants.MATERIAL_METALLIC
-		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
-	    // Melt metal object
-	    SoundManager.playSound(SoundConstants.SOUND_MELT);
-	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
-		    locX + dirX, locY + dirY, locZ, this.getLayer());
-	    return true;
-	}
+    public boolean killsOnMove() {
 	return false;
+    }
+
+    public void laserDoneAction() {
+	// Do nothing
     }
 
     /**
@@ -584,161 +529,118 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return DirectionResolver.resolveRelativeDirection(dirX, dirY);
     }
 
-    public void laserDoneAction() {
+    /**
+     *
+     * @param locX
+     * @param locY
+     * @param locZ
+     */
+    public void moveFailedAction(final int locX, final int locY, final int locZ) {
+	SoundManager.playSound(SoundConstants.SOUND_BUMP_HEAD);
+    }
+
+    // Scripting
+    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
+
+    /**
+     *
+     * @param pushed
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    public void pushCollideAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
 	// Do nothing
     }
 
-    public boolean defersSetProperties() {
-	return false;
+    protected void pushCrushAction(final int x, final int y, final int z) {
+	// Object crushed
+	SoundManager.playSound(SoundConstants.SOUND_CRUSH);
+	LaserTank.getApplication().getGameManager().morph(new Empty(), x, y, z, this.getLayer());
     }
 
     /**
      *
+     * @param pushed
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    public boolean pushIntoAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
+	// Do nothing
+	return true;
+    }
+
+    /**
+     *
+     * @param pushed
      * @param x
      * @param y
      * @param z
      */
-    public final void determineCurrentAppearance(final int x, final int y, final int z) {
+    public void pushOutAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
 	// Do nothing
     }
 
-    public final String getImageName() {
-	return this.getColorPrefix() + this.getBaseImageName() + this.getDirectionSuffix() + this.getFrameSuffix();
-    }
-
-    public final String getBaseImageName() {
-	return StringLoader.loadString(StringConstants.IMAGE_STRINGS_FILE, this.getStringBaseID());
-    }
-
-    private final String getColorPrefix() {
-	if (this.hasColor()) {
-	    return ColorResolver.resolveColorConstantToImageName(this.color) + StringConstants.COMMON_STRING_SPACE;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
+    /**
+     *
+     * @param locX
+     * @param locY
+     * @param locZ
+     * @param dirX
+     * @param dirY
+     * @param rangeType
+     * @param forceUnits
+     * @return
+     */
+    public boolean rangeAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
+	    final int rangeType, final int forceUnits) {
+	if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
+		&& this.getMaterial() == MaterialConstants.MATERIAL_WOODEN
+		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
+	    // Burn wooden object
+	    SoundManager.playSound(SoundConstants.SOUND_WOOD_BURN);
+	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
+		    locX + dirX, locY + dirY, locZ, this.getLayer());
+	    return true;
+	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_ICE
+		&& (this.getMaterial() == MaterialConstants.MATERIAL_METALLIC
+			|| this.getMaterial() == MaterialConstants.MATERIAL_WOODEN
+			|| this.getMaterial() == MaterialConstants.MATERIAL_PLASTIC)
+		&& this.changesToOnExposure(MaterialConstants.MATERIAL_ICE) != null) {
+	    // Freeze metal, wooden, or plastic object
+	    SoundManager.playSound(SoundConstants.SOUND_FROZEN);
+	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_ICE),
+		    locX + dirX, locY + dirY, locZ, this.getLayer());
+	    return true;
+	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
+		&& this.getMaterial() == MaterialConstants.MATERIAL_ICE
+		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
+	    // Melt icy object
+	    SoundManager.playSound(SoundConstants.SOUND_DEFROST);
+	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
+		    locX + dirX, locY + dirY, locZ, this.getLayer());
+	    return true;
+	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_ICE
+		&& this.getMaterial() == MaterialConstants.MATERIAL_FIRE
+		&& this.changesToOnExposure(MaterialConstants.MATERIAL_ICE) != null) {
+	    // Cool hot object
+	    SoundManager.playSound(SoundConstants.SOUND_COOL_OFF);
+	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_ICE),
+		    locX + dirX, locY + dirY, locZ, this.getLayer());
+	    return true;
+	} else if (RangeTypeConstants.getMaterialForRangeType(rangeType) == MaterialConstants.MATERIAL_FIRE
+		&& this.getMaterial() == MaterialConstants.MATERIAL_METALLIC
+		&& this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE) != null) {
+	    // Melt metal object
+	    SoundManager.playSound(SoundConstants.SOUND_MELT);
+	    LaserTank.getApplication().getGameManager().morph(this.changesToOnExposure(MaterialConstants.MATERIAL_FIRE),
+		    locX + dirX, locY + dirY, locZ, this.getLayer());
+	    return true;
 	}
-    }
-
-    private final String getLocalColorPrefix() {
-	if (this.hasColor()) {
-	    return ColorResolver.resolveColorConstantToName(this.color) + StringConstants.COMMON_STRING_SPACE;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
-	}
-    }
-
-    private final String getDirectionSuffix() {
-	if (this.hasDirection()) {
-	    return StringConstants.COMMON_STRING_SPACE
-		    + DirectionResolver.resolveDirectionConstantToImageName(this.direction);
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
-	}
-    }
-
-    private final String getFrameSuffix() {
-	if (this.isAnimated()) {
-	    return StringConstants.COMMON_STRING_SPACE + this.frameNumber;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
-	}
-    }
-
-    public static final int getImbuedRangeForce(final int material) {
-	if (material == MaterialConstants.MATERIAL_PLASTIC) {
-	    return AbstractArenaObject.PLASTIC_MINIMUM_REACTION_FORCE;
-	} else if (material == MaterialConstants.MATERIAL_METALLIC) {
-	    return AbstractArenaObject.METAL_MINIMUM_REACTION_FORCE;
-	} else {
-	    return AbstractArenaObject.DEFAULT_MINIMUM_REACTION_FORCE;
-	}
-    }
-
-    public final int getMinimumReactionForce() {
-	if (this.material == MaterialConstants.MATERIAL_PLASTIC) {
-	    return AbstractArenaObject.PLASTIC_MINIMUM_REACTION_FORCE;
-	} else if (this.material == MaterialConstants.MATERIAL_METALLIC) {
-	    return AbstractArenaObject.METAL_MINIMUM_REACTION_FORCE;
-	} else {
-	    return AbstractArenaObject.DEFAULT_MINIMUM_REACTION_FORCE;
-	}
-    }
-
-    public boolean canMove() {
 	return false;
-    }
-
-    public boolean canShoot() {
-	return false;
-    }
-
-    public boolean killsOnMove() {
-	return false;
-    }
-
-    public boolean solvesOnMove() {
-	return false;
-    }
-
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    private final String getIdentifier() {
-	return this.getBaseImageName();
-    }
-
-    abstract public int getStringBaseID();
-
-    public int getBlockHeight() {
-	return 1;
-    }
-
-    public final String getBaseName() {
-	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
-    }
-
-    public final String getIdentityName() {
-	return this.getLocalColorPrefix()
-		+ StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
-    }
-
-    public final String getDescription() {
-	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 2);
-    }
-
-    abstract public int getLayer();
-
-    abstract public int getCustomProperty(int propID);
-
-    abstract public void setCustomProperty(int propID, int value);
-
-    public int getCustomFormat() {
-	return 0;
-    }
-
-    public String getCustomText() {
-	return null;
-    }
-
-    public Color getCustomTextColor() {
-	return null;
-    }
-
-    public final void writeArenaObject(final XMLFileWriter writer) throws IOException {
-	writer.writeString(this.getIdentifier());
-	final int cc = this.getCustomFormat();
-	if (cc == AbstractArenaObject.CUSTOM_FORMAT_MANUAL_OVERRIDE) {
-	    writer.writeInt(this.direction.ordinal());
-	    writer.writeInt(this.color);
-	    this.writeArenaObjectHook(writer);
-	} else {
-	    writer.writeInt(this.direction.ordinal());
-	    writer.writeInt(this.color);
-	    for (int x = 0; x < cc; x++) {
-		final int cx = this.getCustomProperty(x + 1);
-		writer.writeInt(cx);
-	    }
-	}
     }
 
     public final AbstractArenaObject readArenaObjectG2(final XMLFileReader reader, final String ident, final int ver)
@@ -858,15 +760,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
 
     /**
      *
-     * @param writer
-     * @throws IOException
-     */
-    protected void writeArenaObjectHook(final XMLFileWriter writer) throws IOException {
-	// Do nothing - but let subclasses override
-    }
-
-    /**
-     *
      * @param reader
      * @param formatVersion
      * @return
@@ -928,5 +821,113 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	    throws IOException {
 	// Dummy implementation, subclasses can override
 	return this;
+    }
+
+    public final void setColor(final int col) {
+	this.color = col;
+    }
+
+    abstract public void setCustomProperty(int propID, int value);
+
+    public final void setDiagonalOnly(final boolean value) {
+	this.diagonalOnly = value;
+    }
+
+    public final void setDirection(final Direction dir) {
+	this.direction = dir;
+    }
+
+    public void setEnabled(final boolean value) {
+	this.imageEnabled = value;
+    }
+
+    public final void setFrameNumber(final int frame) {
+	this.frameNumber = frame;
+    }
+
+    protected final void setMaterial(final int mat) {
+	this.material = mat;
+    }
+
+    public final void setPreviousState(final AbstractArenaObject obj) {
+	this.previousState = obj;
+    }
+
+    public final void setSavedObject(final AbstractArenaObject obj) {
+	this.savedObject = obj;
+    }
+
+    public boolean solvesOnMove() {
+	return false;
+    }
+
+    public final void tickTimer(final int dirX, final int dirY, final int actionType) {
+	if (this.timerActive) {
+	    if (this.acceptTick(actionType)) {
+		this.timerValue--;
+		if (this.timerValue == 0) {
+		    this.timerActive = false;
+		    this.initialTimerValue = 0;
+		    this.timerExpiredAction(dirX, dirY);
+		}
+	    }
+	}
+    }
+
+    /**
+     *
+     * @param dirX
+     * @param dirY
+     */
+    public void timerExpiredAction(final int dirX, final int dirY) {
+	// Do nothing
+    }
+
+    private final void toggleColor() {
+	if (this.hasColor()) {
+	    this.color++;
+	    if (this.color >= ColorConstants.COLOR_COUNT) {
+		this.color = ColorConstants.COLOR_GRAY;
+	    }
+	}
+    }
+
+    public final void toggleDirection() {
+	this.direction = ArenaConstants.nextDirOrtho(this.direction);
+    }
+
+    public final void toggleFrameNumber() {
+	if (this.isAnimated()) {
+	    this.frameNumber++;
+	    if (this.frameNumber > 3) {
+		this.frameNumber = 1;
+	    }
+	}
+    }
+
+    public final void writeArenaObject(final XMLFileWriter writer) throws IOException {
+	writer.writeString(this.getIdentifier());
+	final int cc = this.getCustomFormat();
+	if (cc == AbstractArenaObject.CUSTOM_FORMAT_MANUAL_OVERRIDE) {
+	    writer.writeInt(this.direction.ordinal());
+	    writer.writeInt(this.color);
+	    this.writeArenaObjectHook(writer);
+	} else {
+	    writer.writeInt(this.direction.ordinal());
+	    writer.writeInt(this.color);
+	    for (int x = 0; x < cc; x++) {
+		final int cx = this.getCustomProperty(x + 1);
+		writer.writeInt(cx);
+	    }
+	}
+    }
+
+    /**
+     *
+     * @param writer
+     * @throws IOException
+     */
+    protected void writeArenaObjectHook(final XMLFileWriter writer) throws IOException {
+	// Do nothing - but let subclasses override
     }
 }

@@ -21,11 +21,6 @@ public final class EditorLayoutConstants {
 	    StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
 		    StringConstants.PREFS_STRING_EDITOR_LAYOUT_MODERN_V12) };
 
-    // Private Constructor
-    private EditorLayoutConstants() {
-	// Do nothing
-    }
-
     public static void activeLanguageChanged() {
 	EditorLayoutConstants.EDITOR_LAYOUT_LIST = new String[] {
 		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
@@ -38,5 +33,10 @@ public final class EditorLayoutConstants {
 
     public static String[] getEditorLayoutList() {
 	return EditorLayoutConstants.EDITOR_LAYOUT_LIST;
+    }
+
+    // Private Constructor
+    private EditorLayoutConstants() {
+	// Do nothing
     }
 }

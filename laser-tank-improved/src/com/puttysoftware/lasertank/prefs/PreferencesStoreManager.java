@@ -19,22 +19,9 @@ class PreferencesStoreManager {
 	this.store = new Properties();
     }
 
-    // Methods
-    public String getString(final String key, final String defaultValue) {
-	return this.store.getProperty(key, defaultValue);
-    }
-
-    public void setString(final String key, final String newValue) {
-	this.store.setProperty(key, newValue);
-    }
-
     public boolean getBoolean(final String key, final boolean defaultValue) {
 	final String strVal = this.getString(key, Boolean.toString(defaultValue));
 	return Boolean.parseBoolean(strVal);
-    }
-
-    public void setBoolean(final String key, final boolean newValue) {
-	this.setString(key, Boolean.toString(newValue));
     }
 
     public int getInteger(final String key, final int defaultValue) {
@@ -42,8 +29,9 @@ class PreferencesStoreManager {
 	return Integer.parseInt(strVal);
     }
 
-    public void setInteger(final String key, final int newValue) {
-	this.setString(key, Integer.toString(newValue));
+    // Methods
+    public String getString(final String key, final String defaultValue) {
+	return this.store.getProperty(key, defaultValue);
     }
 
     public void loadStore(final InputStream source) throws IOException {
@@ -52,5 +40,17 @@ class PreferencesStoreManager {
 
     public void saveStore(final OutputStream dest) throws IOException {
 	this.store.storeToXML(dest, null);
+    }
+
+    public void setBoolean(final String key, final boolean newValue) {
+	this.setString(key, Boolean.toString(newValue));
+    }
+
+    public void setInteger(final String key, final int newValue) {
+	this.setString(key, Integer.toString(newValue));
+    }
+
+    public void setString(final String key, final String newValue) {
+	this.store.setProperty(key, newValue);
     }
 }

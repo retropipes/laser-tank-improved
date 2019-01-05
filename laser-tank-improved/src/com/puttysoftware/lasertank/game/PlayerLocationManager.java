@@ -7,8 +7,8 @@ package com.puttysoftware.lasertank.game;
 
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
-import com.puttysoftware.storage.NumberStorage;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
+import com.puttysoftware.storage.NumberStorage;
 
 public final class PlayerLocationManager {
     // Fields
@@ -33,10 +33,6 @@ public final class PlayerLocationManager {
 	return this.playerInstance;
     }
 
-    public void setActivePlayerNumber(final int value) {
-	this.playerInstance = value;
-    }
-
     public int getPlayerLocationX() {
 	return this.playerData.getCell(1, this.playerInstance);
     }
@@ -49,16 +45,18 @@ public final class PlayerLocationManager {
 	return this.playerData.getCell(2, this.playerInstance);
     }
 
-    private void setPlayerLocationX(final int val) {
-	this.playerData.setCell(val, 1, this.playerInstance);
+    private void initPlayerLocation(final int valX, final int valY, final int valZ, final int pi) {
+	this.playerData.setCell(valX, 1, pi);
+	this.playerData.setCell(valY, 0, pi);
+	this.playerData.setCell(valZ, 2, pi);
     }
 
-    private void setPlayerLocationY(final int val) {
-	this.playerData.setCell(val, 0, this.playerInstance);
+    void offsetPlayerLocationX(final int val) {
+	this.playerData.setCell(this.getPlayerLocationX() + val, 1, this.playerInstance);
     }
 
-    private void setPlayerLocationZ(final int val) {
-	this.playerData.setCell(val, 2, this.playerInstance);
+    void offsetPlayerLocationY(final int val) {
+	this.playerData.setCell(this.getPlayerLocationY() + val, 0, this.playerInstance);
     }
 
     public void resetPlayerLocation() {
@@ -74,10 +72,24 @@ public final class PlayerLocationManager {
 	}
     }
 
-    private void initPlayerLocation(final int valX, final int valY, final int valZ, final int pi) {
-	this.playerData.setCell(valX, 1, pi);
-	this.playerData.setCell(valY, 0, pi);
-	this.playerData.setCell(valZ, 2, pi);
+    void restorePlayerLocation() {
+	this.playerData = new NumberStorage(this.savedPlayerData);
+    }
+
+    void restoreRemoteLocation() {
+	this.playerData = new NumberStorage(this.savedRemoteData);
+    }
+
+    void savePlayerLocation() {
+	this.savedPlayerData = new NumberStorage(this.playerData);
+    }
+
+    void saveRemoteLocation() {
+	this.savedRemoteData = new NumberStorage(this.playerData);
+    }
+
+    public void setActivePlayerNumber(final int value) {
+	this.playerInstance = value;
     }
 
     public void setPlayerLocation(final int valX, final int valY, final int valZ) {
@@ -86,12 +98,16 @@ public final class PlayerLocationManager {
 	this.setPlayerLocationZ(valZ);
     }
 
-    void offsetPlayerLocationX(final int val) {
-	this.playerData.setCell(this.getPlayerLocationX() + val, 1, this.playerInstance);
+    private void setPlayerLocationX(final int val) {
+	this.playerData.setCell(val, 1, this.playerInstance);
     }
 
-    void offsetPlayerLocationY(final int val) {
-	this.playerData.setCell(this.getPlayerLocationY() + val, 0, this.playerInstance);
+    private void setPlayerLocationY(final int val) {
+	this.playerData.setCell(val, 0, this.playerInstance);
+    }
+
+    private void setPlayerLocationZ(final int val) {
+	this.playerData.setCell(val, 2, this.playerInstance);
     }
 
     public void togglePlayerInstance() {
@@ -108,21 +124,5 @@ public final class PlayerLocationManager {
 		doesNotExist = false;
 	    }
 	}
-    }
-
-    void savePlayerLocation() {
-	this.savedPlayerData = new NumberStorage(this.playerData);
-    }
-
-    void restorePlayerLocation() {
-	this.playerData = new NumberStorage(this.savedPlayerData);
-    }
-
-    void saveRemoteLocation() {
-	this.savedRemoteData = new NumberStorage(this.playerData);
-    }
-
-    void restoreRemoteLocation() {
-	this.playerData = new NumberStorage(this.savedRemoteData);
     }
 }

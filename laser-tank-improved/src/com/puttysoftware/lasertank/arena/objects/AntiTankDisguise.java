@@ -13,9 +13,17 @@ import com.puttysoftware.lasertank.utilities.ActionConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 
 public class AntiTankDisguise extends AbstractCharacter {
+    private static final int DISGUISE_LENGTH = 30;
     // Fields
     private int disguiseLeft;
-    private static final int DISGUISE_LENGTH = 30;
+
+    public AntiTankDisguise(final Direction dir, final int number) {
+	super(number);
+	this.disguiseLeft = AntiTankDisguise.DISGUISE_LENGTH;
+	this.activateTimer(1);
+	this.setDirection(dir);
+	this.setFrameNumber(1);
+    }
 
     // Constructors
     public AntiTankDisguise(final int number) {
@@ -26,22 +34,14 @@ public class AntiTankDisguise extends AbstractCharacter {
 	this.setFrameNumber(1);
     }
 
-    public AntiTankDisguise(final Direction dir, final int number) {
-	super(number);
-	this.disguiseLeft = AntiTankDisguise.DISGUISE_LENGTH;
-	this.activateTimer(1);
-	this.setDirection(dir);
-	this.setFrameNumber(1);
+    @Override
+    public boolean acceptTick(final int actionType) {
+	return actionType == ActionConstants.ACTION_MOVE;
     }
 
     @Override
     public final int getStringBaseID() {
 	return 0;
-    }
-
-    @Override
-    public boolean acceptTick(final int actionType) {
-	return actionType == ActionConstants.ACTION_MOVE;
     }
 
     @Override

@@ -16,13 +16,13 @@ public abstract class AbstractKey extends AbstractArenaObject {
     }
 
     @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_OBJECTS;
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
     }
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_OBJECTS;
     }
 
     @Override

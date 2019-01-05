@@ -18,13 +18,8 @@ public abstract class AbstractWall extends AbstractArenaObject {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
-    }
-
-    @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_OBJECTS;
+    public boolean doLasersPassThrough() {
+	return false;
     }
 
     @Override
@@ -33,12 +28,17 @@ public abstract class AbstractWall extends AbstractArenaObject {
     }
 
     @Override
-    public void setCustomProperty(final int propID, final int value) {
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_OBJECTS;
+    }
+
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
 	// Do nothing
     }
 
     @Override
-    public boolean doLasersPassThrough() {
-	return false;
+    public void setCustomProperty(final int propID, final int value) {
+	// Do nothing
     }
 }

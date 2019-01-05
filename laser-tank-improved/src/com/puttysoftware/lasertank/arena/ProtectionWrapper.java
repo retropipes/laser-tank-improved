@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
+import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -13,8 +13,13 @@ public class ProtectionWrapper {
     // Constants
     private static final int BLOCK_MULTIPLIER = 16;
 
-    private ProtectionWrapper() {
-	// Do nothing
+    private static char[] getTransform() {
+	return CommonDialogs.showPasswordInputDialog(
+		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_PROTECTION_PROMPT),
+		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_PROTECTION_TITLE),
+		15);
     }
 
     public static void protect(final File src, final File dst) throws IOException {
@@ -55,12 +60,7 @@ public class ProtectionWrapper {
 	}
     }
 
-    private static char[] getTransform() {
-	return CommonDialogs.showPasswordInputDialog(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_PROTECTION_PROMPT),
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_PROTECTION_TITLE),
-		15);
+    private ProtectionWrapper() {
+	// Do nothing
     }
 }

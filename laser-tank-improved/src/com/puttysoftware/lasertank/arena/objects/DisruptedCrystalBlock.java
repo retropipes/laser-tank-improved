@@ -16,9 +16,9 @@ import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.RangeTypeConstants;
 
 public class DisruptedCrystalBlock extends AbstractReactionDisruptedObject {
+    private static final int DISRUPTION_START = 20;
     // Fields
     private int disruptionLeft;
-    private static final int DISRUPTION_START = 20;
 
     // Constructors
     public DisruptedCrystalBlock() {
@@ -26,6 +26,16 @@ public class DisruptedCrystalBlock extends AbstractReactionDisruptedObject {
 	this.disruptionLeft = DisruptedCrystalBlock.DISRUPTION_START;
 	this.activateTimer(1);
 	this.setMaterial(MaterialConstants.MATERIAL_METALLIC);
+    }
+
+    @Override
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 49;
     }
 
     @Override
@@ -42,18 +52,6 @@ public class DisruptedCrystalBlock extends AbstractReactionDisruptedObject {
 	} else {
 	    // Pass laser through
 	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
-	}
-    }
-
-    @Override
-    public void timerExpiredAction(final int locX, final int locY) {
-	this.disruptionLeft--;
-	if (this.disruptionLeft == 0) {
-	    SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
-	    final int z = LaserTank.getApplication().getGameManager().getPlayerManager().getPlayerLocationZ();
-	    LaserTank.getApplication().getGameManager().morph(new CrystalBlock(), locX, locY, z, this.getLayer());
-	} else {
-	    this.activateTimer(1);
 	}
     }
 
@@ -79,12 +77,14 @@ public class DisruptedCrystalBlock extends AbstractReactionDisruptedObject {
     }
 
     @Override
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 49;
+    public void timerExpiredAction(final int locX, final int locY) {
+	this.disruptionLeft--;
+	if (this.disruptionLeft == 0) {
+	    SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
+	    final int z = LaserTank.getApplication().getGameManager().getPlayerManager().getPlayerLocationZ();
+	    LaserTank.getApplication().getGameManager().morph(new CrystalBlock(), locX, locY, z, this.getLayer());
+	} else {
+	    this.activateTimer(1);
+	}
     }
 }

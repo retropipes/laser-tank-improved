@@ -16,11 +16,6 @@ import javax.swing.SwingConstants;
 import com.puttysoftware.lasertank.arena.AbstractArena;
 
 public class RCLGenerator {
-    // Constructor
-    private RCLGenerator() {
-	// Do nothing
-    }
-
     public static Container generateRowColumnLabels() {
 	final Container outerOutputPane = new Container();
 	outerOutputPane.setLayout(new BorderLayout());
@@ -55,5 +50,10 @@ public class RCLGenerator {
 	outerOutputPane.add(rowsPane, BorderLayout.WEST);
 	outerOutputPane.add(columnsPane, BorderLayout.NORTH);
 	return outerOutputPane;
+    }
+
+    // Constructor
+    private RCLGenerator() {
+	// Do nothing
     }
 }

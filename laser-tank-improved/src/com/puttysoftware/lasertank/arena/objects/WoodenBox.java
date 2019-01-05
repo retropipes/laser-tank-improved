@@ -25,16 +25,6 @@ public class WoodenBox extends AbstractMovableObject {
     }
 
     @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 70;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -46,6 +36,11 @@ public class WoodenBox extends AbstractMovableObject {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 70;
     }
 
     @Override
@@ -77,5 +72,10 @@ public class WoodenBox extends AbstractMovableObject {
 	    return super.laserEnteredAction(locX, locY, locZ, dirX, dirY, laserType, forceUnits);
 	}
 	return Direction.NONE;
+    }
+
+    @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
     }
 }

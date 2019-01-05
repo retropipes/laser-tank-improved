@@ -23,6 +23,9 @@ public abstract class AbstractReactionPassThroughObject extends AbstractPassThro
 	}
     }
 
+    public abstract Direction laserEnteredActionHook(int locX, int locY, int locZ, int dirX, int dirY, int laserType,
+	    int forceUnits);
+
     @Override
     public final boolean rangeAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int rangeType, final int forceUnits) {
@@ -32,9 +35,6 @@ public abstract class AbstractReactionPassThroughObject extends AbstractPassThro
 	    return super.rangeAction(locX, locY, locZ, dirX, dirY, rangeType, forceUnits);
 	}
     }
-
-    public abstract Direction laserEnteredActionHook(int locX, int locY, int locZ, int dirX, int dirY, int laserType,
-	    int forceUnits);
 
     public abstract boolean rangeActionHook(int locX, int locY, int locZ, int dirX, int dirY, int laserType,
 	    int forceUnits);

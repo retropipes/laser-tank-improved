@@ -17,11 +17,6 @@ public final class DifficultyConstants {
     public static final int DIFFICULTY_DEADLY = 5;
     private static String[] DIFFICULTY_NAMES = null;
 
-    // Private Constructor
-    private DifficultyConstants() {
-	// Do nothing
-    }
-
     public static String[] getDifficultyNames() {
 	if (DifficultyConstants.DIFFICULTY_NAMES == null) {
 	    DifficultyConstants.reloadDifficultyNames();
@@ -41,5 +36,10 @@ public final class DifficultyConstants {
 			StringConstants.DIFFICULTY_STRING_HARD),
 		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
 			StringConstants.DIFFICULTY_STRING_DEADLY) };
+    }
+
+    // Private Constructor
+    private DifficultyConstants() {
+	// Do nothing
     }
 }

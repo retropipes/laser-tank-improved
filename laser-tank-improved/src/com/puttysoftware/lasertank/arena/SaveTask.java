@@ -8,15 +8,28 @@ package com.puttysoftware.lasertank.arena;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.Extension;
 
 public class SaveTask extends Thread {
+    private static boolean hasExtension(final String s) {
+	String ext = null;
+	final int i = s.lastIndexOf('.');
+	if (i > 0 && i < s.length() - 1) {
+	    ext = s.substring(i + 1).toLowerCase();
+	}
+	if (ext == null) {
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+
     // Fields
     private String filename;
     private final boolean saveProtected;
@@ -88,18 +101,5 @@ public class SaveTask extends Thread {
 		    StringConstants.MESSAGE_STRING_ARENA_SAVED));
 	}
 	app.getArenaManager().handleDeferredSuccess(success);
-    }
-
-    private static boolean hasExtension(final String s) {
-	String ext = null;
-	final int i = s.lastIndexOf('.');
-	if (i > 0 && i < s.length() - 1) {
-	    ext = s.substring(i + 1).toLowerCase();
-	}
-	if (ext == null) {
-	    return false;
-	} else {
-	    return true;
-	}
     }
 }

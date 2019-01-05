@@ -21,8 +21,13 @@ public class HotBox extends AbstractMovableObject {
     }
 
     @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	switch (materialID) {
+	case MaterialConstants.MATERIAL_ICE:
+	    return new Box();
+	default:
+	    return this;
+	}
     }
 
     @Override
@@ -31,12 +36,7 @@ public class HotBox extends AbstractMovableObject {
     }
 
     @Override
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	switch (materialID) {
-	case MaterialConstants.MATERIAL_ICE:
-	    return new Box();
-	default:
-	    return this;
-	}
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
     }
 }

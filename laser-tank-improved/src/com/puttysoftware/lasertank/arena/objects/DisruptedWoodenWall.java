@@ -16,9 +16,9 @@ import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class DisruptedWoodenWall extends AbstractDisruptedObject {
+    private static final int DISRUPTION_START = 20;
     // Fields
     private int disruptionLeft;
-    private static final int DISRUPTION_START = 20;
 
     // Constructors
     public DisruptedWoodenWall() {
@@ -27,6 +27,23 @@ public class DisruptedWoodenWall extends AbstractDisruptedObject {
 	this.disruptionLeft = DisruptedWoodenWall.DISRUPTION_START;
 	this.activateTimer(1);
 	this.setMaterial(MaterialConstants.MATERIAL_WOODEN);
+    }
+
+    @Override
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	switch (materialID) {
+	case MaterialConstants.MATERIAL_FIRE:
+	    return new Ground();
+	case MaterialConstants.MATERIAL_ICE:
+	    return new DisruptedIcyWall();
+	default:
+	    return this;
+	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 57;
     }
 
     @Override
@@ -58,23 +75,6 @@ public class DisruptedWoodenWall extends AbstractDisruptedObject {
 	    LaserTank.getApplication().getGameManager().morph(new WoodenWall(), locX, locY, z, this.getLayer());
 	} else {
 	    this.activateTimer(1);
-	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 57;
-    }
-
-    @Override
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	switch (materialID) {
-	case MaterialConstants.MATERIAL_FIRE:
-	    return new Ground();
-	case MaterialConstants.MATERIAL_ICE:
-	    return new DisruptedIcyWall();
-	default:
-	    return this;
 	}
     }
 }

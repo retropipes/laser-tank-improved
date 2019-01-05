@@ -7,14 +7,10 @@ package com.puttysoftware.lasertank.utilities;
 
 import java.io.File;
 
+import com.puttysoftware.fileio.DirectoryUtilities;
 import com.puttysoftware.lasertank.arena.AbstractArena;
-import com.puttysoftware.lasertank.improved.fileio.DirectoryUtilities;
 
 public class CleanupTask {
-    private CleanupTask() {
-	// Do nothing
-    }
-
     public static void cleanUp() {
 	try {
 	    final File dirToDelete = new File(AbstractArena.getArenaTempFolder());
@@ -22,5 +18,9 @@ public class CleanupTask {
 	} catch (final Throwable t) {
 	    // Ignore
 	}
+    }
+
+    private CleanupTask() {
+	// Do nothing
     }
 }

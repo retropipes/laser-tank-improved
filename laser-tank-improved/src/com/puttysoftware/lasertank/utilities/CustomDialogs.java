@@ -14,10 +14,6 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class CustomDialogs {
-    private CustomDialogs() {
-	// Do nothing
-    }
-
     public static int showDeadDialog() {
 	final Application app = LaserTank.getApplication();
 	return JOptionPane.showOptionDialog(app.getOutputFrame(),
@@ -34,5 +30,9 @@ public class CustomDialogs {
 				StringConstants.DIALOG_STRING_END_BUTTON) },
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_UNDO_BUTTON));
+    }
+
+    private CustomDialogs() {
+	// Do nothing
     }
 }

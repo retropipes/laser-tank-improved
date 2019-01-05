@@ -16,9 +16,9 @@ import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class DisruptedIcyWall extends AbstractDisruptedObject {
+    private static final int DISRUPTION_START = 20;
     // Fields
     private int disruptionLeft;
-    private static final int DISRUPTION_START = 20;
 
     // Constructors
     public DisruptedIcyWall() {
@@ -35,6 +35,21 @@ public class DisruptedIcyWall extends AbstractDisruptedObject {
 	this.disruptionLeft = disruption;
 	this.activateTimer(1);
 	this.setMaterial(MaterialConstants.MATERIAL_ICE);
+    }
+
+    @Override
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	switch (materialID) {
+	case MaterialConstants.MATERIAL_FIRE:
+	    return new DisruptedWall(this.disruptionLeft);
+	default:
+	    return this;
+	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 59;
     }
 
     @Override
@@ -68,21 +83,6 @@ public class DisruptedIcyWall extends AbstractDisruptedObject {
 	    LaserTank.getApplication().getGameManager().morph(iw, locX, locY, z, this.getLayer());
 	} else {
 	    this.activateTimer(1);
-	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 59;
-    }
-
-    @Override
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	switch (materialID) {
-	case MaterialConstants.MATERIAL_FIRE:
-	    return new DisruptedWall(this.disruptionLeft);
-	default:
-	    return this;
 	}
     }
 }

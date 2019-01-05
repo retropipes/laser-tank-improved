@@ -7,14 +7,33 @@ package com.puttysoftware.lasertank.arena.current;
 
 import java.io.IOException;
 
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.storage.NumberStorage;
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
+import com.puttysoftware.storage.NumberStorage;
 
 public final class LevelInfo {
+    public static LevelInfo readLevelInfo(final XMLFileReader reader) throws IOException {
+	final LevelInfo li = new LevelInfo();
+	int x, y;
+	for (y = 0; y < 3; y++) {
+	    for (x = 0; x < ArenaConstants.NUM_PLAYERS; x++) {
+		li.playerData.setCell(reader.readInt(), y, x);
+	    }
+	}
+	li.horizontalWraparoundEnabled = reader.readBoolean();
+	li.verticalWraparoundEnabled = reader.readBoolean();
+	li.thirdDimensionWraparoundEnabled = reader.readBoolean();
+	li.name = reader.readString();
+	li.hint = reader.readString();
+	li.author = reader.readString();
+	li.difficulty = reader.readInt();
+	li.moveShootAllowed = reader.readBoolean();
+	return li;
+    }
+
     // Properties
     private NumberStorage playerData;
     private boolean horizontalWraparoundEnabled;
@@ -56,68 +75,16 @@ public final class LevelInfo {
 	return copy;
     }
 
-    public boolean isMoveShootAllowed() {
-	return this.moveShootAllowed;
+    public void disableHorizontalWraparound() {
+	this.horizontalWraparoundEnabled = false;
     }
 
-    public void setMoveShootAllowed(final boolean value) {
-	this.moveShootAllowed = value;
+    public void disableThirdDimensionWraparound() {
+	this.thirdDimensionWraparoundEnabled = false;
     }
 
-    public String getName() {
-	return this.name;
-    }
-
-    public void setName(final String newName) {
-	this.name = newName;
-    }
-
-    public String getHint() {
-	return this.hint;
-    }
-
-    public void setHint(final String newHint) {
-	this.hint = newHint;
-    }
-
-    public String getAuthor() {
-	return this.author;
-    }
-
-    public void setAuthor(final String newAuthor) {
-	this.author = newAuthor;
-    }
-
-    public int getDifficulty() {
-	return this.difficulty;
-    }
-
-    public void setDifficulty(final int newDifficulty) {
-	this.difficulty = newDifficulty;
-    }
-
-    public int getStartRow(final int pi) {
-	return this.playerData.getCell(1, pi);
-    }
-
-    public int getStartColumn(final int pi) {
-	return this.playerData.getCell(0, pi);
-    }
-
-    public int getStartFloor(final int pi) {
-	return this.playerData.getCell(2, pi);
-    }
-
-    public void setStartRow(final int pi, final int value) {
-	this.playerData.setCell(value, 1, pi);
-    }
-
-    public void setStartColumn(final int pi, final int value) {
-	this.playerData.setCell(value, 0, pi);
-    }
-
-    public void setStartFloor(final int pi, final int value) {
-	this.playerData.setCell(value, 2, pi);
+    public void disableVerticalWraparound() {
+	this.verticalWraparoundEnabled = false;
     }
 
     public boolean doesPlayerExist(final int pi) {
@@ -133,36 +100,88 @@ public final class LevelInfo {
 	this.horizontalWraparoundEnabled = true;
     }
 
-    public void disableHorizontalWraparound() {
-	this.horizontalWraparoundEnabled = false;
+    public void enableThirdDimensionWraparound() {
+	this.thirdDimensionWraparoundEnabled = true;
     }
 
     public void enableVerticalWraparound() {
 	this.verticalWraparoundEnabled = true;
     }
 
-    public void disableVerticalWraparound() {
-	this.verticalWraparoundEnabled = false;
+    public String getAuthor() {
+	return this.author;
     }
 
-    public void enableThirdDimensionWraparound() {
-	this.thirdDimensionWraparoundEnabled = true;
+    public int getDifficulty() {
+	return this.difficulty;
     }
 
-    public void disableThirdDimensionWraparound() {
-	this.thirdDimensionWraparoundEnabled = false;
+    public String getHint() {
+	return this.hint;
+    }
+
+    public String getName() {
+	return this.name;
+    }
+
+    public int getStartColumn(final int pi) {
+	return this.playerData.getCell(0, pi);
+    }
+
+    public int getStartFloor(final int pi) {
+	return this.playerData.getCell(2, pi);
+    }
+
+    public int getStartRow(final int pi) {
+	return this.playerData.getCell(1, pi);
     }
 
     public boolean isHorizontalWraparoundEnabled() {
 	return this.horizontalWraparoundEnabled;
     }
 
-    public boolean isVerticalWraparoundEnabled() {
-	return this.verticalWraparoundEnabled;
+    public boolean isMoveShootAllowed() {
+	return this.moveShootAllowed;
     }
 
     public boolean isThirdDimensionWraparoundEnabled() {
 	return this.thirdDimensionWraparoundEnabled;
+    }
+
+    public boolean isVerticalWraparoundEnabled() {
+	return this.verticalWraparoundEnabled;
+    }
+
+    public void setAuthor(final String newAuthor) {
+	this.author = newAuthor;
+    }
+
+    public void setDifficulty(final int newDifficulty) {
+	this.difficulty = newDifficulty;
+    }
+
+    public void setHint(final String newHint) {
+	this.hint = newHint;
+    }
+
+    public void setMoveShootAllowed(final boolean value) {
+	this.moveShootAllowed = value;
+    }
+
+    public void setName(final String newName) {
+	this.name = newName;
+    }
+
+    public void setStartColumn(final int pi, final int value) {
+	this.playerData.setCell(value, 0, pi);
+    }
+
+    public void setStartFloor(final int pi, final int value) {
+	this.playerData.setCell(value, 2, pi);
+    }
+
+    public void setStartRow(final int pi, final int value) {
+	this.playerData.setCell(value, 1, pi);
     }
 
     public void writeLevelInfo(final XMLFileWriter writer) throws IOException {
@@ -180,24 +199,5 @@ public final class LevelInfo {
 	writer.writeString(this.author);
 	writer.writeInt(this.difficulty);
 	writer.writeBoolean(this.moveShootAllowed);
-    }
-
-    public static LevelInfo readLevelInfo(final XMLFileReader reader) throws IOException {
-	LevelInfo li = new LevelInfo();
-	int x, y;
-	for (y = 0; y < 3; y++) {
-	    for (x = 0; x < ArenaConstants.NUM_PLAYERS; x++) {
-		li.playerData.setCell(reader.readInt(), y, x);
-	    }
-	}
-	li.horizontalWraparoundEnabled = reader.readBoolean();
-	li.verticalWraparoundEnabled = reader.readBoolean();
-	li.thirdDimensionWraparoundEnabled = reader.readBoolean();
-	li.name = reader.readString();
-	li.hint = reader.readString();
-	li.author = reader.readString();
-	li.difficulty = reader.readInt();
-	li.moveShootAllowed = reader.readBoolean();
-	return li;
     }
 }

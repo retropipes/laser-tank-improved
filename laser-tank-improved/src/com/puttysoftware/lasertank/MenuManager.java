@@ -19,91 +19,6 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class MenuManager implements MenuSection {
-    // Fields
-    private final JMenuBar mainMenuBar;
-    private final ArrayList<MenuSection> modeMgrs;
-    private JMenuItem playPlay, playEdit;
-    private JCheckBoxMenuItem playToggleAccelerators;
-    private Accelerators accel;
-
-    // Constructors
-    public MenuManager() {
-	this.mainMenuBar = new JMenuBar();
-	this.modeMgrs = new ArrayList<>();
-	if (PreferencesManager.useClassicAccelerators()) {
-	    this.accel = new ClassicAccelerators();
-	} else {
-	    this.accel = new ModernAccelerators();
-	}
-    }
-
-    // Methods
-    public JMenuBar getMainMenuBar() {
-	return this.mainMenuBar;
-    }
-
-    public void initMenus() {
-	final JMenu menu = this.createCommandsMenu();
-	this.attachAccelerators(this.accel);
-	this.setInitialState();
-	this.mainMenuBar.add(menu);
-    }
-
-    public void unregisterAllModeManagers() {
-	this.modeMgrs.clear();
-	this.mainMenuBar.removeAll();
-    }
-
-    public void registerModeManager(final MenuSection mgr) {
-	this.modeMgrs.add(mgr);
-	final JMenu menu = mgr.createCommandsMenu();
-	mgr.attachAccelerators(this.accel);
-	mgr.setInitialState();
-	this.mainMenuBar.add(menu);
-    }
-
-    public void modeChanged(final MenuSection currentMgr) {
-	for (final MenuSection mgr : this.modeMgrs) {
-	    if (currentMgr == null || !currentMgr.getClass().equals(mgr.getClass())) {
-		mgr.disableModeCommands();
-	    } else {
-		mgr.enableModeCommands();
-	    }
-	}
-    }
-
-    void toggleAccelerators() {
-	if (this.accel instanceof ClassicAccelerators) {
-	    this.accel = new ModernAccelerators();
-	    PreferencesManager.setClassicAccelerators(false);
-	} else {
-	    this.accel = new ClassicAccelerators();
-	    PreferencesManager.setClassicAccelerators(true);
-	}
-    }
-
-    public void checkFlags() {
-	final Application app = LaserTank.getApplication();
-	if (app.getArenaManager().getLoaded()) {
-	    for (final MenuSection mgr : this.modeMgrs) {
-		mgr.enableLoadedCommands();
-	    }
-	} else {
-	    for (final MenuSection mgr : this.modeMgrs) {
-		mgr.disableLoadedCommands();
-	    }
-	}
-	if (app.getArenaManager().getDirty()) {
-	    for (final MenuSection mgr : this.modeMgrs) {
-		mgr.enableDirtyCommands();
-	    }
-	} else {
-	    for (final MenuSection mgr : this.modeMgrs) {
-		mgr.disableDirtyCommands();
-	    }
-	}
-    }
-
     private class EventHandler implements ActionListener {
 	public EventHandler() {
 	    // Do nothing
@@ -140,21 +55,50 @@ public class MenuManager implements MenuSection {
 	}
     }
 
-    @Override
-    public void enableModeCommands() {
-	// Do nothing
+    // Fields
+    private final JMenuBar mainMenuBar;
+    private final ArrayList<MenuSection> modeMgrs;
+    private JMenuItem playPlay, playEdit;
+    private JCheckBoxMenuItem playToggleAccelerators;
+    private Accelerators accel;
+
+    // Constructors
+    public MenuManager() {
+	this.mainMenuBar = new JMenuBar();
+	this.modeMgrs = new ArrayList<>();
+	if (PreferencesManager.useClassicAccelerators()) {
+	    this.accel = new ClassicAccelerators();
+	} else {
+	    this.accel = new ModernAccelerators();
+	}
     }
 
     @Override
-    public void disableModeCommands() {
-	// Do nothing
+    public void attachAccelerators(final Accelerators newAccel) {
+	this.playPlay.setAccelerator(this.accel.playPlayArenaAccel);
+	this.playEdit.setAccelerator(this.accel.playEditArenaAccel);
     }
 
-    @Override
-    public void setInitialState() {
-	this.playPlay.setEnabled(false);
-	this.playEdit.setEnabled(false);
-	this.playToggleAccelerators.setEnabled(true);
+    public void checkFlags() {
+	final Application app = LaserTank.getApplication();
+	if (app.getArenaManager().getLoaded()) {
+	    for (final MenuSection mgr : this.modeMgrs) {
+		mgr.enableLoadedCommands();
+	    }
+	} else {
+	    for (final MenuSection mgr : this.modeMgrs) {
+		mgr.disableLoadedCommands();
+	    }
+	}
+	if (app.getArenaManager().getDirty()) {
+	    for (final MenuSection mgr : this.modeMgrs) {
+		mgr.enableDirtyCommands();
+	    }
+	} else {
+	    for (final MenuSection mgr : this.modeMgrs) {
+		mgr.disableDirtyCommands();
+	    }
+	}
     }
 
     @Override
@@ -178,9 +122,24 @@ public class MenuManager implements MenuSection {
     }
 
     @Override
-    public void attachAccelerators(final Accelerators newAccel) {
-	this.playPlay.setAccelerator(this.accel.playPlayArenaAccel);
-	this.playEdit.setAccelerator(this.accel.playEditArenaAccel);
+    public void disableDirtyCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void disableLoadedCommands() {
+	this.playPlay.setEnabled(false);
+	this.playEdit.setEnabled(false);
+    }
+
+    @Override
+    public void disableModeCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableDirtyCommands() {
+	// Do nothing
     }
 
     @Override
@@ -195,18 +154,59 @@ public class MenuManager implements MenuSection {
     }
 
     @Override
-    public void disableLoadedCommands() {
+    public void enableModeCommands() {
+	// Do nothing
+    }
+
+    // Methods
+    public JMenuBar getMainMenuBar() {
+	return this.mainMenuBar;
+    }
+
+    public void initMenus() {
+	final JMenu menu = this.createCommandsMenu();
+	this.attachAccelerators(this.accel);
+	this.setInitialState();
+	this.mainMenuBar.add(menu);
+    }
+
+    public void modeChanged(final MenuSection currentMgr) {
+	for (final MenuSection mgr : this.modeMgrs) {
+	    if (currentMgr == null || !currentMgr.getClass().equals(mgr.getClass())) {
+		mgr.disableModeCommands();
+	    } else {
+		mgr.enableModeCommands();
+	    }
+	}
+    }
+
+    public void registerModeManager(final MenuSection mgr) {
+	this.modeMgrs.add(mgr);
+	final JMenu menu = mgr.createCommandsMenu();
+	mgr.attachAccelerators(this.accel);
+	mgr.setInitialState();
+	this.mainMenuBar.add(menu);
+    }
+
+    @Override
+    public void setInitialState() {
 	this.playPlay.setEnabled(false);
 	this.playEdit.setEnabled(false);
+	this.playToggleAccelerators.setEnabled(true);
     }
 
-    @Override
-    public void enableDirtyCommands() {
-	// Do nothing
+    void toggleAccelerators() {
+	if (this.accel instanceof ClassicAccelerators) {
+	    this.accel = new ModernAccelerators();
+	    PreferencesManager.setClassicAccelerators(false);
+	} else {
+	    this.accel = new ClassicAccelerators();
+	    PreferencesManager.setClassicAccelerators(true);
+	}
     }
 
-    @Override
-    public void disableDirtyCommands() {
-	// Do nothing
+    public void unregisterAllModeManagers() {
+	this.modeMgrs.clear();
+	this.mainMenuBar.removeAll();
     }
 }

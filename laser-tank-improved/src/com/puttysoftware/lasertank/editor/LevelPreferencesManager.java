@@ -32,6 +32,68 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 
 class LevelPreferencesManager {
+    private class EventHandler implements ActionListener, WindowListener {
+	public EventHandler() {
+	    // Do nothing
+	}
+
+	// Handle buttons
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    try {
+		final LevelPreferencesManager lpm = LevelPreferencesManager.this;
+		final String cmd = e.getActionCommand();
+		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		    lpm.setPrefs();
+		    lpm.hidePrefs();
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
+		    lpm.hidePrefs();
+		}
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+
+	@Override
+	public void windowActivated(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowClosed(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowClosing(final WindowEvent e) {
+	    final LevelPreferencesManager pm = LevelPreferencesManager.this;
+	    pm.hidePrefs();
+	}
+
+	@Override
+	public void windowDeactivated(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowDeiconified(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	@Override
+	public void windowIconified(final WindowEvent e) {
+	    // Do nothing
+	}
+
+	// handle window
+	@Override
+	public void windowOpened(final WindowEvent e) {
+	    // Do nothing
+	}
+    }
+
     // Fields
     private JFrame prefFrame;
     private JCheckBox horizontalWrap;
@@ -48,18 +110,23 @@ class LevelPreferencesManager {
 	this.setUpGUI();
     }
 
-    // Methods
-    void showPrefs() {
-	this.loadPrefs();
-	LaserTank.getApplication().getEditor().disableOutput();
-	this.prefFrame.setVisible(true);
-    }
-
     void hidePrefs() {
 	this.prefFrame.setVisible(false);
 	LaserTank.getApplication().getEditor().enableOutput();
 	LaserTank.getApplication().getArenaManager().setDirty(true);
 	LaserTank.getApplication().getEditor().redrawEditor();
+    }
+
+    private void loadPrefs() {
+	final AbstractArena m = LaserTank.getApplication().getArenaManager().getArena();
+	this.horizontalWrap.setSelected(m.isHorizontalWraparoundEnabled());
+	this.verticalWrap.setSelected(m.isVerticalWraparoundEnabled());
+	this.thirdWrap.setSelected(m.isThirdDimensionWraparoundEnabled());
+	this.name.setText(m.getName());
+	this.author.setText(m.getAuthor());
+	this.hint.setText(m.getHint());
+	this.difficulty.setSelectedIndex(m.getDifficulty() - 1);
+	this.moveShoot.setSelected(m.isMoveShootAllowedThisLevel());
     }
 
     void setPrefs() {
@@ -84,18 +151,6 @@ class LevelPreferencesManager {
 	m.setHint(this.hint.getText());
 	m.setDifficulty(this.difficulty.getSelectedIndex() + 1);
 	m.setMoveShootAllowedThisLevel(this.moveShoot.isSelected());
-    }
-
-    private void loadPrefs() {
-	final AbstractArena m = LaserTank.getApplication().getArenaManager().getArena();
-	this.horizontalWrap.setSelected(m.isHorizontalWraparoundEnabled());
-	this.verticalWrap.setSelected(m.isVerticalWraparoundEnabled());
-	this.thirdWrap.setSelected(m.isThirdDimensionWraparoundEnabled());
-	this.name.setText(m.getName());
-	this.author.setText(m.getAuthor());
-	this.hint.setText(m.getHint());
-	this.difficulty.setSelectedIndex(m.getDifficulty() - 1);
-	this.moveShoot.setSelected(m.isMoveShootAllowedThisLevel());
     }
 
     private void setUpGUI() {
@@ -160,65 +215,10 @@ class LevelPreferencesManager {
 	this.prefFrame.pack();
     }
 
-    private class EventHandler implements ActionListener, WindowListener {
-	public EventHandler() {
-	    // Do nothing
-	}
-
-	// Handle buttons
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final LevelPreferencesManager lpm = LevelPreferencesManager.this;
-		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
-		    lpm.setPrefs();
-		    lpm.hidePrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
-		    lpm.hidePrefs();
-		}
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-
-	// handle window
-	@Override
-	public void windowOpened(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowClosing(final WindowEvent e) {
-	    final LevelPreferencesManager pm = LevelPreferencesManager.this;
-	    pm.hidePrefs();
-	}
-
-	@Override
-	public void windowClosed(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowIconified(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowDeiconified(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowActivated(final WindowEvent e) {
-	    // Do nothing
-	}
-
-	@Override
-	public void windowDeactivated(final WindowEvent e) {
-	    // Do nothing
-	}
+    // Methods
+    void showPrefs() {
+	this.loadPrefs();
+	LaserTank.getApplication().getEditor().disableOutput();
+	this.prefFrame.setVisible(true);
     }
 }

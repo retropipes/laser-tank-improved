@@ -21,8 +21,8 @@ public abstract class AbstractGround extends AbstractArenaObject {
     }
 
     @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_GROUND;
+    public int getBlockHeight() {
+	return 0;
     }
 
     @Override
@@ -31,8 +31,8 @@ public abstract class AbstractGround extends AbstractArenaObject {
     }
 
     @Override
-    public void setCustomProperty(final int propID, final int value) {
-	// Do nothing
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_GROUND;
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class AbstractGround extends AbstractArenaObject {
     }
 
     @Override
-    public int getBlockHeight() {
-	return 0;
+    public void setCustomProperty(final int propID, final int value) {
+	// Do nothing
     }
 }

@@ -23,6 +23,11 @@ public class MagneticWall extends AbstractWall {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 24;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	if (laserType == LaserTypeConstants.LASER_TYPE_DISRUPTOR) {
@@ -35,10 +40,5 @@ public class MagneticWall extends AbstractWall {
 	    // Stop laser
 	    return super.laserEnteredAction(locX, locY, locZ, dirX, dirY, laserType, forceUnits);
 	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 24;
     }
 }

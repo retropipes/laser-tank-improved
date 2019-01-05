@@ -15,10 +15,12 @@ public abstract class AbstractTeleport extends AbstractArenaObject {
 	this.type.set(TypeConstants.TYPE_TELEPORT);
     }
 
-    public abstract int getDestinationFloor();
-
     @Override
-    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    }
+
+    public abstract int getDestinationFloor();
 
     @Override
     public int getLayer() {
@@ -26,9 +28,7 @@ public abstract class AbstractTeleport extends AbstractArenaObject {
     }
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
-    }
+    public abstract void postMoveAction(final int dirX, final int dirY, int dirZ);
 
     @Override
     public void setCustomProperty(final int propID, final int value) {

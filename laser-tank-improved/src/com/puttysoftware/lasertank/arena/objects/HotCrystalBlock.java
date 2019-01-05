@@ -25,6 +25,21 @@ public class HotCrystalBlock extends AbstractReactionWall {
     }
 
     @Override
+    public AbstractArenaObject changesToOnExposure(final int materialID) {
+	switch (materialID) {
+	case MaterialConstants.MATERIAL_ICE:
+	    return new CrystalBlock();
+	default:
+	    return this;
+	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 126;
+    }
+
+    @Override
     public Direction laserEnteredActionHook(final int locX, final int locY, final int locZ, final int dirX,
 	    final int dirY, final int laserType, final int forceUnits) {
 	if (laserType == LaserTypeConstants.LASER_TYPE_MISSILE) {
@@ -65,21 +80,6 @@ public class HotCrystalBlock extends AbstractReactionWall {
 	} else {
 	    // Do nothing
 	    return true;
-	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 126;
-    }
-
-    @Override
-    public AbstractArenaObject changesToOnExposure(final int materialID) {
-	switch (materialID) {
-	case MaterialConstants.MATERIAL_ICE:
-	    return new CrystalBlock();
-	default:
-	    return this;
 	}
     }
 }

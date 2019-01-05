@@ -20,6 +20,10 @@ class GameDraw extends JPanel {
 	this.drawGrid = new DrawGrid(vSize);
     }
 
+    public DrawGrid getGrid() {
+	return this.drawGrid;
+    }
+
     @Override
     public void paintComponent(final Graphics g) {
 	super.paintComponent(g);
@@ -32,9 +36,5 @@ class GameDraw extends JPanel {
 		}
 	    }
 	}
-    }
-
-    public DrawGrid getGrid() {
-	return this.drawGrid;
     }
 }

@@ -12,9 +12,12 @@ final class GameViewingWindowManager {
     private static final int VIEWING_WINDOW_SIZE_X = AbstractArena.getMinColumns();
     private static final int VIEWING_WINDOW_SIZE_Y = AbstractArena.getMinRows();
 
-    // Constructors
-    private GameViewingWindowManager() {
-	// Do nothing
+    static int getLowerRightViewingWindowLocationX() {
+	return GameViewingWindowManager.VIEWING_WINDOW_SIZE_X - 1;
+    }
+
+    static int getLowerRightViewingWindowLocationY() {
+	return GameViewingWindowManager.VIEWING_WINDOW_SIZE_Y - 1;
     }
 
     // Methods
@@ -24,14 +27,6 @@ final class GameViewingWindowManager {
 
     static int getViewingWindowLocationY() {
 	return 0;
-    }
-
-    static int getLowerRightViewingWindowLocationX() {
-	return GameViewingWindowManager.VIEWING_WINDOW_SIZE_X - 1;
-    }
-
-    static int getLowerRightViewingWindowLocationY() {
-	return GameViewingWindowManager.VIEWING_WINDOW_SIZE_Y - 1;
     }
 
     static int getViewingWindowSize() {
@@ -44,5 +39,10 @@ final class GameViewingWindowManager {
 
     static int getViewingWindowSizeY() {
 	return GameViewingWindowManager.VIEWING_WINDOW_SIZE_Y;
+    }
+
+    // Constructors
+    private GameViewingWindowManager() {
+	// Do nothing
     }
 }

@@ -13,15 +13,9 @@ public abstract class AbstractTransientObject extends AbstractArenaObject {
 	super(true);
     }
 
-    // Methods
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
-    }
-
-    @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_VIRTUAL;
+    public int getBlockHeight() {
+	return 0;
     }
 
     @Override
@@ -29,15 +23,21 @@ public abstract class AbstractTransientObject extends AbstractArenaObject {
 	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
     }
 
-    @Override
-    public void setCustomProperty(final int propID, final int value) {
-	// Do nothing
-    }
-
     public abstract int getForceUnitsImbued();
 
     @Override
-    public int getBlockHeight() {
-	return 0;
+    public int getLayer() {
+	return ArenaConstants.LAYER_VIRTUAL;
+    }
+
+    // Methods
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	// Do nothing
+    }
+
+    @Override
+    public void setCustomProperty(final int propID, final int value) {
+	// Do nothing
     }
 }

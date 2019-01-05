@@ -27,11 +27,6 @@ public class Flag extends AbstractPassThroughObject {
     }
 
     @Override
-    public boolean solvesOnMove() {
-	return true;
-    }
-
-    @Override
     public int getCustomFormat() {
 	return 0;
     }
@@ -39,5 +34,10 @@ public class Flag extends AbstractPassThroughObject {
     @Override
     public final int getStringBaseID() {
 	return 13;
+    }
+
+    @Override
+    public boolean solvesOnMove() {
+	return true;
     }
 }

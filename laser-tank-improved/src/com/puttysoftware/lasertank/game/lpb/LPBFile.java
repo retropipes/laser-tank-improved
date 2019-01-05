@@ -7,15 +7,34 @@ package com.puttysoftware.lasertank.game.lpb;
 
 import java.io.FileInputStream;
 
+import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.game.GameManager;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 class LPBFile {
-    private LPBFile() {
-	// Do nothing
+    private static void decodeData(final byte d) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	switch (d) {
+	case 0x20:
+	    gm.loadReplay(true, 0, 0);
+	    break;
+	case 0x25:
+	    gm.loadReplay(false, -1, 0);
+	    break;
+	case 0x26:
+	    gm.loadReplay(false, 0, -1);
+	    break;
+	case 0x27:
+	    gm.loadReplay(false, 1, 0);
+	    break;
+	case 0x28:
+	    gm.loadReplay(false, 0, 1);
+	    break;
+	default:
+	    break;
+	}
     }
 
     static void loadLPB(final FileInputStream file) {
@@ -42,26 +61,7 @@ class LPBFile {
 	}
     }
 
-    private static void decodeData(final byte d) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	switch (d) {
-	case 0x20:
-	    gm.loadReplay(true, 0, 0);
-	    break;
-	case 0x25:
-	    gm.loadReplay(false, -1, 0);
-	    break;
-	case 0x26:
-	    gm.loadReplay(false, 0, -1);
-	    break;
-	case 0x27:
-	    gm.loadReplay(false, 1, 0);
-	    break;
-	case 0x28:
-	    gm.loadReplay(false, 0, 1);
-	    break;
-	default:
-	    break;
-	}
+    private LPBFile() {
+	// Do nothing
     }
 }

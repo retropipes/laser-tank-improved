@@ -9,14 +9,14 @@ import com.puttysoftware.lasertank.arena.abstractobjects.AbstractCharacter;
 import com.puttysoftware.lasertank.utilities.Direction;
 
 public class FrozenTank extends AbstractCharacter {
-    // Constructors
-    public FrozenTank(final int number) {
-	super(number);
-    }
-
     public FrozenTank(final Direction dir, final int number) {
 	super(number);
 	this.setDirection(dir);
+    }
+
+    // Constructors
+    public FrozenTank(final int number) {
+	super(number);
     }
 
     @Override

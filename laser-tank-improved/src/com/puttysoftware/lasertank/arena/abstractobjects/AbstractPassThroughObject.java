@@ -16,8 +16,8 @@ public abstract class AbstractPassThroughObject extends AbstractArenaObject {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
     }
 
     @Override
@@ -26,8 +26,8 @@ public abstract class AbstractPassThroughObject extends AbstractArenaObject {
     }
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	// Do nothing
     }
 
     @Override

@@ -1,4 +1,4 @@
-module com.puttysoftware.lasertank.improved {
+module com.puttysoftware.lasertank {
     requires java.desktop;
     requires com.puttysoftware.storage;
 }

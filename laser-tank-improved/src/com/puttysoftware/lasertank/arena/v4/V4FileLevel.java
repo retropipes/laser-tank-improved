@@ -47,13 +47,8 @@ class V4FileLevel {
     private static final int AUTHOR_SIZE = 31;
     private static final int DIFFICULTY_SIZE = 2;
 
-    // Constructors
-    private V4FileLevel() {
-	// Do nothing
-    }
-
     // Methods
-    static CurrentArenaData loadAndConvert(final FileInputStream file, AbstractArena a) {
+    static CurrentArenaData loadAndConvert(final FileInputStream file, final AbstractArena a) {
 	try {
 	    V4FileLevel.objects = new byte[V4FileLevel.OBJECTS_SIZE];
 	    V4FileLevel.name = new byte[V4FileLevel.NAME_SIZE];
@@ -282,5 +277,10 @@ class V4FileLevel {
 	    return 0x0;
 	}
 	return (0xff & data[0]) << 0 | (0xff & data[1]) << 8;
+    }
+
+    // Constructors
+    private V4FileLevel() {
+	// Do nothing
     }
 }

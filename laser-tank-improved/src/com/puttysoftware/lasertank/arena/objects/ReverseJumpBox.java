@@ -21,26 +21,6 @@ public class ReverseJumpBox extends AbstractJumpObject {
     }
 
     @Override
-    public int getActualJumpRows() {
-	return -super.getActualJumpRows();
-    }
-
-    @Override
-    public int getActualJumpCols() {
-	return -super.getActualJumpCols();
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 124;
-    }
-
-    @Override
-    public final Color getCustomTextColor() {
-	return Color.black;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -52,5 +32,25 @@ public class ReverseJumpBox extends AbstractJumpObject {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public int getActualJumpCols() {
+	return -super.getActualJumpCols();
+    }
+
+    @Override
+    public int getActualJumpRows() {
+	return -super.getActualJumpRows();
+    }
+
+    @Override
+    public final Color getCustomTextColor() {
+	return Color.black;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 124;
     }
 }

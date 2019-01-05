@@ -20,6 +20,13 @@ public abstract class AbstractDoor extends AbstractArenaObject {
     }
 
     @Override
+    public AbstractDoor clone() {
+	final AbstractDoor copy = (AbstractDoor) super.clone();
+	copy.key = (AbstractKey) this.key.clone();
+	return copy;
+    }
+
+    @Override
     public boolean equals(final Object obj) {
 	if (obj == null) {
 	    return false;
@@ -35,16 +42,8 @@ public abstract class AbstractDoor extends AbstractArenaObject {
     }
 
     @Override
-    public int hashCode() {
-	final int hash = 7;
-	return 71 * hash + (this.key != null ? this.key.hashCode() : 0);
-    }
-
-    @Override
-    public AbstractDoor clone() {
-	final AbstractDoor copy = (AbstractDoor) super.clone();
-	copy.key = (AbstractKey) this.key.clone();
-	return copy;
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
     }
 
     @Override
@@ -53,8 +52,9 @@ public abstract class AbstractDoor extends AbstractArenaObject {
     }
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    public int hashCode() {
+	final int hash = 7;
+	return 71 * hash + (this.key != null ? this.key.hashCode() : 0);
     }
 
     @Override

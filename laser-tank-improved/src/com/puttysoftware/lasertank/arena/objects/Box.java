@@ -21,16 +21,6 @@ public class Box extends AbstractMovableObject {
     }
 
     @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 7;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_ICE:
@@ -42,5 +32,15 @@ public class Box extends AbstractMovableObject {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 7;
+    }
+
+    @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
     }
 }

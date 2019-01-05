@@ -32,6 +32,21 @@ public class AntiTank extends AbstractMovableObject {
 	this.type.set(TypeConstants.TYPE_ANTI);
     }
 
+    @Override
+    public boolean acceptTick(final int actionType) {
+	return actionType == ActionConstants.ACTION_MOVE;
+    }
+
+    @Override
+    public boolean canShoot() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 0;
+    }
+
     public void kill(final int locX, final int locY) {
 	if (this.canShoot) {
 	    LaserTank.getApplication().getGameManager().setLaserType(LaserTypeConstants.LASER_TYPE_RED);
@@ -41,18 +56,8 @@ public class AntiTank extends AbstractMovableObject {
     }
 
     @Override
-    public boolean canShoot() {
-	return true;
-    }
-
-    @Override
     public void laserDoneAction() {
 	this.canShoot = true;
-    }
-
-    @Override
-    public boolean acceptTick(final int actionType) {
-	return actionType == ActionConstants.ACTION_MOVE;
     }
 
     @Override
@@ -95,6 +100,11 @@ public class AntiTank extends AbstractMovableObject {
     }
 
     @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_ANTI_TANK);
+    }
+
+    @Override
     public void timerExpiredAction(final int locX, final int locY) {
 	if (this.getSavedObject().isOfType(TypeConstants.TYPE_ANTI_MOVER)) {
 	    final Direction moveDir = this.getSavedObject().getDirection();
@@ -110,15 +120,5 @@ public class AntiTank extends AbstractMovableObject {
 	    }
 	}
 	this.activateTimer(1);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 0;
-    }
-
-    @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_ANTI_TANK);
     }
 }

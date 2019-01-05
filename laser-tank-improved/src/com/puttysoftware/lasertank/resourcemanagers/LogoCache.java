@@ -5,7 +5,7 @@
  */
 package com.puttysoftware.lasertank.resourcemanagers;
 
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
+import com.puttysoftware.images.BufferedImageIcon;
 
 class LogoCache {
     // Fields
@@ -13,9 +13,25 @@ class LogoCache {
     private final static int CACHE_INCREMENT = 20;
     private static int CACHE_SIZE = 0;
 
-    // Constructor
-    private LogoCache() {
-	// Do nothing
+    private static void addToCache(final String name, final BufferedImageIcon bii) {
+	if (LogoCache.cache == null) {
+	    LogoCache.cache = new LogoCacheEntry[LogoCache.CACHE_INCREMENT];
+	}
+	if (LogoCache.CACHE_SIZE == LogoCache.cache.length) {
+	    LogoCache.expandCache();
+	}
+	LogoCache.cache[LogoCache.CACHE_SIZE] = new LogoCacheEntry();
+	LogoCache.cache[LogoCache.CACHE_SIZE].setEntry(bii);
+	LogoCache.cache[LogoCache.CACHE_SIZE].setNameEntry(name);
+	LogoCache.CACHE_SIZE++;
+    }
+
+    private static void expandCache() {
+	final LogoCacheEntry[] tempCache = new LogoCacheEntry[LogoCache.cache.length + LogoCache.CACHE_INCREMENT];
+	for (int x = 0; x < LogoCache.CACHE_SIZE; x++) {
+	    tempCache[x] = LogoCache.cache[x];
+	}
+	LogoCache.cache = tempCache;
     }
 
     // Methods
@@ -32,27 +48,6 @@ class LogoCache {
 	return null;
     }
 
-    private static void expandCache() {
-	final LogoCacheEntry[] tempCache = new LogoCacheEntry[LogoCache.cache.length + LogoCache.CACHE_INCREMENT];
-	for (int x = 0; x < LogoCache.CACHE_SIZE; x++) {
-	    tempCache[x] = LogoCache.cache[x];
-	}
-	LogoCache.cache = tempCache;
-    }
-
-    private static void addToCache(final String name, final BufferedImageIcon bii) {
-	if (LogoCache.cache == null) {
-	    LogoCache.cache = new LogoCacheEntry[LogoCache.CACHE_INCREMENT];
-	}
-	if (LogoCache.CACHE_SIZE == LogoCache.cache.length) {
-	    LogoCache.expandCache();
-	}
-	LogoCache.cache[LogoCache.CACHE_SIZE] = new LogoCacheEntry();
-	LogoCache.cache[LogoCache.CACHE_SIZE].setEntry(bii);
-	LogoCache.cache[LogoCache.CACHE_SIZE].setNameEntry(name);
-	LogoCache.CACHE_SIZE++;
-    }
-
     private static boolean isInCache(final String name) {
 	if (LogoCache.cache == null) {
 	    LogoCache.cache = new LogoCacheEntry[LogoCache.CACHE_INCREMENT];
@@ -63,5 +58,10 @@ class LogoCache {
 	    }
 	}
 	return false;
+    }
+
+    // Constructor
+    private LogoCache() {
+	// Do nothing
     }
 }

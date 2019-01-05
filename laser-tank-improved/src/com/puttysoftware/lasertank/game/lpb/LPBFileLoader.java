@@ -21,8 +21,8 @@ class LPBFileLoader {
     private static final int LNUM_SIZE = 2;
     private static final int RAWSIZE_SIZE = 2;
 
-    private LPBFileLoader() {
-	// Do nothing
+    static byte[] getData() {
+	return LPBFileLoader.data;
     }
 
     static boolean loadLPB(final FileInputStream file) {
@@ -59,14 +59,14 @@ class LPBFileLoader {
 	}
     }
 
-    static byte[] getData() {
-	return LPBFileLoader.data;
-    }
-
     private static int toInt(final byte[] d) {
 	if (d == null || d.length != 2) {
 	    return 0x0;
 	}
 	return 0xff & d[0] | (0xff & d[1]) << 8;
+    }
+
+    private LPBFileLoader() {
+	// Do nothing
     }
 }

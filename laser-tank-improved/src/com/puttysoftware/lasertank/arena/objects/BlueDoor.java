@@ -17,6 +17,11 @@ public class BlueDoor extends AbstractDoor {
 	super(new BlueKey());
     }
 
+    @Override
+    public final int getStringBaseID() {
+	return 4;
+    }
+
     // Scriptability
     @Override
     public boolean isConditionallySolid() {
@@ -28,10 +33,5 @@ public class BlueDoor extends AbstractDoor {
 	SoundManager.playSound(SoundConstants.SOUND_UNLOCK);
 	TankInventory.useBlueKey();
 	LaserTank.getApplication().getGameManager().morph(new Empty(), dirX, dirY, dirZ, this.getLayer());
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 4;
     }
 }

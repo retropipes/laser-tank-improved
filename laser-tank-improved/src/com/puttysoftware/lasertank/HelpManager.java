@@ -15,8 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import com.puttysoftware.lasertank.improved.help.GraphicalHelpViewer;
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
+import com.puttysoftware.help.GraphicalHelpViewer;
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -24,6 +24,17 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
 class HelpManager {
+    private class ButtonHandler implements ActionListener {
+	public ButtonHandler() {
+	    // Do nothing
+	}
+
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    HelpManager.this.hv.exportHelp();
+	}
+    }
+
     // Fields
     private JFrame helpFrame;
     GraphicalHelpViewer hv;
@@ -32,13 +43,6 @@ class HelpManager {
     // Constructors
     public HelpManager() {
 	// Do nothing
-    }
-
-    // Methods
-    void showHelp() {
-	this.initHelp();
-	LaserTank.getApplication().setInHelp();
-	this.helpFrame.setVisible(true);
     }
 
     void activeLanguageChanged() {
@@ -71,14 +75,10 @@ class HelpManager {
 	}
     }
 
-    private class ButtonHandler implements ActionListener {
-	public ButtonHandler() {
-	    // Do nothing
-	}
-
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    HelpManager.this.hv.exportHelp();
-	}
+    // Methods
+    void showHelp() {
+	this.initHelp();
+	LaserTank.getApplication().setInHelp();
+	this.helpFrame.setVisible(true);
     }
 }

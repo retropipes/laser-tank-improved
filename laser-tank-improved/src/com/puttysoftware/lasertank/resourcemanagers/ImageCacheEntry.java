@@ -5,7 +5,7 @@
  */
 package com.puttysoftware.lasertank.resourcemanagers;
 
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
+import com.puttysoftware.images.BufferedImageIcon;
 
 class ImageCacheEntry {
     // Fields
@@ -22,12 +22,12 @@ class ImageCacheEntry {
 	return this.entry;
     }
 
-    void setEntry(final BufferedImageIcon entry1) {
-	this.entry = entry1;
-    }
-
     String getNameEntry() {
 	return this.nameEntry;
+    }
+
+    void setEntry(final BufferedImageIcon entry1) {
+	this.entry = entry1;
     }
 
     void setNameEntry(final String nameEntry1) {

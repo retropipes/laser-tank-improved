@@ -10,10 +10,6 @@ public class RangeTypeConstants {
     public static final int RANGE_TYPE_HEAT_BOMB = 1;
     public static final int RANGE_TYPE_ICE_BOMB = 2;
 
-    private RangeTypeConstants() {
-	// Do nothing
-    }
-
     public static final int getMaterialForRangeType(final int rt) {
 	switch (rt) {
 	case RANGE_TYPE_BOMB:
@@ -25,5 +21,9 @@ public class RangeTypeConstants {
 	default:
 	    return MaterialConstants.MATERIAL_DEFAULT;
 	}
+    }
+
+    private RangeTypeConstants() {
+	// Do nothing
     }
 }

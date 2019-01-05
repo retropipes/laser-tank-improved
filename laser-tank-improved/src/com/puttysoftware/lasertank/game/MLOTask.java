@@ -32,6 +32,77 @@ import com.puttysoftware.lasertank.utilities.DirectionResolver;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 final class MLOTask extends Thread {
+    static void activateAutomaticMovement() {
+	LaserTank.getApplication().getGameManager().scheduleAutoMove();
+    }
+
+    private static boolean checkSolid(final AbstractArenaObject next) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	// Check cheats
+	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
+	    return true;
+	} else {
+	    return !next.isConditionallySolid();
+	}
+    }
+
+    static boolean checkSolid(final int zx, final int zy) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	final AbstractArenaObject next = LaserTank.getApplication().getArenaManager().getArena().getCell(zx, zy,
+		gm.getPlayerManager().getPlayerLocationZ(), ArenaConstants.LAYER_LOWER_OBJECTS);
+	// Check cheats
+	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
+	    return true;
+	} else {
+	    return !next.isConditionallySolid();
+	}
+    }
+
+    private static void freezeTank() {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	final AbstractCharacter tank = gm.getTank();
+	final Direction dir = tank.getDirection();
+	final int px = gm.getPlayerManager().getPlayerLocationX();
+	final int py = gm.getPlayerManager().getPlayerLocationY();
+	final int pz = gm.getPlayerManager().getPlayerLocationZ();
+	final FrozenTank ft = new FrozenTank(dir, tank.getNumber());
+	ft.setSavedObject(tank.getSavedObject());
+	gm.morph(ft, px, py, pz, ft.getLayer());
+	gm.updateTank();
+    }
+
+    private static int normalizeColumn(final int column, final int columns) {
+	int fC = column;
+	if (fC < 0) {
+	    fC += columns;
+	    while (fC < 0) {
+		fC += columns;
+	    }
+	} else if (fC > columns - 1) {
+	    fC -= columns;
+	    while (fC > columns - 1) {
+		fC -= columns;
+	    }
+	}
+	return fC;
+    }
+
+    private static int normalizeRow(final int row, final int rows) {
+	int fR = row;
+	if (fR < 0) {
+	    fR += rows;
+	    while (fR < 0) {
+		fR += rows;
+	    }
+	} else if (fR > rows - 1) {
+	    fR -= rows;
+	    while (fR > rows - 1) {
+		fR -= rows;
+	    }
+	}
+	return fR;
+    }
+
     // Fields
     private int sx, sy;
     private boolean mover;
@@ -55,26 +126,30 @@ final class MLOTask extends Thread {
 	this.magnet = false;
     }
 
-    @Override
-    public void run() {
-	try {
-	    final GameManager gm = LaserTank.getApplication().getGameManager();
-	    gm.clearDead();
-	    this.doMovementLasersObjects();
-	    // Check auto-move flag
-	    if (gm.isAutoMoveScheduled() && this.canMoveThere()) {
-		gm.unscheduleAutoMove();
-		this.doMovementLasersObjects();
-	    }
-	} catch (final AlreadyDeadException ade) {
-	    // Ignore
-	} catch (final Throwable t) {
-	    LaserTank.getErrorLogger().logError(t);
+    void abortLoop() {
+	this.abort = true;
+    }
+
+    void activateFrozenMovement(final int zx, final int zy) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	// Moving under the influence of a Frost Field
+	this.frozen = true;
+	MLOTask.freezeTank();
+	gm.updateScore(1, 0, 0);
+	this.sx = zx;
+	this.sy = zy;
+	GameManager.updateUndo(false, false, false, false, false, false, false, false, false, false);
+	this.move = true;
+	if (!gm.isReplaying()) {
+	    gm.updateReplay(false, zx, zy);
 	}
     }
 
-    void abortLoop() {
-	this.abort = true;
+    void activateLasers(final int zx, final int zy, final int zox, final int zoy, final int zlt,
+	    final AbstractArenaObject zshooter) {
+	final MovingLaserTracker tracker = new MovingLaserTracker();
+	tracker.activateLasers(zx, zy, zox, zoy, zlt, zshooter);
+	this.laserTrackers.add(tracker);
     }
 
     void activateMovement(final int zx, final int zy) {
@@ -133,25 +208,6 @@ final class MLOTask extends Thread {
 	}
     }
 
-    void activateFrozenMovement(final int zx, final int zy) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	// Moving under the influence of a Frost Field
-	this.frozen = true;
-	MLOTask.freezeTank();
-	gm.updateScore(1, 0, 0);
-	this.sx = zx;
-	this.sy = zy;
-	GameManager.updateUndo(false, false, false, false, false, false, false, false, false, false);
-	this.move = true;
-	if (!gm.isReplaying()) {
-	    gm.updateReplay(false, zx, zy);
-	}
-    }
-
-    static void activateAutomaticMovement() {
-	LaserTank.getApplication().getGameManager().scheduleAutoMove();
-    }
-
     void activateObjects(final int zx, final int zy, final int pushX, final int pushY,
 	    final AbstractMovableObject gmo) {
 	final MovingObjectTracker tracker = new MovingObjectTracker();
@@ -159,19 +215,136 @@ final class MLOTask extends Thread {
 	this.objectTrackers.add(tracker);
     }
 
-    void haltMovingObjects() {
+    private boolean areLaserTrackersChecking() {
+	boolean result = false;
+	for (final MovingLaserTracker tracker : this.laserTrackers) {
+	    if (tracker.isChecking()) {
+		result = true;
+	    }
+	}
+	return result;
+    }
+
+    private boolean areObjectTrackersChecking() {
+	boolean result = false;
+	for (final MovingObjectTracker tracker : this.objectTrackers) {
+	    if (tracker.isChecking()) {
+		result = true;
+	    }
+	}
+	return result;
+    }
+
+    private boolean areObjectTrackersTracking() {
+	boolean result = false;
 	for (final MovingObjectTracker tracker : this.objectTrackers) {
 	    if (tracker.isTracking()) {
-		tracker.haltMovingObject();
+		result = true;
+	    }
+	}
+	return result;
+    }
+
+    private boolean canMoveThere() {
+	final Application app = LaserTank.getApplication();
+	final GameManager gm = app.getGameManager();
+	final PlayerLocationManager plMgr = gm.getPlayerManager();
+	final int px = plMgr.getPlayerLocationX();
+	final int py = plMgr.getPlayerLocationY();
+	final int pz = plMgr.getPlayerLocationZ();
+	final int pw = ArenaConstants.LAYER_UPPER_OBJECTS;
+	final AbstractArena m = app.getArenaManager().getArena();
+	AbstractArenaObject lgo = null;
+	AbstractArenaObject ugo = null;
+	AbstractArenaObject loo = null;
+	AbstractArenaObject uoo = null;
+	try {
+	    try {
+		lgo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_LOWER_GROUND);
+		ugo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_UPPER_GROUND);
+		loo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_LOWER_OBJECTS);
+		uoo = m.getCell(px + this.sx, py + this.sy, pz, pw);
+	    } catch (final ArrayIndexOutOfBoundsException ae) {
+		lgo = new Wall();
+		ugo = new Wall();
+		loo = new Wall();
+		uoo = new Wall();
+	    }
+	} catch (final NullPointerException np) {
+	    this.proceed = false;
+	    lgo = new Wall();
+	    ugo = new Wall();
+	    loo = new Wall();
+	    uoo = new Wall();
+	}
+	return MLOTask.checkSolid(lgo) && MLOTask.checkSolid(ugo) && MLOTask.checkSolid(loo) && MLOTask.checkSolid(uoo);
+    }
+
+    private boolean checkLoopCondition(final boolean zproceed) {
+	final Application app = LaserTank.getApplication();
+	final GameManager gm = app.getGameManager();
+	final PlayerLocationManager plMgr = gm.getPlayerManager();
+	final int px = plMgr.getPlayerLocationX();
+	final int py = plMgr.getPlayerLocationY();
+	final int pz = plMgr.getPlayerLocationZ();
+	final AbstractArena m = app.getArenaManager().getArena();
+	AbstractArenaObject lgo = null;
+	AbstractArenaObject ugo = null;
+	try {
+	    try {
+		lgo = m.getCell(px, py, pz, ArenaConstants.LAYER_LOWER_GROUND);
+		ugo = m.getCell(px, py, pz, ArenaConstants.LAYER_UPPER_GROUND);
+	    } catch (final ArrayIndexOutOfBoundsException ae) {
+		lgo = new Wall();
+		ugo = new Wall();
+	    }
+	} catch (final NullPointerException np) {
+	    this.proceed = false;
+	    lgo = new Wall();
+	    ugo = new Wall();
+	}
+	return zproceed && (!lgo.hasFriction() || !ugo.hasFriction() || this.mover || this.frozen)
+		&& this.canMoveThere();
+    }
+
+    private void cullTrackers() {
+	final MovingObjectTracker[] tempArray1 = this.objectTrackers
+		.toArray(new MovingObjectTracker[this.objectTrackers.size()]);
+	this.objectTrackers.clear();
+	for (final MovingObjectTracker tracker : tempArray1) {
+	    if (tracker != null) {
+		if (tracker.isTracking()) {
+		    this.objectTrackers.add(tracker);
+		}
+	    }
+	}
+	final MovingLaserTracker[] tempArray2 = this.laserTrackers
+		.toArray(new MovingLaserTracker[this.laserTrackers.size()]);
+	this.laserTrackers.clear();
+	for (final MovingLaserTracker tracker : tempArray2) {
+	    if (tracker != null) {
+		if (tracker.isTracking()) {
+		    this.laserTrackers.add(tracker);
+		}
 	    }
 	}
     }
 
-    void activateLasers(final int zx, final int zy, final int zox, final int zoy, final int zlt,
-	    final AbstractArenaObject zshooter) {
-	final MovingLaserTracker tracker = new MovingLaserTracker();
-	tracker.activateLasers(zx, zy, zox, zoy, zlt, zshooter);
-	this.laserTrackers.add(tracker);
+    private void defrostTank() {
+	if (this.frozen) {
+	    this.frozen = false;
+	    final GameManager gm = LaserTank.getApplication().getGameManager();
+	    final AbstractCharacter tank = gm.getTank();
+	    final Direction dir = tank.getDirection();
+	    final int px = gm.getPlayerManager().getPlayerLocationX();
+	    final int py = gm.getPlayerManager().getPlayerLocationY();
+	    final int pz = gm.getPlayerManager().getPlayerLocationZ();
+	    final Tank t = new Tank(dir, tank.getNumber());
+	    t.setSavedObject(tank.getSavedObject());
+	    gm.morph(t, px, py, pz, t.getLayer());
+	    gm.updateTank();
+	    SoundManager.playSound(SoundConstants.SOUND_DEFROST);
+	}
     }
 
     private void doMovementLasersObjects() {
@@ -302,41 +475,6 @@ final class MLOTask extends Thread {
 		}
 	    }
 	}
-    }
-
-    private boolean canMoveThere() {
-	final Application app = LaserTank.getApplication();
-	final GameManager gm = app.getGameManager();
-	final PlayerLocationManager plMgr = gm.getPlayerManager();
-	final int px = plMgr.getPlayerLocationX();
-	final int py = plMgr.getPlayerLocationY();
-	final int pz = plMgr.getPlayerLocationZ();
-	final int pw = ArenaConstants.LAYER_UPPER_OBJECTS;
-	final AbstractArena m = app.getArenaManager().getArena();
-	AbstractArenaObject lgo = null;
-	AbstractArenaObject ugo = null;
-	AbstractArenaObject loo = null;
-	AbstractArenaObject uoo = null;
-	try {
-	    try {
-		lgo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_LOWER_GROUND);
-		ugo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_UPPER_GROUND);
-		loo = m.getCell(px + this.sx, py + this.sy, pz, ArenaConstants.LAYER_LOWER_OBJECTS);
-		uoo = m.getCell(px + this.sx, py + this.sy, pz, pw);
-	    } catch (final ArrayIndexOutOfBoundsException ae) {
-		lgo = new Wall();
-		ugo = new Wall();
-		loo = new Wall();
-		uoo = new Wall();
-	    }
-	} catch (final NullPointerException np) {
-	    this.proceed = false;
-	    lgo = new Wall();
-	    ugo = new Wall();
-	    loo = new Wall();
-	    uoo = new Wall();
-	}
-	return MLOTask.checkSolid(lgo) && MLOTask.checkSolid(ugo) && MLOTask.checkSolid(loo) && MLOTask.checkSolid(uoo);
     }
 
     private AbstractArenaObject[] doMovementOnce() {
@@ -479,167 +617,29 @@ final class MLOTask extends Thread {
 	return new AbstractArenaObject[] { lgo, ugo, loo, uoo };
     }
 
-    private boolean checkLoopCondition(final boolean zproceed) {
-	final Application app = LaserTank.getApplication();
-	final GameManager gm = app.getGameManager();
-	final PlayerLocationManager plMgr = gm.getPlayerManager();
-	final int px = plMgr.getPlayerLocationX();
-	final int py = plMgr.getPlayerLocationY();
-	final int pz = plMgr.getPlayerLocationZ();
-	final AbstractArena m = app.getArenaManager().getArena();
-	AbstractArenaObject lgo = null;
-	AbstractArenaObject ugo = null;
-	try {
-	    try {
-		lgo = m.getCell(px, py, pz, ArenaConstants.LAYER_LOWER_GROUND);
-		ugo = m.getCell(px, py, pz, ArenaConstants.LAYER_UPPER_GROUND);
-	    } catch (final ArrayIndexOutOfBoundsException ae) {
-		lgo = new Wall();
-		ugo = new Wall();
-	    }
-	} catch (final NullPointerException np) {
-	    this.proceed = false;
-	    lgo = new Wall();
-	    ugo = new Wall();
-	}
-	return zproceed && (!lgo.hasFriction() || !ugo.hasFriction() || this.mover || this.frozen)
-		&& this.canMoveThere();
-    }
-
-    private static void freezeTank() {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	final AbstractCharacter tank = gm.getTank();
-	final Direction dir = tank.getDirection();
-	final int px = gm.getPlayerManager().getPlayerLocationX();
-	final int py = gm.getPlayerManager().getPlayerLocationY();
-	final int pz = gm.getPlayerManager().getPlayerLocationZ();
-	final FrozenTank ft = new FrozenTank(dir, tank.getNumber());
-	ft.setSavedObject(tank.getSavedObject());
-	gm.morph(ft, px, py, pz, ft.getLayer());
-	gm.updateTank();
-    }
-
-    private void defrostTank() {
-	if (this.frozen) {
-	    this.frozen = false;
-	    final GameManager gm = LaserTank.getApplication().getGameManager();
-	    final AbstractCharacter tank = gm.getTank();
-	    final Direction dir = tank.getDirection();
-	    final int px = gm.getPlayerManager().getPlayerLocationX();
-	    final int py = gm.getPlayerManager().getPlayerLocationY();
-	    final int pz = gm.getPlayerManager().getPlayerLocationZ();
-	    final Tank t = new Tank(dir, tank.getNumber());
-	    t.setSavedObject(tank.getSavedObject());
-	    gm.morph(t, px, py, pz, t.getLayer());
-	    gm.updateTank();
-	    SoundManager.playSound(SoundConstants.SOUND_DEFROST);
-	}
-    }
-
-    private static boolean checkSolid(final AbstractArenaObject next) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	// Check cheats
-	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
-	    return true;
-	} else {
-	    return !next.isConditionallySolid();
-	}
-    }
-
-    static boolean checkSolid(final int zx, final int zy) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	final AbstractArenaObject next = LaserTank.getApplication().getArenaManager().getArena().getCell(zx, zy,
-		gm.getPlayerManager().getPlayerLocationZ(), ArenaConstants.LAYER_LOWER_OBJECTS);
-	// Check cheats
-	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
-	    return true;
-	} else {
-	    return !next.isConditionallySolid();
-	}
-    }
-
-    private boolean areObjectTrackersTracking() {
-	boolean result = false;
+    void haltMovingObjects() {
 	for (final MovingObjectTracker tracker : this.objectTrackers) {
 	    if (tracker.isTracking()) {
-		result = true;
-	    }
-	}
-	return result;
-    }
-
-    private boolean areObjectTrackersChecking() {
-	boolean result = false;
-	for (final MovingObjectTracker tracker : this.objectTrackers) {
-	    if (tracker.isChecking()) {
-		result = true;
-	    }
-	}
-	return result;
-    }
-
-    private boolean areLaserTrackersChecking() {
-	boolean result = false;
-	for (final MovingLaserTracker tracker : this.laserTrackers) {
-	    if (tracker.isChecking()) {
-		result = true;
-	    }
-	}
-	return result;
-    }
-
-    private void cullTrackers() {
-	final MovingObjectTracker[] tempArray1 = this.objectTrackers
-		.toArray(new MovingObjectTracker[this.objectTrackers.size()]);
-	this.objectTrackers.clear();
-	for (final MovingObjectTracker tracker : tempArray1) {
-	    if (tracker != null) {
-		if (tracker.isTracking()) {
-		    this.objectTrackers.add(tracker);
-		}
-	    }
-	}
-	final MovingLaserTracker[] tempArray2 = this.laserTrackers
-		.toArray(new MovingLaserTracker[this.laserTrackers.size()]);
-	this.laserTrackers.clear();
-	for (final MovingLaserTracker tracker : tempArray2) {
-	    if (tracker != null) {
-		if (tracker.isTracking()) {
-		    this.laserTrackers.add(tracker);
-		}
+		tracker.haltMovingObject();
 	    }
 	}
     }
 
-    private static int normalizeRow(final int row, final int rows) {
-	int fR = row;
-	if (fR < 0) {
-	    fR += rows;
-	    while (fR < 0) {
-		fR += rows;
+    @Override
+    public void run() {
+	try {
+	    final GameManager gm = LaserTank.getApplication().getGameManager();
+	    gm.clearDead();
+	    this.doMovementLasersObjects();
+	    // Check auto-move flag
+	    if (gm.isAutoMoveScheduled() && this.canMoveThere()) {
+		gm.unscheduleAutoMove();
+		this.doMovementLasersObjects();
 	    }
-	} else if (fR > rows - 1) {
-	    fR -= rows;
-	    while (fR > rows - 1) {
-		fR -= rows;
-	    }
+	} catch (final AlreadyDeadException ade) {
+	    // Ignore
+	} catch (final Throwable t) {
+	    LaserTank.getErrorLogger().logError(t);
 	}
-	return fR;
-    }
-
-    private static int normalizeColumn(final int column, final int columns) {
-	int fC = column;
-	if (fC < 0) {
-	    fC += columns;
-	    while (fC < 0) {
-		fC += columns;
-	    }
-	} else if (fC > columns - 1) {
-	    fC -= columns;
-	    while (fC > columns - 1) {
-		fC -= columns;
-	    }
-	}
-	return fC;
     }
 }

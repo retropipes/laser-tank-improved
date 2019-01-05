@@ -25,6 +25,16 @@ public class MetallicMirror extends AbstractMovableObject {
     }
 
     @Override
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 65;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	final Direction dir = DirectionResolver.resolveRelativeDirectionInvert(dirX, dirY);
@@ -75,15 +85,5 @@ public class MetallicMirror extends AbstractMovableObject {
     @Override
     public void playSoundHook() {
 	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
-    }
-
-    @Override
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 65;
     }
 }

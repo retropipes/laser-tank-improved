@@ -25,6 +25,16 @@ public class Mirror extends AbstractMovableObject {
     }
 
     @Override
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 25;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	if (laserType == LaserTypeConstants.LASER_TYPE_MISSILE) {
@@ -82,15 +92,5 @@ public class Mirror extends AbstractMovableObject {
     @Override
     public void playSoundHook() {
 	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
-    }
-
-    @Override
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 25;
     }
 }

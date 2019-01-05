@@ -23,9 +23,9 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.arena.ArenaManager;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -34,88 +34,6 @@ import com.puttysoftware.lasertank.utilities.BoardPrinter;
 import com.puttysoftware.lasertank.utilities.CleanupTask;
 
 public class GUIManager implements MenuSection {
-    // Fields
-    private final JFrame guiFrame;
-    private final JLabel logoLabel;
-    private JMenuItem fileNew, fileOpen, fileOpenDefault, fileClose, fileSave, fileSaveAs, fileSaveAsProtected,
-	    filePrint, filePreferences, fileExit;
-
-    // Constructors
-    public GUIManager() {
-	final CloseHandler cHandler = new CloseHandler();
-	final FocusHandler fHandler = new FocusHandler();
-	this.guiFrame = new JFrame(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
-	final Container guiPane = this.guiFrame.getContentPane();
-	this.guiFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-	this.guiFrame.setLayout(new GridLayout(1, 1));
-	this.logoLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, null, SwingConstants.CENTER);
-	this.logoLabel.setLabelFor(null);
-	this.logoLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
-	guiPane.add(this.logoLabel);
-	this.guiFrame.setResizable(false);
-	this.guiFrame.addWindowListener(cHandler);
-	this.guiFrame.addWindowFocusListener(fHandler);
-    }
-
-    // Methods
-    JFrame getGUIFrame() {
-	if (this.guiFrame.isVisible()) {
-	    return this.guiFrame;
-	} else {
-	    return null;
-	}
-    }
-
-    public void showGUI() {
-	final Application app = LaserTank.getApplication();
-	app.setInGUI();
-	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	this.guiFrame.setVisible(true);
-	this.guiFrame.pack();
-	app.getMenuManager().checkFlags();
-    }
-
-    public void attachMenus() {
-	final Application app = LaserTank.getApplication();
-	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	app.getMenuManager().checkFlags();
-    }
-
-    public void hideGUI() {
-	this.guiFrame.setVisible(false);
-    }
-
-    void updateLogo() {
-	final BufferedImageIcon logo = LogoManager.getLogo();
-	this.logoLabel.setIcon(logo);
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.guiFrame.setIconImage(iconlogo);
-	this.guiFrame.pack();
-    }
-
-    public boolean quitHandler() {
-	final ArenaManager mm = LaserTank.getApplication().getArenaManager();
-	boolean saved = true;
-	int status = JOptionPane.DEFAULT_OPTION;
-	if (mm.getDirty()) {
-	    status = ArenaManager.showSaveDialog();
-	    if (status == JOptionPane.YES_OPTION) {
-		saved = mm.saveArena(mm.isArenaProtected());
-	    } else if (status == JOptionPane.CANCEL_OPTION) {
-		saved = false;
-	    } else {
-		mm.setDirty(false);
-	    }
-	}
-	if (saved) {
-	    PreferencesManager.writePrefs();
-	    // Run cleanup task
-	    CleanupTask.cleanUp();
-	}
-	return saved;
-    }
-
     private class CloseHandler implements WindowListener {
 	public CloseHandler() {
 	    // Do nothing
@@ -273,34 +191,54 @@ public class GUIManager implements MenuSection {
 	}
     }
 
-    @Override
-    public void enableModeCommands() {
-	this.fileNew.setEnabled(true);
-	this.fileOpen.setEnabled(true);
-	this.fileOpenDefault.setEnabled(true);
-	LaserTank.getApplication().getMenuManager().enableModeCommands();
+    // Fields
+    private final JFrame guiFrame;
+    private final JLabel logoLabel;
+    private JMenuItem fileNew, fileOpen, fileOpenDefault, fileClose, fileSave, fileSaveAs, fileSaveAsProtected,
+	    filePrint, filePreferences, fileExit;
+
+    // Constructors
+    public GUIManager() {
+	final CloseHandler cHandler = new CloseHandler();
+	final FocusHandler fHandler = new FocusHandler();
+	this.guiFrame = new JFrame(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
+	final Container guiPane = this.guiFrame.getContentPane();
+	this.guiFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	this.guiFrame.setLayout(new GridLayout(1, 1));
+	this.logoLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, null, SwingConstants.CENTER);
+	this.logoLabel.setLabelFor(null);
+	this.logoLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
+	guiPane.add(this.logoLabel);
+	this.guiFrame.setResizable(false);
+	this.guiFrame.addWindowListener(cHandler);
+	this.guiFrame.addWindowFocusListener(fHandler);
     }
 
     @Override
-    public void disableModeCommands() {
-	this.fileNew.setEnabled(false);
-	this.fileOpen.setEnabled(false);
-	this.fileOpenDefault.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableModeCommands();
+    public void attachAccelerators(final Accelerators accel) {
+	this.fileNew.setAccelerator(accel.fileNewAccel);
+	this.fileOpen.setAccelerator(accel.fileOpenAccel);
+	this.fileClose.setAccelerator(accel.fileCloseAccel);
+	this.fileSave.setAccelerator(accel.fileSaveAccel);
+	this.fileSaveAs.setAccelerator(accel.fileSaveAsAccel);
+	this.filePreferences.setAccelerator(accel.filePreferencesAccel);
+	this.filePrint.setAccelerator(accel.filePrintAccel);
+	if (System
+		.getProperty(
+			StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME))
+		.contains(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			StringConstants.NOTL_STRING_WINDOWS))) {
+	    this.fileExit.setAccelerator(null);
+	} else {
+	    this.fileExit.setAccelerator(accel.fileExitAccel);
+	}
     }
 
-    @Override
-    public void setInitialState() {
-	this.fileNew.setEnabled(true);
-	this.fileOpen.setEnabled(true);
-	this.fileOpenDefault.setEnabled(true);
-	this.fileClose.setEnabled(false);
-	this.fileSave.setEnabled(false);
-	this.fileSaveAs.setEnabled(false);
-	this.fileSaveAsProtected.setEnabled(false);
-	this.filePreferences.setEnabled(true);
-	this.filePrint.setEnabled(true);
-	this.fileExit.setEnabled(true);
+    public void attachMenus() {
+	final Application app = LaserTank.getApplication();
+	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	app.getMenuManager().checkFlags();
     }
 
     @Override
@@ -373,23 +311,31 @@ public class GUIManager implements MenuSection {
     }
 
     @Override
-    public void attachAccelerators(final Accelerators accel) {
-	this.fileNew.setAccelerator(accel.fileNewAccel);
-	this.fileOpen.setAccelerator(accel.fileOpenAccel);
-	this.fileClose.setAccelerator(accel.fileCloseAccel);
-	this.fileSave.setAccelerator(accel.fileSaveAccel);
-	this.fileSaveAs.setAccelerator(accel.fileSaveAsAccel);
-	this.filePreferences.setAccelerator(accel.filePreferencesAccel);
-	this.filePrint.setAccelerator(accel.filePrintAccel);
-	if (System
-		.getProperty(
-			StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME))
-		.contains(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-			StringConstants.NOTL_STRING_WINDOWS))) {
-	    this.fileExit.setAccelerator(null);
-	} else {
-	    this.fileExit.setAccelerator(accel.fileExitAccel);
-	}
+    public void disableDirtyCommands() {
+	this.fileSave.setEnabled(false);
+	LaserTank.getApplication().getMenuManager().disableDirtyCommands();
+    }
+
+    @Override
+    public void disableLoadedCommands() {
+	this.fileClose.setEnabled(false);
+	this.fileSaveAs.setEnabled(false);
+	this.fileSaveAsProtected.setEnabled(false);
+	LaserTank.getApplication().getMenuManager().disableLoadedCommands();
+    }
+
+    @Override
+    public void disableModeCommands() {
+	this.fileNew.setEnabled(false);
+	this.fileOpen.setEnabled(false);
+	this.fileOpenDefault.setEnabled(false);
+	LaserTank.getApplication().getMenuManager().disableModeCommands();
+    }
+
+    @Override
+    public void enableDirtyCommands() {
+	this.fileSave.setEnabled(true);
+	LaserTank.getApplication().getMenuManager().enableDirtyCommands();
     }
 
     @Override
@@ -408,22 +354,76 @@ public class GUIManager implements MenuSection {
     }
 
     @Override
-    public void disableLoadedCommands() {
+    public void enableModeCommands() {
+	this.fileNew.setEnabled(true);
+	this.fileOpen.setEnabled(true);
+	this.fileOpenDefault.setEnabled(true);
+	LaserTank.getApplication().getMenuManager().enableModeCommands();
+    }
+
+    // Methods
+    JFrame getGUIFrame() {
+	if (this.guiFrame.isVisible()) {
+	    return this.guiFrame;
+	} else {
+	    return null;
+	}
+    }
+
+    public void hideGUI() {
+	this.guiFrame.setVisible(false);
+    }
+
+    public boolean quitHandler() {
+	final ArenaManager mm = LaserTank.getApplication().getArenaManager();
+	boolean saved = true;
+	int status = JOptionPane.DEFAULT_OPTION;
+	if (mm.getDirty()) {
+	    status = ArenaManager.showSaveDialog();
+	    if (status == JOptionPane.YES_OPTION) {
+		saved = mm.saveArena(mm.isArenaProtected());
+	    } else if (status == JOptionPane.CANCEL_OPTION) {
+		saved = false;
+	    } else {
+		mm.setDirty(false);
+	    }
+	}
+	if (saved) {
+	    PreferencesManager.writePrefs();
+	    // Run cleanup task
+	    CleanupTask.cleanUp();
+	}
+	return saved;
+    }
+
+    @Override
+    public void setInitialState() {
+	this.fileNew.setEnabled(true);
+	this.fileOpen.setEnabled(true);
+	this.fileOpenDefault.setEnabled(true);
 	this.fileClose.setEnabled(false);
+	this.fileSave.setEnabled(false);
 	this.fileSaveAs.setEnabled(false);
 	this.fileSaveAsProtected.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableLoadedCommands();
+	this.filePreferences.setEnabled(true);
+	this.filePrint.setEnabled(true);
+	this.fileExit.setEnabled(true);
     }
 
-    @Override
-    public void enableDirtyCommands() {
-	this.fileSave.setEnabled(true);
-	LaserTank.getApplication().getMenuManager().enableDirtyCommands();
+    public void showGUI() {
+	final Application app = LaserTank.getApplication();
+	app.setInGUI();
+	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.guiFrame.setVisible(true);
+	this.guiFrame.pack();
+	app.getMenuManager().checkFlags();
     }
 
-    @Override
-    public void disableDirtyCommands() {
-	this.fileSave.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableDirtyCommands();
+    void updateLogo() {
+	final BufferedImageIcon logo = LogoManager.getLogo();
+	this.logoLabel.setIcon(logo);
+	final Image iconlogo = LogoManager.getIconLogo();
+	this.guiFrame.setIconImage(iconlogo);
+	this.guiFrame.pack();
     }
 }

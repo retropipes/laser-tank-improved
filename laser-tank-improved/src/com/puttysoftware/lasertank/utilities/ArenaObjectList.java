@@ -8,6 +8,8 @@ package com.puttysoftware.lasertank.utilities;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
 import com.puttysoftware.lasertank.arena.objects.AntiBelt;
@@ -138,8 +140,6 @@ import com.puttysoftware.lasertank.arena.objects.WoodenPressureButtonDoor;
 import com.puttysoftware.lasertank.arena.objects.WoodenTriggerButton;
 import com.puttysoftware.lasertank.arena.objects.WoodenTriggerButtonDoor;
 import com.puttysoftware.lasertank.arena.objects.WoodenWall;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 
@@ -177,6 +177,12 @@ public class ArenaObjectList {
 	    new RollingBarrelHorizontal(), new RollingBarrelVertical(), new FreezeSpell(), new KillSpell(),
 	    new AntiBelt() };
 
+    public void enableAllObjects() {
+	for (final AbstractArenaObject allObject : this.allObjects) {
+	    allObject.setEnabled(true);
+	}
+    }
+
     public String[] getAllDescriptions() {
 	final String[] allDescriptions = new String[this.allObjects.length];
 	for (int x = 0; x < this.allObjects.length; x++) {
@@ -191,83 +197,6 @@ public class ArenaObjectList {
 	    allEditorAppearances[x] = ImageManager.getImage(this.allObjects[x], false);
 	}
 	return allEditorAppearances;
-    }
-
-    public void enableAllObjects() {
-	for (final AbstractArenaObject allObject : this.allObjects) {
-	    allObject.setEnabled(true);
-	}
-    }
-
-    public AbstractArenaObject[] getAllObjectsOnLayer(final int layer, final boolean useDisable) {
-	if (useDisable) {
-	    for (final AbstractArenaObject allObject : this.allObjects) {
-		if (allObject.getLayer() == layer) {
-		    allObject.setEnabled(true);
-		} else {
-		    allObject.setEnabled(false);
-		}
-	    }
-	    return this.allObjects;
-	} else {
-	    final AbstractArenaObject[] tempAllObjectsOnLayer = new AbstractArenaObject[this.allObjects.length];
-	    int objectCount = 0;
-	    for (int x = 0; x < this.allObjects.length; x++) {
-		if (this.allObjects[x].getLayer() == layer) {
-		    tempAllObjectsOnLayer[x] = this.allObjects[x];
-		}
-	    }
-	    for (final AbstractArenaObject element : tempAllObjectsOnLayer) {
-		if (element != null) {
-		    objectCount++;
-		}
-	    }
-	    final AbstractArenaObject[] allObjectsOnLayer = new AbstractArenaObject[objectCount];
-	    objectCount = 0;
-	    for (final AbstractArenaObject element : tempAllObjectsOnLayer) {
-		if (element != null) {
-		    allObjectsOnLayer[objectCount] = element;
-		    objectCount++;
-		}
-	    }
-	    return allObjectsOnLayer;
-	}
-    }
-
-    public String[] getAllNamesOnLayer(final int layer) {
-	final String[] tempAllNamesOnLayer = new String[this.allObjects.length];
-	int objectCount = 0;
-	for (int x = 0; x < this.allObjects.length; x++) {
-	    if (this.allObjects[x].getLayer() == layer) {
-		tempAllNamesOnLayer[x] = this.allObjects[x].getBaseName();
-	    }
-	}
-	for (final String element : tempAllNamesOnLayer) {
-	    if (element != null) {
-		objectCount++;
-	    }
-	}
-	final String[] allNamesOnLayer = new String[objectCount];
-	objectCount = 0;
-	for (final String element : tempAllNamesOnLayer) {
-	    if (element != null) {
-		allNamesOnLayer[objectCount] = element;
-		objectCount++;
-	    }
-	}
-	return allNamesOnLayer;
-    }
-
-    public boolean[] getObjectEnabledStatuses(final int layer) {
-	final boolean[] allObjectEnabledStatuses = new boolean[this.allObjects.length];
-	for (int x = 0; x < this.allObjects.length; x++) {
-	    if (this.allObjects[x].getLayer() == layer) {
-		allObjectEnabledStatuses[x] = true;
-	    } else {
-		allObjectEnabledStatuses[x] = false;
-	    }
-	}
-	return allObjectEnabledStatuses;
     }
 
     public BufferedImageIcon[] getAllEditorAppearancesOnLayer(final int layer, final boolean useDisable) {
@@ -307,6 +236,77 @@ public class ArenaObjectList {
 	}
     }
 
+    public String[] getAllNamesOnLayer(final int layer) {
+	final String[] tempAllNamesOnLayer = new String[this.allObjects.length];
+	int objectCount = 0;
+	for (int x = 0; x < this.allObjects.length; x++) {
+	    if (this.allObjects[x].getLayer() == layer) {
+		tempAllNamesOnLayer[x] = this.allObjects[x].getBaseName();
+	    }
+	}
+	for (final String element : tempAllNamesOnLayer) {
+	    if (element != null) {
+		objectCount++;
+	    }
+	}
+	final String[] allNamesOnLayer = new String[objectCount];
+	objectCount = 0;
+	for (final String element : tempAllNamesOnLayer) {
+	    if (element != null) {
+		allNamesOnLayer[objectCount] = element;
+		objectCount++;
+	    }
+	}
+	return allNamesOnLayer;
+    }
+
+    public AbstractArenaObject[] getAllObjectsOnLayer(final int layer, final boolean useDisable) {
+	if (useDisable) {
+	    for (final AbstractArenaObject allObject : this.allObjects) {
+		if (allObject.getLayer() == layer) {
+		    allObject.setEnabled(true);
+		} else {
+		    allObject.setEnabled(false);
+		}
+	    }
+	    return this.allObjects;
+	} else {
+	    final AbstractArenaObject[] tempAllObjectsOnLayer = new AbstractArenaObject[this.allObjects.length];
+	    int objectCount = 0;
+	    for (int x = 0; x < this.allObjects.length; x++) {
+		if (this.allObjects[x].getLayer() == layer) {
+		    tempAllObjectsOnLayer[x] = this.allObjects[x];
+		}
+	    }
+	    for (final AbstractArenaObject element : tempAllObjectsOnLayer) {
+		if (element != null) {
+		    objectCount++;
+		}
+	    }
+	    final AbstractArenaObject[] allObjectsOnLayer = new AbstractArenaObject[objectCount];
+	    objectCount = 0;
+	    for (final AbstractArenaObject element : tempAllObjectsOnLayer) {
+		if (element != null) {
+		    allObjectsOnLayer[objectCount] = element;
+		    objectCount++;
+		}
+	    }
+	    return allObjectsOnLayer;
+	}
+    }
+
+    public boolean[] getObjectEnabledStatuses(final int layer) {
+	final boolean[] allObjectEnabledStatuses = new boolean[this.allObjects.length];
+	for (int x = 0; x < this.allObjects.length; x++) {
+	    if (this.allObjects[x].getLayer() == layer) {
+		allObjectEnabledStatuses[x] = true;
+	    } else {
+		allObjectEnabledStatuses[x] = false;
+	    }
+	}
+	return allObjectEnabledStatuses;
+    }
+
     public AbstractArenaObject readArenaObjectG2(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
@@ -333,13 +333,13 @@ public class ArenaObjectList {
 		LaserTank.getErrorLogger().logError(ex);
 	    } catch (final IllegalAccessException ex) {
 		LaserTank.getErrorLogger().logError(ex);
-	    } catch (IllegalArgumentException e) {
+	    } catch (final IllegalArgumentException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (InvocationTargetException e) {
+	    } catch (final InvocationTargetException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (NoSuchMethodException e) {
+	    } catch (final NoSuchMethodException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (SecurityException e) {
+	    } catch (final SecurityException e) {
 		LaserTank.getErrorLogger().logError(e);
 	    }
 	}
@@ -370,13 +370,13 @@ public class ArenaObjectList {
 		LaserTank.getErrorLogger().logError(ex);
 	    } catch (final IllegalAccessException ex) {
 		LaserTank.getErrorLogger().logError(ex);
-	    } catch (IllegalArgumentException e) {
+	    } catch (final IllegalArgumentException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (InvocationTargetException e) {
+	    } catch (final InvocationTargetException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (NoSuchMethodException e) {
+	    } catch (final NoSuchMethodException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (SecurityException e) {
+	    } catch (final SecurityException e) {
 		LaserTank.getErrorLogger().logError(e);
 	    }
 	}
@@ -407,13 +407,13 @@ public class ArenaObjectList {
 		LaserTank.getErrorLogger().logError(ex);
 	    } catch (final IllegalAccessException ex) {
 		LaserTank.getErrorLogger().logError(ex);
-	    } catch (IllegalArgumentException e) {
+	    } catch (final IllegalArgumentException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (InvocationTargetException e) {
+	    } catch (final InvocationTargetException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (NoSuchMethodException e) {
+	    } catch (final NoSuchMethodException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (SecurityException e) {
+	    } catch (final SecurityException e) {
 		LaserTank.getErrorLogger().logError(e);
 	    }
 	}
@@ -444,13 +444,13 @@ public class ArenaObjectList {
 		LaserTank.getErrorLogger().logError(ex);
 	    } catch (final IllegalAccessException ex) {
 		LaserTank.getErrorLogger().logError(ex);
-	    } catch (IllegalArgumentException e) {
+	    } catch (final IllegalArgumentException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (InvocationTargetException e) {
+	    } catch (final InvocationTargetException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (NoSuchMethodException e) {
+	    } catch (final NoSuchMethodException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (SecurityException e) {
+	    } catch (final SecurityException e) {
 		LaserTank.getErrorLogger().logError(e);
 	    }
 	}
@@ -481,13 +481,13 @@ public class ArenaObjectList {
 		LaserTank.getErrorLogger().logError(ex);
 	    } catch (final IllegalAccessException ex) {
 		LaserTank.getErrorLogger().logError(ex);
-	    } catch (IllegalArgumentException e) {
+	    } catch (final IllegalArgumentException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (InvocationTargetException e) {
+	    } catch (final InvocationTargetException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (NoSuchMethodException e) {
+	    } catch (final NoSuchMethodException e) {
 		LaserTank.getErrorLogger().logError(e);
-	    } catch (SecurityException e) {
+	    } catch (final SecurityException e) {
 		LaserTank.getErrorLogger().logError(e);
 	    }
 	}

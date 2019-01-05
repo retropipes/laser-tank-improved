@@ -22,16 +22,6 @@ public class Ice extends AbstractGround {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 20;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_FIRE:
@@ -43,6 +33,16 @@ public class Ice extends AbstractGround {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 20;
+    }
+
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_MIRROR);
     }
 
     @Override

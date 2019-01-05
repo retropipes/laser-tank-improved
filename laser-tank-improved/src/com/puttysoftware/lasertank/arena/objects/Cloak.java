@@ -22,13 +22,13 @@ public class Cloak extends AbstractAttribute {
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 135;
+    public AbstractArenaObject attributeGameRenderHook() {
+	return new Empty();
     }
 
     @Override
-    public AbstractArenaObject attributeGameRenderHook() {
-	return new Empty();
+    public final int getStringBaseID() {
+	return 135;
     }
 
     @Override
@@ -41,14 +41,14 @@ public class Cloak extends AbstractAttribute {
     }
 
     @Override
-    public void postMoveAction(final int locX, final int locY, final int locZ) {
+    public void moveFailedAction(final int locX, final int locY, final int locZ) {
 	final Application app = LaserTank.getApplication();
 	app.getGameManager().morph(new Empty(), locX, locY, locZ, this.getLayer());
 	SoundManager.playSound(SoundConstants.SOUND_DISCOVER);
     }
 
     @Override
-    public void moveFailedAction(final int locX, final int locY, final int locZ) {
+    public void postMoveAction(final int locX, final int locY, final int locZ) {
 	final Application app = LaserTank.getApplication();
 	app.getGameManager().morph(new Empty(), locX, locY, locZ, this.getLayer());
 	SoundManager.playSound(SoundConstants.SOUND_DISCOVER);

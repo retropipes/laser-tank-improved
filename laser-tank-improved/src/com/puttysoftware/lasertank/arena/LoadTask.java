@@ -14,10 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;

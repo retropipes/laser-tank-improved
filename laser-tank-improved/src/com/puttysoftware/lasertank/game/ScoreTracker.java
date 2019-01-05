@@ -7,21 +7,15 @@ package com.puttysoftware.lasertank.game;
 
 import java.io.File;
 
+import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.scoring.SavedScoreManager;
-import com.puttysoftware.lasertank.improved.scoring.ScoreManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.Extension;
+import com.puttysoftware.scoring.SavedScoreManager;
+import com.puttysoftware.scoring.ScoreManager;
 
 class ScoreTracker {
-    // Fields
-    private SavedScoreManager ssMgr;
-    private long moves;
-    private long shots;
-    private long others;
-    private boolean trackScores;
     private static final String MAC_PREFIX = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 	    StringConstants.NOTL_STRING_DIRECTORY_UNIX_HOME);
     private static final String WIN_PREFIX = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
@@ -34,6 +28,58 @@ class ScoreTracker {
 	    StringConstants.NOTL_STRING_DIRECTORY_SCORES_WINDOWS);
     private static final String UNIX_DIR = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 	    StringConstants.NOTL_STRING_DIRECTORY_SCORES_UNIX);
+
+    private static String getScoreDirectory() {
+	final String osName = System.getProperty(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME));
+	if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
+	    // Mac OS X
+	    return ScoreTracker.MAC_DIR;
+	} else if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
+	    // Windows
+	    return ScoreTracker.WIN_DIR;
+	} else {
+	    // Other - assume UNIX-like
+	    return ScoreTracker.UNIX_DIR;
+	}
+    }
+
+    private static String getScoreDirPrefix() {
+	final String osName = System.getProperty(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME));
+	if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
+	    // Mac OS X
+	    return System.getenv(ScoreTracker.MAC_PREFIX);
+	} else if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
+	    // Windows
+	    return System.getenv(ScoreTracker.WIN_PREFIX);
+	} else {
+	    // Other - assume UNIX-like
+	    return System.getenv(ScoreTracker.UNIX_PREFIX);
+	}
+    }
+
+    private static File getScoresFile(final String filename) {
+	final StringBuilder b = new StringBuilder();
+	b.append(ScoreTracker.getScoreDirPrefix());
+	b.append(ScoreTracker.getScoreDirectory());
+	b.append(filename);
+	b.append(StringConstants.COMMON_STRING_UNDERSCORE);
+	b.append(LaserTank.getApplication().getArenaManager().getArena().getActiveLevelNumber() + 1);
+	b.append(Extension.getScoresExtensionWithPeriod());
+	return new File(b.toString());
+    }
+
+    // Fields
+    private SavedScoreManager ssMgr;
+    private long moves;
+    private long shots;
+    private long others;
+    private boolean trackScores;
 
     // Constructors
     public ScoreTracker() {
@@ -62,6 +108,42 @@ class ScoreTracker {
 	}
     }
 
+    void decrementMoves() {
+	this.moves--;
+    }
+
+    void decrementOthers() {
+	this.others--;
+    }
+
+    void decrementShots() {
+	this.shots--;
+    }
+
+    long getMoves() {
+	return this.moves;
+    }
+
+    long getOthers() {
+	return this.others;
+    }
+
+    long getShots() {
+	return this.shots;
+    }
+
+    void incrementMoves() {
+	this.moves++;
+    }
+
+    void incrementOthers() {
+	this.others++;
+    }
+
+    void incrementShots() {
+	this.shots++;
+    }
+
     void resetScore() {
 	this.moves = 0L;
 	this.shots = 0L;
@@ -75,24 +157,8 @@ class ScoreTracker {
 	this.others = 0L;
     }
 
-    long getMoves() {
-	return this.moves;
-    }
-
-    long getShots() {
-	return this.shots;
-    }
-
-    long getOthers() {
-	return this.others;
-    }
-
     void setMoves(final long m) {
 	this.moves = m;
-    }
-
-    void setShots(final long s) {
-	this.shots = s;
     }
 
     void setOthers(final long o) {
@@ -139,28 +205,8 @@ class ScoreTracker {
 	}
     }
 
-    void incrementMoves() {
-	this.moves++;
-    }
-
-    void incrementShots() {
-	this.shots++;
-    }
-
-    void incrementOthers() {
-	this.others++;
-    }
-
-    void decrementMoves() {
-	this.moves--;
-    }
-
-    void decrementShots() {
-	this.shots--;
-    }
-
-    void decrementOthers() {
-	this.others--;
+    void setShots(final long s) {
+	this.shots = s;
     }
 
     void showScoreTable() {
@@ -170,50 +216,5 @@ class ScoreTracker {
 	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
 		    StringConstants.GAME_STRING_SCORES_UNAVAILABLE));
 	}
-    }
-
-    private static String getScoreDirPrefix() {
-	final String osName = System.getProperty(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME));
-	if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
-	    // Mac OS X
-	    return System.getenv(ScoreTracker.MAC_PREFIX);
-	} else if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
-	    // Windows
-	    return System.getenv(ScoreTracker.WIN_PREFIX);
-	} else {
-	    // Other - assume UNIX-like
-	    return System.getenv(ScoreTracker.UNIX_PREFIX);
-	}
-    }
-
-    private static String getScoreDirectory() {
-	final String osName = System.getProperty(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME));
-	if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
-	    // Mac OS X
-	    return ScoreTracker.MAC_DIR;
-	} else if (osName.indexOf(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
-	    // Windows
-	    return ScoreTracker.WIN_DIR;
-	} else {
-	    // Other - assume UNIX-like
-	    return ScoreTracker.UNIX_DIR;
-	}
-    }
-
-    private static File getScoresFile(final String filename) {
-	final StringBuilder b = new StringBuilder();
-	b.append(ScoreTracker.getScoreDirPrefix());
-	b.append(ScoreTracker.getScoreDirectory());
-	b.append(filename);
-	b.append(StringConstants.COMMON_STRING_UNDERSCORE);
-	b.append(LaserTank.getApplication().getArenaManager().getArena().getActiveLevelNumber() + 1);
-	b.append(Extension.getScoresExtensionWithPeriod());
-	return new File(b.toString());
     }
 }

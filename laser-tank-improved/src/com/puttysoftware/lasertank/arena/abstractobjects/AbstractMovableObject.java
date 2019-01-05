@@ -7,11 +7,11 @@ package com.puttysoftware.lasertank.arena.abstractobjects;
 
 import java.io.IOException;
 
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.objects.Empty;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.LaserTypeConstants;
@@ -30,12 +30,9 @@ public abstract class AbstractMovableObject extends AbstractArenaObject {
 	this.type.set(TypeConstants.TYPE_MOVABLE);
     }
 
-    public final boolean waitingOnTunnel() {
-	return this.waitingOnTunnel;
-    }
-
-    public final void setWaitingOnTunnel(final boolean value) {
-	this.waitingOnTunnel = value;
+    @Override
+    public boolean canMove() {
+	return this.isPushable();
     }
 
     @Override
@@ -48,16 +45,24 @@ public abstract class AbstractMovableObject extends AbstractArenaObject {
     }
 
     @Override
-    public boolean canMove() {
-	return this.isPushable();
+    public boolean doLasersPassThrough() {
+	return false;
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
+    public int getCustomFormat() {
+	return AbstractArenaObject.CUSTOM_FORMAT_MANUAL_OVERRIDE;
     }
 
-    public abstract void playSoundHook();
+    @Override
+    public int getCustomProperty(final int propID) {
+	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+    }
+
+    @Override
+    public int getLayer() {
+	return ArenaConstants.LAYER_LOWER_OBJECTS;
+    }
 
     @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
@@ -110,18 +115,10 @@ public abstract class AbstractMovableObject extends AbstractArenaObject {
 	return Direction.NONE;
     }
 
-    @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_LOWER_OBJECTS;
-    }
+    public abstract void playSoundHook();
 
     @Override
-    public int getCustomProperty(final int propID) {
-	return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
-    }
-
-    @Override
-    public void setCustomProperty(final int propID, final int value) {
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
 	// Do nothing
     }
 
@@ -161,17 +158,20 @@ public abstract class AbstractMovableObject extends AbstractArenaObject {
     }
 
     @Override
+    public void setCustomProperty(final int propID, final int value) {
+	// Do nothing
+    }
+
+    public final void setWaitingOnTunnel(final boolean value) {
+	this.waitingOnTunnel = value;
+    }
+
+    public final boolean waitingOnTunnel() {
+	return this.waitingOnTunnel;
+    }
+
+    @Override
     protected void writeArenaObjectHook(final XMLFileWriter writer) throws IOException {
 	this.getSavedObject().writeArenaObject(writer);
-    }
-
-    @Override
-    public int getCustomFormat() {
-	return AbstractArenaObject.CUSTOM_FORMAT_MANUAL_OVERRIDE;
-    }
-
-    @Override
-    public boolean doLasersPassThrough() {
-	return false;
     }
 }

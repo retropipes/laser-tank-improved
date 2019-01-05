@@ -7,14 +7,30 @@ package com.puttysoftware.lasertank.arena;
 
 import java.io.IOException;
 
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.FormatConstants;
 
 public class PrefixHandler implements AbstractPrefixIO {
     private static final byte FORMAT_VERSION = (byte) FormatConstants.ARENA_FORMAT_LATEST;
+
+    private static boolean checkFormatVersion(final byte version) {
+	if (version > PrefixHandler.FORMAT_VERSION) {
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+
+    private static byte readFormatVersion(final XMLFileReader reader) throws IOException {
+	return reader.readByte();
+    }
+
+    private static void writeFormatVersion(final XMLFileWriter writer) throws IOException {
+	writer.writeByte(PrefixHandler.FORMAT_VERSION);
+    }
 
     @Override
     public int readPrefix(final XMLFileReader reader) throws IOException {
@@ -30,21 +46,5 @@ public class PrefixHandler implements AbstractPrefixIO {
     @Override
     public void writePrefix(final XMLFileWriter writer) throws IOException {
 	PrefixHandler.writeFormatVersion(writer);
-    }
-
-    private static byte readFormatVersion(final XMLFileReader reader) throws IOException {
-	return reader.readByte();
-    }
-
-    private static boolean checkFormatVersion(final byte version) {
-	if (version > PrefixHandler.FORMAT_VERSION) {
-	    return false;
-	} else {
-	    return true;
-	}
-    }
-
-    private static void writeFormatVersion(final XMLFileWriter writer) throws IOException {
-	writer.writeByte(PrefixHandler.FORMAT_VERSION);
     }
 }

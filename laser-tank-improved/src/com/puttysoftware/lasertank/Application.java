@@ -11,10 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
+import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.game.GameManager;
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -22,16 +22,6 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
 public final class Application {
-    // Fields
-    private AboutDialog about;
-    private GameManager gameMgr;
-    private ArenaManager arenaMgr;
-    private MenuManager menuMgr;
-    private HelpManager helpMgr;
-    private ArenaEditor editor;
-    private GUIManager guiMgr;
-    private int mode, formerMode;
-    private final ArenaObjectList objects;
     private static final int VERSION_MAJOR = 17;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
@@ -42,6 +32,48 @@ public final class Application {
     public static final int STATUS_PREFS = 3;
     public static final int STATUS_HELP = 4;
     private static final int STATUS_NULL = 5;
+
+    public static String getLogoVersionString() {
+	if (Application.isBetaModeEnabled()) {
+	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
+		    + StringConstants.COMMON_STRING_BETA_SHORT + Application.VERSION_BETA;
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
+	}
+    }
+
+    private static String getVersionString() {
+	if (Application.isBetaModeEnabled()) {
+	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
+		    + StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE, StringConstants.MESSAGE_STRING_BETA)
+		    + Application.VERSION_BETA;
+	} else {
+	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
+		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
+	}
+    }
+
+    private static boolean isBetaModeEnabled() {
+	return Application.VERSION_BETA > 0;
+    }
+
+    // Fields
+    private AboutDialog about;
+    private GameManager gameMgr;
+    private ArenaManager arenaMgr;
+    private MenuManager menuMgr;
+    private HelpManager helpMgr;
+    private ArenaEditor editor;
+    private GUIManager guiMgr;
+    private int mode, formerMode;
+    private final ArenaObjectList objects;
 
     // Constructors
     public Application() {
@@ -65,53 +97,6 @@ public final class Application {
 	this.getEditor().activeLanguageChanged();
     }
 
-    void postConstruct() {
-	// Create Managers
-	this.menuMgr = new MenuManager();
-	this.about = new AboutDialog(Application.getVersionString());
-	this.guiMgr = new GUIManager();
-	this.helpMgr = new HelpManager();
-	this.gameMgr = new GameManager();
-	this.editor = new ArenaEditor();
-	// Cache Logo
-	this.guiMgr.updateLogo();
-    }
-
-    void setInGUI() {
-	this.mode = Application.STATUS_GUI;
-	this.menuMgr.modeChanged(this.guiMgr);
-    }
-
-    public void setInPrefs() {
-	this.formerMode = this.mode;
-	this.mode = Application.STATUS_PREFS;
-	this.menuMgr.modeChanged(null);
-    }
-
-    public void setInGame() {
-	this.mode = Application.STATUS_GAME;
-	this.menuMgr.modeChanged(this.gameMgr);
-    }
-
-    public void setInEditor() {
-	this.mode = Application.STATUS_EDITOR;
-	this.menuMgr.modeChanged(this.editor);
-    }
-
-    public void setInHelp() {
-	this.formerMode = this.mode;
-	this.mode = Application.STATUS_HELP;
-	this.menuMgr.modeChanged(null);
-    }
-
-    public int getMode() {
-	return this.mode;
-    }
-
-    public int getFormerMode() {
-	return this.formerMode;
-    }
-
     void exitCurrentMode() {
 	if (this.mode == Application.STATUS_GUI) {
 	    this.guiMgr.hideGUI();
@@ -122,24 +107,8 @@ public final class Application {
 	}
     }
 
-    public void showMessage(final String msg) {
-	if (this.mode == Application.STATUS_EDITOR) {
-	    this.getEditor().setStatusMessage(msg);
-	} else {
-	    CommonDialogs.showDialog(msg);
-	}
-    }
-
-    public MenuManager getMenuManager() {
-	return this.menuMgr;
-    }
-
-    public GUIManager getGUIManager() {
-	return this.guiMgr;
-    }
-
-    public GameManager getGameManager() {
-	return this.gameMgr;
+    AboutDialog getAboutDialog() {
+	return this.about;
     }
 
     public ArenaManager getArenaManager() {
@@ -149,43 +118,40 @@ public final class Application {
 	return this.arenaMgr;
     }
 
-    HelpManager getHelpManager() {
-	return this.helpMgr;
-    }
-
     public ArenaEditor getEditor() {
 	return this.editor;
     }
 
-    AboutDialog getAboutDialog() {
-	return this.about;
+    public int getFormerMode() {
+	return this.formerMode;
     }
 
-    private static String getVersionString() {
-	if (Application.isBetaModeEnabled()) {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
-		    + StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE, StringConstants.MESSAGE_STRING_BETA)
-		    + Application.VERSION_BETA;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
-	}
+    public GameManager getGameManager() {
+	return this.gameMgr;
     }
 
-    public static String getLogoVersionString() {
-	if (Application.isBetaModeEnabled()) {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
-		    + StringConstants.COMMON_STRING_BETA_SHORT + Application.VERSION_BETA;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
-	}
+    public GUIManager getGUIManager() {
+	return this.guiMgr;
+    }
+
+    HelpManager getHelpManager() {
+	return this.helpMgr;
+    }
+
+    public String[] getLevelInfoList() {
+	return this.arenaMgr.getArena().getLevelInfoList();
+    }
+
+    public MenuManager getMenuManager() {
+	return this.menuMgr;
+    }
+
+    public int getMode() {
+	return this.mode;
+    }
+
+    public ArenaObjectList getObjects() {
+	return this.objects;
     }
 
     public JFrame getOutputFrame() {
@@ -206,12 +172,51 @@ public final class Application {
 	}
     }
 
-    public ArenaObjectList getObjects() {
-	return this.objects;
+    void postConstruct() {
+	// Create Managers
+	this.menuMgr = new MenuManager();
+	this.about = new AboutDialog(Application.getVersionString());
+	this.guiMgr = new GUIManager();
+	this.helpMgr = new HelpManager();
+	this.gameMgr = new GameManager();
+	this.editor = new ArenaEditor();
+	// Cache Logo
+	this.guiMgr.updateLogo();
     }
 
-    public String[] getLevelInfoList() {
-	return this.arenaMgr.getArena().getLevelInfoList();
+    public void setInEditor() {
+	this.mode = Application.STATUS_EDITOR;
+	this.menuMgr.modeChanged(this.editor);
+    }
+
+    public void setInGame() {
+	this.mode = Application.STATUS_GAME;
+	this.menuMgr.modeChanged(this.gameMgr);
+    }
+
+    void setInGUI() {
+	this.mode = Application.STATUS_GUI;
+	this.menuMgr.modeChanged(this.guiMgr);
+    }
+
+    public void setInHelp() {
+	this.formerMode = this.mode;
+	this.mode = Application.STATUS_HELP;
+	this.menuMgr.modeChanged(null);
+    }
+
+    public void setInPrefs() {
+	this.formerMode = this.mode;
+	this.mode = Application.STATUS_PREFS;
+	this.menuMgr.modeChanged(null);
+    }
+
+    public void showMessage(final String msg) {
+	if (this.mode == Application.STATUS_EDITOR) {
+	    this.getEditor().setStatusMessage(msg);
+	} else {
+	    CommonDialogs.showDialog(msg);
+	}
     }
 
     public void updateLevelInfoList() {
@@ -230,9 +235,5 @@ public final class Application {
 	loadFrame.setVisible(true);
 	this.arenaMgr.getArena().generateLevelInfoList();
 	loadFrame.setVisible(false);
-    }
-
-    private static boolean isBetaModeEnabled() {
-	return Application.VERSION_BETA > 0;
     }
 }

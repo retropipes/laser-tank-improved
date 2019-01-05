@@ -21,12 +21,12 @@ public class ExternalMusic {
 	return this.name;
     }
 
-    public void setName(final String newName) {
-	this.name = newName;
-    }
-
     public String getPath() {
 	return this.path;
+    }
+
+    public void setName(final String newName) {
+	this.name = newName;
     }
 
     public void setPath(final String newPath) {

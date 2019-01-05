@@ -16,9 +16,9 @@ import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.RangeTypeConstants;
 
 public class DisruptedIcyCrystalBlock extends AbstractReactionDisruptedObject {
+    private static final int DISRUPTION_START = 20;
     // Fields
     private int disruptionLeft;
-    private static final int DISRUPTION_START = 20;
 
     // Constructors
     public DisruptedIcyCrystalBlock() {
@@ -26,6 +26,16 @@ public class DisruptedIcyCrystalBlock extends AbstractReactionDisruptedObject {
 	this.disruptionLeft = DisruptedIcyCrystalBlock.DISRUPTION_START;
 	this.activateTimer(1);
 	this.setMaterial(MaterialConstants.MATERIAL_ICE);
+    }
+
+    @Override
+    public boolean doLasersPassThrough() {
+	return true;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 129;
     }
 
     @Override
@@ -42,22 +52,6 @@ public class DisruptedIcyCrystalBlock extends AbstractReactionDisruptedObject {
 	} else {
 	    // Pass laser through
 	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
-	}
-    }
-
-    @Override
-    public void timerExpiredAction(final int locX, final int locY) {
-	this.disruptionLeft--;
-	if (this.disruptionLeft == 0) {
-	    SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
-	    final int z = LaserTank.getApplication().getGameManager().getPlayerManager().getPlayerLocationZ();
-	    final IcyCrystalBlock icb = new IcyCrystalBlock();
-	    if (this.hasPreviousState()) {
-		icb.setPreviousState(this.getPreviousState());
-	    }
-	    LaserTank.getApplication().getGameManager().morph(icb, locX, locY, z, this.getLayer());
-	} else {
-	    this.activateTimer(1);
 	}
     }
 
@@ -83,12 +77,18 @@ public class DisruptedIcyCrystalBlock extends AbstractReactionDisruptedObject {
     }
 
     @Override
-    public boolean doLasersPassThrough() {
-	return true;
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 129;
+    public void timerExpiredAction(final int locX, final int locY) {
+	this.disruptionLeft--;
+	if (this.disruptionLeft == 0) {
+	    SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
+	    final int z = LaserTank.getApplication().getGameManager().getPlayerManager().getPlayerLocationZ();
+	    final IcyCrystalBlock icb = new IcyCrystalBlock();
+	    if (this.hasPreviousState()) {
+		icb.setPreviousState(this.getPreviousState());
+	    }
+	    LaserTank.getApplication().getGameManager().morph(icb, locX, locY, z, this.getLayer());
+	} else {
+	    this.activateTimer(1);
+	}
     }
 }

@@ -17,14 +17,14 @@ public class PowerBolt extends AbstractField {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 139;
+    }
+
+    @Override
     public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
 	SoundManager.playSound(SoundConstants.SOUND_POWERFUL);
 	LaserTank.getApplication().getGameManager().morph(new Empty(), dirX, dirY, dirZ, this.getLayer());
 	LaserTank.getApplication().getGameManager().setPowerfulTank();
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 139;
     }
 }

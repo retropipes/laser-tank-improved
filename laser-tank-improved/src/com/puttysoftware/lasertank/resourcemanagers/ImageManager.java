@@ -15,10 +15,10 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractTunnel;
 import com.puttysoftware.lasertank.arena.objects.Tunnel;
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ColorConstants;
@@ -37,12 +37,37 @@ public class ImageManager {
     private static final int DRAW_VERT = 22;
     private static final float DRAW_SIZE = 14;
 
-    private ImageManager() {
-	// Do nothing
-    }
-
     public static void activeLanguageChanged() {
 	ImageCache.flushCache();
+    }
+
+    public static BufferedImageIcon getCompositeImage(final AbstractArenaObject obj1, final AbstractArenaObject obj2,
+	    final boolean useText) {
+	final BufferedImageIcon icon1 = ImageManager.getImage(obj1, useText);
+	final BufferedImageIcon icon2 = ImageManager.getImage(obj2, useText);
+	return ImageManager.getCompositeImageDirectly(icon1, icon2);
+    }
+
+    private static BufferedImageIcon getCompositeImageDirectly(final BufferedImageIcon icon1,
+	    final BufferedImageIcon icon2) {
+	try {
+	    final BufferedImageIcon result = new BufferedImageIcon(icon1);
+	    if (icon1 != null && icon2 != null) {
+		final Graphics2D g2 = result.createGraphics();
+		g2.drawImage(icon2, 0, 0, null);
+		return result;
+	    } else {
+		return null;
+	    }
+	} catch (final NullPointerException np) {
+	    return null;
+	} catch (final IllegalArgumentException ia) {
+	    return null;
+	}
+    }
+
+    public static int getGraphicSize() {
+	return 32;
     }
 
     public static BufferedImageIcon getImage(final AbstractArenaObject obj, final boolean useText) {
@@ -50,6 +75,49 @@ public class ImageManager {
 	    return ImageManager.getTransformedTunnel(obj.getColor(), useText);
 	} else {
 	    return ImageCache.getCachedImage(obj, useText);
+	}
+    }
+
+    private static BufferedImageIcon getTransformedTunnel(final int cc, final boolean useText) {
+	try {
+	    final BufferedImageIcon icon = ImageCache.getCachedImage(new Tunnel(), useText);
+	    Color color;
+	    if (cc == ColorConstants.COLOR_BLUE) {
+		color = Color.blue;
+	    } else if (cc == ColorConstants.COLOR_CYAN) {
+		color = Color.cyan;
+	    } else if (cc == ColorConstants.COLOR_GREEN) {
+		color = Color.green;
+	    } else if (cc == ColorConstants.COLOR_MAGENTA) {
+		color = Color.magenta;
+	    } else if (cc == ColorConstants.COLOR_RED) {
+		color = Color.red;
+	    } else if (cc == ColorConstants.COLOR_WHITE) {
+		color = Color.white;
+	    } else if (cc == ColorConstants.COLOR_YELLOW) {
+		color = Color.yellow;
+	    } else {
+		color = Color.gray;
+	    }
+	    if (icon != null) {
+		final BufferedImageIcon result = new BufferedImageIcon(icon);
+		for (int x = 0; x < ImageManager.getGraphicSize(); x++) {
+		    for (int y = 0; y < ImageManager.getGraphicSize(); y++) {
+			final int pixel = icon.getRGB(x, y);
+			final Color c = new Color(pixel);
+			if (c.equals(ImageManager.TRANSPARENT)) {
+			    result.setRGB(x, y, color.getRGB());
+			}
+		    }
+		}
+		return result;
+	    } else {
+		return null;
+	    }
+	} catch (final NullPointerException np) {
+	    return null;
+	} catch (final IllegalArgumentException ia) {
+	    return null;
 	}
     }
 
@@ -100,74 +168,6 @@ public class ImageManager {
 	}
     }
 
-    private static BufferedImageIcon getTransformedTunnel(final int cc, final boolean useText) {
-	try {
-	    final BufferedImageIcon icon = ImageCache.getCachedImage(new Tunnel(), useText);
-	    Color color;
-	    if (cc == ColorConstants.COLOR_BLUE) {
-		color = Color.blue;
-	    } else if (cc == ColorConstants.COLOR_CYAN) {
-		color = Color.cyan;
-	    } else if (cc == ColorConstants.COLOR_GREEN) {
-		color = Color.green;
-	    } else if (cc == ColorConstants.COLOR_MAGENTA) {
-		color = Color.magenta;
-	    } else if (cc == ColorConstants.COLOR_RED) {
-		color = Color.red;
-	    } else if (cc == ColorConstants.COLOR_WHITE) {
-		color = Color.white;
-	    } else if (cc == ColorConstants.COLOR_YELLOW) {
-		color = Color.yellow;
-	    } else {
-		color = Color.gray;
-	    }
-	    if (icon != null) {
-		final BufferedImageIcon result = new BufferedImageIcon(icon);
-		for (int x = 0; x < ImageManager.getGraphicSize(); x++) {
-		    for (int y = 0; y < ImageManager.getGraphicSize(); y++) {
-			final int pixel = icon.getRGB(x, y);
-			final Color c = new Color(pixel);
-			if (c.equals(ImageManager.TRANSPARENT)) {
-			    result.setRGB(x, y, color.getRGB());
-			}
-		    }
-		}
-		return result;
-	    } else {
-		return null;
-	    }
-	} catch (final NullPointerException np) {
-	    return null;
-	} catch (final IllegalArgumentException ia) {
-	    return null;
-	}
-    }
-
-    public static BufferedImageIcon getCompositeImage(final AbstractArenaObject obj1, final AbstractArenaObject obj2,
-	    final boolean useText) {
-	final BufferedImageIcon icon1 = ImageManager.getImage(obj1, useText);
-	final BufferedImageIcon icon2 = ImageManager.getImage(obj2, useText);
-	return ImageManager.getCompositeImageDirectly(icon1, icon2);
-    }
-
-    private static BufferedImageIcon getCompositeImageDirectly(final BufferedImageIcon icon1,
-	    final BufferedImageIcon icon2) {
-	try {
-	    final BufferedImageIcon result = new BufferedImageIcon(icon1);
-	    if (icon1 != null && icon2 != null) {
-		final Graphics2D g2 = result.createGraphics();
-		g2.drawImage(icon2, 0, 0, null);
-		return result;
-	    } else {
-		return null;
-	    }
-	} catch (final NullPointerException np) {
-	    return null;
-	} catch (final IllegalArgumentException ia) {
-	    return null;
-	}
-    }
-
     public static BufferedImageIcon getVirtualCompositeImage(final AbstractArenaObject obj1,
 	    final AbstractArenaObject obj2, final AbstractArenaObject... otherObjs) {
 	BufferedImageIcon result = ImageManager.getCompositeImage(obj1, obj2, true);
@@ -188,7 +188,7 @@ public class ImageManager {
 	return sb.toString().toLowerCase();
     }
 
-    public static int getGraphicSize() {
-	return 32;
+    private ImageManager() {
+	// Do nothing
     }
 }

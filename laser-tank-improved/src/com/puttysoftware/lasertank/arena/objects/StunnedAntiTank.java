@@ -13,9 +13,9 @@ import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class StunnedAntiTank extends AbstractMovableObject {
+    private static final int STUNNED_START = 10;
     // Fields
     private int stunnedLeft;
-    private static final int STUNNED_START = 10;
 
     // Constructors
     public StunnedAntiTank() {
@@ -30,6 +30,16 @@ public class StunnedAntiTank extends AbstractMovableObject {
 	final StunnedAntiTank copy = (StunnedAntiTank) super.clone();
 	copy.stunnedLeft = this.stunnedLeft;
 	return copy;
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 34;
+    }
+
+    @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_ANTI_TANK);
     }
 
     @Override
@@ -48,15 +58,5 @@ public class StunnedAntiTank extends AbstractMovableObject {
 	    SoundManager.playSound(SoundConstants.SOUND_STUNNED);
 	    this.activateTimer(1);
 	}
-    }
-
-    @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_ANTI_TANK);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 34;
     }
 }

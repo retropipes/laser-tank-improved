@@ -17,13 +17,6 @@ public class TenMissiles extends AbstractInventoryModifier {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	TankInventory.addTenMissiles();
-	gm.morph(new Empty(), dirX, dirY, dirZ, this.getLayer());
-    }
-
-    @Override
     public boolean doLasersPassThrough() {
 	return true;
     }
@@ -31,5 +24,12 @@ public class TenMissiles extends AbstractInventoryModifier {
     @Override
     public final int getStringBaseID() {
 	return 41;
+    }
+
+    @Override
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	TankInventory.addTenMissiles();
+	gm.morph(new Empty(), dirX, dirY, dirZ, this.getLayer());
     }
 }

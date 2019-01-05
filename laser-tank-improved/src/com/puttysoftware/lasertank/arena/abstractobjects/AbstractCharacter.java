@@ -8,10 +8,10 @@ package com.puttysoftware.lasertank.arena.abstractobjects;
 import java.awt.Color;
 import java.io.IOException;
 
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.objects.Empty;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
@@ -28,19 +28,27 @@ public abstract class AbstractCharacter extends AbstractArenaObject {
 	this.characterNumber = number;
     }
 
-    // Methods
-    public int getNumber() {
-	return this.characterNumber;
-    }
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	// Do nothing
-    }
-
-    @Override
-    public int getLayer() {
-	return ArenaConstants.LAYER_UPPER_OBJECTS;
+    public boolean equals(final Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (!super.equals(obj)) {
+	    return false;
+	}
+	if (!(obj instanceof AbstractCharacter)) {
+	    return false;
+	}
+	final AbstractCharacter other = (AbstractCharacter) obj;
+	if (this.characterNumber != other.characterNumber) {
+	    return false;
+	}
+	return true;
     }
 
     @Override
@@ -54,19 +62,6 @@ public abstract class AbstractCharacter extends AbstractArenaObject {
     }
 
     @Override
-    public void setCustomProperty(final int propID, final int value) {
-	// Do nothing
-    }
-
-    @Override
-    public void timerExpiredAction(final int x, final int y) {
-	if (this.getSavedObject() instanceof AbstractMovableObject) {
-	    this.getSavedObject().timerExpiredAction(x, y);
-	}
-	this.activateTimer(1);
-    }
-
-    @Override
     public String getCustomText() {
 	return Integer.toString(this.characterNumber);
     }
@@ -76,9 +71,19 @@ public abstract class AbstractCharacter extends AbstractArenaObject {
 	return Color.white;
     }
 
+    @Override
+    public int getLayer() {
+	return ArenaConstants.LAYER_UPPER_OBJECTS;
+    }
+
+    // Methods
+    public int getNumber() {
+	return this.characterNumber;
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -89,32 +94,9 @@ public abstract class AbstractCharacter extends AbstractArenaObject {
 	return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
-    public boolean equals(Object obj) {
-	if (this == obj) {
-	    return true;
-	}
-	if (!super.equals(obj)) {
-	    return false;
-	}
-	if (!(obj instanceof AbstractCharacter)) {
-	    return false;
-	}
-	AbstractCharacter other = (AbstractCharacter) obj;
-	if (this.characterNumber != other.characterNumber) {
-	    return false;
-	}
-	return true;
-    }
-
-    @Override
-    protected void writeArenaObjectHook(final XMLFileWriter writer) throws IOException {
-	this.getSavedObject().writeArenaObject(writer);
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	// Do nothing
     }
 
     @Override
@@ -150,5 +132,23 @@ public abstract class AbstractCharacter extends AbstractArenaObject {
 	    throws IOException {
 	this.setSavedObject(LaserTank.getApplication().getObjects().readArenaObjectG6(reader, formatVersion));
 	return this;
+    }
+
+    @Override
+    public void setCustomProperty(final int propID, final int value) {
+	// Do nothing
+    }
+
+    @Override
+    public void timerExpiredAction(final int x, final int y) {
+	if (this.getSavedObject() instanceof AbstractMovableObject) {
+	    this.getSavedObject().timerExpiredAction(x, y);
+	}
+	this.activateTimer(1);
+    }
+
+    @Override
+    protected void writeArenaObjectHook(final XMLFileWriter writer) throws IOException {
+	this.getSavedObject().writeArenaObject(writer);
     }
 }

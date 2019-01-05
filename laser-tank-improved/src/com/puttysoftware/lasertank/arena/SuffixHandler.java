@@ -7,9 +7,9 @@ package com.puttysoftware.lasertank.arena;
 
 import java.io.IOException;
 
+import com.puttysoftware.fileio.XMLFileReader;
+import com.puttysoftware.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
-import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.utilities.FormatConstants;
 
 public class SuffixHandler implements AbstractSuffixIO {

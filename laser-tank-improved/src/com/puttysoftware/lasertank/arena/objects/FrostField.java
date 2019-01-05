@@ -17,13 +17,13 @@ public class FrostField extends AbstractField {
     }
 
     @Override
-    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
-	SoundManager.playSound(SoundConstants.SOUND_FROZEN);
-	LaserTank.getApplication().getGameManager().updatePositionRelativeFrozen();
+    public final int getStringBaseID() {
+	return 14;
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 14;
+    public void postMoveAction(final int dirX, final int dirY, final int dirZ) {
+	SoundManager.playSound(SoundConstants.SOUND_FROZEN);
+	LaserTank.getApplication().getGameManager().updatePositionRelativeFrozen();
     }
 }

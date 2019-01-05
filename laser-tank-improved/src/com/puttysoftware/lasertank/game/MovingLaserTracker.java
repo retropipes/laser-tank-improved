@@ -32,6 +32,110 @@ import com.puttysoftware.lasertank.utilities.TankInventory;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 final class MovingLaserTracker {
+    private static boolean canMoveThere(final int sx, final int sy) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	final PlayerLocationManager plMgr = gm.getPlayerManager();
+	final int px = plMgr.getPlayerLocationX();
+	final int py = plMgr.getPlayerLocationY();
+	final int pz = plMgr.getPlayerLocationZ();
+	final Application app = LaserTank.getApplication();
+	final AbstractArena m = app.getArenaManager().getArena();
+	boolean zproceed = true;
+	AbstractArenaObject zo = null;
+	try {
+	    try {
+		zo = m.getCell(px + sx, py + sy, pz, ArenaConstants.LAYER_LOWER_OBJECTS);
+	    } catch (final ArrayIndexOutOfBoundsException ae) {
+		zo = new Wall();
+	    }
+	} catch (final NullPointerException np) {
+	    zproceed = false;
+	    zo = new Wall();
+	}
+	if (zproceed) {
+	    try {
+		if (MovingLaserTracker.checkSolid(zo)) {
+		    return true;
+		}
+	    } catch (final ArrayIndexOutOfBoundsException ae) {
+		// Ignore
+	    }
+	}
+	return false;
+    }
+
+    private static boolean checkSolid(final AbstractArenaObject next) {
+	final GameManager gm = LaserTank.getApplication().getGameManager();
+	// Check cheats
+	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
+	    return true;
+	} else {
+	    final boolean nextSolid = next.isConditionallySolid();
+	    if (nextSolid) {
+		if (next.isOfType(TypeConstants.TYPE_CHARACTER)) {
+		    return true;
+		} else {
+		    return false;
+		}
+	    } else {
+		return true;
+	    }
+	}
+    }
+
+    private static AbstractTransientObject createLaserForType(final int type) {
+	switch (type) {
+	case LaserTypeConstants.LASER_TYPE_GREEN:
+	    return new GreenLaser();
+	case LaserTypeConstants.LASER_TYPE_BLUE:
+	    return new BlueLaser();
+	case LaserTypeConstants.LASER_TYPE_RED:
+	    return new RedLaser();
+	case LaserTypeConstants.LASER_TYPE_MISSILE:
+	    return new Missile();
+	case LaserTypeConstants.LASER_TYPE_STUNNER:
+	    return new Stunner();
+	case LaserTypeConstants.LASER_TYPE_DISRUPTOR:
+	    return new Disruptor();
+	case LaserTypeConstants.LASER_TYPE_POWER:
+	    return new PowerLaser();
+	default:
+	    return null;
+	}
+    }
+
+    private static int normalizeColumn(final int column, final int columns) {
+	int fC = column;
+	if (fC < 0) {
+	    fC += columns;
+	    while (fC < 0) {
+		fC += columns;
+	    }
+	} else if (fC > columns - 1) {
+	    fC -= columns;
+	    while (fC > columns - 1) {
+		fC -= columns;
+	    }
+	}
+	return fC;
+    }
+
+    private static int normalizeRow(final int row, final int rows) {
+	int fR = row;
+	if (fR < 0) {
+	    fR += rows;
+	    while (fR < 0) {
+		fR += rows;
+	    }
+	} else if (fR > rows - 1) {
+	    fR -= rows;
+	    while (fR > rows - 1) {
+		fR -= rows;
+	    }
+	}
+	return fR;
+    }
+
     // Fields
     private AbstractArenaObject shooter;
     private int ox, oy, lt;
@@ -43,14 +147,6 @@ final class MovingLaserTracker {
     // Constructors
     public MovingLaserTracker() {
 	this.lt = 0;
-    }
-
-    boolean isTracking() {
-	return this.laser;
-    }
-
-    boolean isChecking() {
-	return this.res;
     }
 
     void activateLasers(final int zx, final int zy, final int zox, final int zoy, final int zlt,
@@ -133,33 +229,6 @@ final class MovingLaserTracker {
 	    this.laser = true;
 	    this.res = true;
 	}
-    }
-
-    void trackPart1(final boolean tracking) {
-	if (this.laser && this.res) {
-	    this.doLasersOnce(tracking);
-	}
-    }
-
-    boolean trackPart2(final int nsx, final int nsy, final boolean nMover) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	int sx = nsx;
-	int sy = nsy;
-	boolean mover = nMover;
-	if (!this.res && this.laser) {
-	    if (gm.getTank().getSavedObject().isOfType(TypeConstants.TYPE_MOVER)) {
-		final Direction dir = gm.getTank().getSavedObject().getDirection();
-		final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
-		sx = unres[0];
-		sy = unres[1];
-		mover = true;
-	    }
-	    if (mover && !MovingLaserTracker.canMoveThere(sx, sy)) {
-		MLOTask.activateAutomaticMovement();
-	    }
-	    this.clearLastLaser();
-	}
-	return mover;
     }
 
     void clearLastLaser() {
@@ -316,107 +385,38 @@ final class MovingLaserTracker {
 	gm.redrawArena();
     }
 
-    private static AbstractTransientObject createLaserForType(final int type) {
-	switch (type) {
-	case LaserTypeConstants.LASER_TYPE_GREEN:
-	    return new GreenLaser();
-	case LaserTypeConstants.LASER_TYPE_BLUE:
-	    return new BlueLaser();
-	case LaserTypeConstants.LASER_TYPE_RED:
-	    return new RedLaser();
-	case LaserTypeConstants.LASER_TYPE_MISSILE:
-	    return new Missile();
-	case LaserTypeConstants.LASER_TYPE_STUNNER:
-	    return new Stunner();
-	case LaserTypeConstants.LASER_TYPE_DISRUPTOR:
-	    return new Disruptor();
-	case LaserTypeConstants.LASER_TYPE_POWER:
-	    return new PowerLaser();
-	default:
-	    return null;
+    boolean isChecking() {
+	return this.res;
+    }
+
+    boolean isTracking() {
+	return this.laser;
+    }
+
+    void trackPart1(final boolean tracking) {
+	if (this.laser && this.res) {
+	    this.doLasersOnce(tracking);
 	}
     }
 
-    private static int normalizeRow(final int row, final int rows) {
-	int fR = row;
-	if (fR < 0) {
-	    fR += rows;
-	    while (fR < 0) {
-		fR += rows;
-	    }
-	} else if (fR > rows - 1) {
-	    fR -= rows;
-	    while (fR > rows - 1) {
-		fR -= rows;
-	    }
-	}
-	return fR;
-    }
-
-    private static int normalizeColumn(final int column, final int columns) {
-	int fC = column;
-	if (fC < 0) {
-	    fC += columns;
-	    while (fC < 0) {
-		fC += columns;
-	    }
-	} else if (fC > columns - 1) {
-	    fC -= columns;
-	    while (fC > columns - 1) {
-		fC -= columns;
-	    }
-	}
-	return fC;
-    }
-
-    private static boolean canMoveThere(final int sx, final int sy) {
+    boolean trackPart2(final int nsx, final int nsy, final boolean nMover) {
 	final GameManager gm = LaserTank.getApplication().getGameManager();
-	final PlayerLocationManager plMgr = gm.getPlayerManager();
-	final int px = plMgr.getPlayerLocationX();
-	final int py = plMgr.getPlayerLocationY();
-	final int pz = plMgr.getPlayerLocationZ();
-	final Application app = LaserTank.getApplication();
-	final AbstractArena m = app.getArenaManager().getArena();
-	boolean zproceed = true;
-	AbstractArenaObject zo = null;
-	try {
-	    try {
-		zo = m.getCell(px + sx, py + sy, pz, ArenaConstants.LAYER_LOWER_OBJECTS);
-	    } catch (final ArrayIndexOutOfBoundsException ae) {
-		zo = new Wall();
+	int sx = nsx;
+	int sy = nsy;
+	boolean mover = nMover;
+	if (!this.res && this.laser) {
+	    if (gm.getTank().getSavedObject().isOfType(TypeConstants.TYPE_MOVER)) {
+		final Direction dir = gm.getTank().getSavedObject().getDirection();
+		final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+		sx = unres[0];
+		sy = unres[1];
+		mover = true;
 	    }
-	} catch (final NullPointerException np) {
-	    zproceed = false;
-	    zo = new Wall();
-	}
-	if (zproceed) {
-	    try {
-		if (MovingLaserTracker.checkSolid(zo)) {
-		    return true;
-		}
-	    } catch (final ArrayIndexOutOfBoundsException ae) {
-		// Ignore
+	    if (mover && !MovingLaserTracker.canMoveThere(sx, sy)) {
+		MLOTask.activateAutomaticMovement();
 	    }
+	    this.clearLastLaser();
 	}
-	return false;
-    }
-
-    private static boolean checkSolid(final AbstractArenaObject next) {
-	final GameManager gm = LaserTank.getApplication().getGameManager();
-	// Check cheats
-	if (gm.getCheatStatus(GameManager.CHEAT_GHOSTLY)) {
-	    return true;
-	} else {
-	    final boolean nextSolid = next.isConditionallySolid();
-	    if (nextSolid) {
-		if (next.isOfType(TypeConstants.TYPE_CHARACTER)) {
-		    return true;
-		} else {
-		    return false;
-		}
-	    } else {
-		return true;
-	    }
-	}
+	return mover;
     }
 }

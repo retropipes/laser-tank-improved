@@ -26,6 +26,11 @@ public class MagneticBox extends AbstractMovableObject {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 22;
+    }
+
+    @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
 	final Application app = LaserTank.getApplication();
@@ -51,10 +56,5 @@ public class MagneticBox extends AbstractMovableObject {
     @Override
     public void playSoundHook() {
 	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 22;
     }
 }

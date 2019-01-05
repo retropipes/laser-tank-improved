@@ -26,6 +26,11 @@ public class Barrel extends AbstractReactionWall {
     }
 
     @Override
+    public final int getStringBaseID() {
+	return 3;
+    }
+
+    @Override
     public Direction laserEnteredActionHook(final int locX, final int locY, final int locZ, final int dirX,
 	    final int dirY, final int laserType, final int forceUnits) {
 	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
@@ -49,6 +54,14 @@ public class Barrel extends AbstractReactionWall {
     }
 
     @Override
+    public void pushCollideAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
+	// React to balls hitting barrels
+	if (pushed.isOfType(TypeConstants.TYPE_BALL)) {
+	    this.laserEnteredAction(x, y, z, 0, 0, LaserTypeConstants.LASER_TYPE_GREEN, 1);
+	}
+    }
+
+    @Override
     public boolean rangeActionHook(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int rangeType, final int forceUnits) {
 	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
@@ -64,18 +77,5 @@ public class Barrel extends AbstractReactionWall {
 	// Destroy barrel
 	LaserTank.getApplication().getGameManager().morph(new Empty(), locX + dirX, locY + dirY, locZ, this.getLayer());
 	return true;
-    }
-
-    @Override
-    public void pushCollideAction(final AbstractMovableObject pushed, final int x, final int y, final int z) {
-	// React to balls hitting barrels
-	if (pushed.isOfType(TypeConstants.TYPE_BALL)) {
-	    this.laserEnteredAction(x, y, z, 0, 0, LaserTypeConstants.LASER_TYPE_GREEN, 1);
-	}
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 3;
     }
 }

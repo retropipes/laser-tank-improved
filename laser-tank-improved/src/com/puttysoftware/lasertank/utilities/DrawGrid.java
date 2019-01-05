@@ -1,6 +1,6 @@
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.improved.images.BufferedImageIcon;
+import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.storage.ObjectStorage;
 
 public class DrawGrid extends ObjectStorage {

@@ -38,10 +38,31 @@ public abstract class GenericEditor {
 	this.objectChanged = true;
     }
 
-    // Methods from EditorProperties
-    public final String getEditorSource() {
-	return this.source;
+    protected abstract void borderPaneHook();
+
+    public final boolean create() {
+	if (this.usesImporter()) {
+	    this.newObjectOptions();
+	    return true;
+	} else {
+	    boolean success = true;
+	    if (this.newObjectOptions()) {
+		success = this.newObjectCreate();
+		if (success) {
+		    this.saveObject();
+		    this.objectChanged = true;
+		}
+		return success;
+	    }
+	    return false;
+	}
     }
+
+    public abstract JMenu createEditorCommandsMenu();
+
+    public abstract void disableEditorCommands();
+
+    protected abstract boolean doesObjectExist();
 
     // Methods
     public final void edit() {
@@ -63,35 +84,20 @@ public abstract class GenericEditor {
 	this.redrawEditor();
     }
 
-    public final boolean create() {
-	if (this.usesImporter()) {
-	    this.newObjectOptions();
-	    return true;
-	} else {
-	    boolean success = true;
-	    if (this.newObjectOptions()) {
-		success = this.newObjectCreate();
-		if (success) {
-		    this.saveObject();
-		    this.objectChanged = true;
-		}
-		return success;
-	    }
-	    return false;
-	}
+    protected abstract void editObjectChanged();
+
+    public abstract void enableEditorCommands();
+
+    public final void exitEditor() {
+	// Save changes
+	this.saveObject();
+	// Hide the editor
+	this.hideOutput();
     }
 
-    public final void showOutput() {
-	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	this.outputFrame.setVisible(true);
-	this.outputFrame.pack();
-    }
-
-    public final void hideOutput() {
-	if (this.outputFrame != null) {
-	    this.outputFrame.setVisible(false);
-	}
+    // Methods from EditorProperties
+    public final String getEditorSource() {
+	return this.source;
     }
 
     public final JFrame getOutputFrame() {
@@ -102,54 +108,31 @@ public abstract class GenericEditor {
 	}
     }
 
+    protected abstract WindowListener guiHookWindow();
+
+    public abstract void handleCloseWindow();
+
+    public final void hideOutput() {
+	if (this.outputFrame != null) {
+	    this.outputFrame.setVisible(false);
+	}
+    }
+
     public final boolean isReadOnly() {
 	return this.readOnly;
     }
 
-    public final void exitEditor() {
-	// Save changes
-	this.saveObject();
-	// Hide the editor
-	this.hideOutput();
-    }
-
-    public boolean usesImporter() {
-	return false;
-    }
-
-    public abstract JMenu createEditorCommandsMenu();
-
-    public abstract void enableEditorCommands();
-
-    public abstract void disableEditorCommands();
-
-    public abstract void handleCloseWindow();
-
-    protected abstract boolean doesObjectExist();
-
-    protected abstract boolean newObjectOptions();
+    protected abstract void loadObject();
 
     protected abstract boolean newObjectCreate();
 
-    protected abstract void editObjectChanged();
+    protected abstract boolean newObjectOptions();
 
-    protected abstract void borderPaneHook();
-
-    protected abstract void loadObject();
-
-    protected abstract void saveObject();
-
-    protected abstract void setUpGUIHook(Container output);
+    public abstract void redrawEditor();
 
     protected abstract void reSetUpGUIHook(Container output);
 
-    protected abstract WindowListener guiHookWindow();
-
-    public abstract void switchToSubEditor();
-
-    public abstract void switchFromSubEditor();
-
-    public abstract void redrawEditor();
+    protected abstract void saveObject();
 
     protected void setUpGUI() {
 	// Destroy the old GUI, if one exists
@@ -190,5 +173,22 @@ public abstract class GenericEditor {
 	    }
 	    this.scrollPane.setPreferredSize(new Dimension(pw, ph));
 	}
+    }
+
+    protected abstract void setUpGUIHook(Container output);
+
+    public final void showOutput() {
+	final Application app = LaserTank.getApplication();
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setVisible(true);
+	this.outputFrame.pack();
+    }
+
+    public abstract void switchFromSubEditor();
+
+    public abstract void switchToSubEditor();
+
+    public boolean usesImporter() {
+	return false;
     }
 }

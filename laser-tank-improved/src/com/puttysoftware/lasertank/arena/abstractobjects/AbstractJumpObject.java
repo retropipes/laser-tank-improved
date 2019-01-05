@@ -32,20 +32,39 @@ public abstract class AbstractJumpObject extends AbstractMovableObject {
 	this.type.set(TypeConstants.TYPE_JUMP_OBJECT);
     }
 
-    public int getActualJumpRows() {
-	if (this.flip) {
-	    if (this.dir2X == 0) {
-		return this.jumpCols * this.dir1X;
-	    } else {
-		return this.jumpCols * this.dir2X;
-	    }
-	} else {
-	    if (this.dir2Y == 0) {
-		return this.jumpRows * this.dir1Y;
-	    } else {
-		return this.jumpRows * this.dir2Y;
-	    }
+    @Override
+    public AbstractJumpObject clone() {
+	final AbstractJumpObject copy = (AbstractJumpObject) super.clone();
+	copy.jumpRows = this.jumpRows;
+	copy.jumpCols = this.jumpCols;
+	return copy;
+    }
+
+    @Override
+    public AbstractArenaObject editorPropertiesHook() {
+	LaserTank.getApplication().getEditor().editJumpBox(this);
+	return this;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+	if (this == obj) {
+	    return true;
 	}
+	if (!super.equals(obj)) {
+	    return false;
+	}
+	if (!(obj instanceof AbstractJumpObject)) {
+	    return false;
+	}
+	final AbstractJumpObject other = (AbstractJumpObject) obj;
+	if (this.jumpCols != other.jumpCols) {
+	    return false;
+	}
+	if (this.jumpRows != other.jumpRows) {
+	    return false;
+	}
+	return true;
     }
 
     public int getActualJumpCols() {
@@ -64,20 +83,74 @@ public abstract class AbstractJumpObject extends AbstractMovableObject {
 	}
     }
 
-    public final int getJumpRows() {
-	return this.jumpRows;
+    public int getActualJumpRows() {
+	if (this.flip) {
+	    if (this.dir2X == 0) {
+		return this.jumpCols * this.dir1X;
+	    } else {
+		return this.jumpCols * this.dir2X;
+	    }
+	} else {
+	    if (this.dir2Y == 0) {
+		return this.jumpRows * this.dir1Y;
+	    } else {
+		return this.jumpRows * this.dir2Y;
+	    }
+	}
+    }
+
+    @Override
+    public int getCustomFormat() {
+	return 2;
+    }
+
+    @Override
+    public int getCustomProperty(final int propID) {
+	switch (propID) {
+	case 1:
+	    return this.jumpRows;
+	case 2:
+	    return this.jumpCols;
+	default:
+	    return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
+	}
+    }
+
+    @Override
+    public String getCustomText() {
+	final StringBuilder sb = new StringBuilder();
+	sb.append(this.jumpCols);
+	sb.append(",");
+	sb.append(this.jumpRows);
+	return sb.toString();
     }
 
     public final int getJumpCols() {
 	return this.jumpCols;
     }
 
-    public final void setJumpRows(final int njr) {
-	this.jumpRows = njr;
+    public final int getJumpRows() {
+	return this.jumpRows;
     }
 
-    public final void setJumpCols(final int njc) {
-	this.jumpCols = njc;
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = super.hashCode();
+	result = prime * result + this.jumpCols;
+	return prime * result + this.jumpRows;
+    }
+
+    public final void jumpSound(final boolean success) {
+	if (success) {
+	    if (this.jumpRows == 0 && this.jumpCols == 0) {
+		SoundManager.playSound(SoundConstants.SOUND_LASER_DIE);
+	    } else {
+		SoundManager.playSound(SoundConstants.SOUND_JUMPING);
+	    }
+	} else {
+	    SoundManager.playSound(SoundConstants.SOUND_LASER_DIE);
+	}
     }
 
     @Override
@@ -119,89 +192,8 @@ public abstract class AbstractJumpObject extends AbstractMovableObject {
     }
 
     @Override
-    public AbstractArenaObject editorPropertiesHook() {
-	LaserTank.getApplication().getEditor().editJumpBox(this);
-	return this;
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = super.hashCode();
-	result = prime * result + this.jumpCols;
-	return prime * result + this.jumpRows;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
-	}
-	if (!super.equals(obj)) {
-	    return false;
-	}
-	if (!(obj instanceof AbstractJumpObject)) {
-	    return false;
-	}
-	final AbstractJumpObject other = (AbstractJumpObject) obj;
-	if (this.jumpCols != other.jumpCols) {
-	    return false;
-	}
-	if (this.jumpRows != other.jumpRows) {
-	    return false;
-	}
-	return true;
-    }
-
-    @Override
-    public AbstractJumpObject clone() {
-	final AbstractJumpObject copy = (AbstractJumpObject) super.clone();
-	copy.jumpRows = this.jumpRows;
-	copy.jumpCols = this.jumpCols;
-	return copy;
-    }
-
-    @Override
     public void playSoundHook() {
 	// Do nothing
-    }
-
-    public final void jumpSound(final boolean success) {
-	if (success) {
-	    if (this.jumpRows == 0 && this.jumpCols == 0) {
-		SoundManager.playSound(SoundConstants.SOUND_LASER_DIE);
-	    } else {
-		SoundManager.playSound(SoundConstants.SOUND_JUMPING);
-	    }
-	} else {
-	    SoundManager.playSound(SoundConstants.SOUND_LASER_DIE);
-	}
-    }
-
-    @Override
-    public String getCustomText() {
-	final StringBuilder sb = new StringBuilder();
-	sb.append(this.jumpCols);
-	sb.append(",");
-	sb.append(this.jumpRows);
-	return sb.toString();
-    }
-
-    @Override
-    public int getCustomFormat() {
-	return 2;
-    }
-
-    @Override
-    public int getCustomProperty(final int propID) {
-	switch (propID) {
-	case 1:
-	    return this.jumpRows;
-	case 2:
-	    return this.jumpCols;
-	default:
-	    return AbstractArenaObject.DEFAULT_CUSTOM_VALUE;
-	}
     }
 
     @Override
@@ -216,5 +208,13 @@ public abstract class AbstractJumpObject extends AbstractMovableObject {
 	default:
 	    break;
 	}
+    }
+
+    public final void setJumpCols(final int njc) {
+	this.jumpCols = njc;
+    }
+
+    public final void setJumpRows(final int njr) {
+	this.jumpRows = njr;
     }
 }

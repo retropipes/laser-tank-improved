@@ -22,16 +22,6 @@ public class IcyBox extends AbstractMovableObject {
     }
 
     @Override
-    public void playSoundHook() {
-	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
-    }
-
-    @Override
-    public final int getStringBaseID() {
-	return 21;
-    }
-
-    @Override
     public AbstractArenaObject changesToOnExposure(final int materialID) {
 	switch (materialID) {
 	case MaterialConstants.MATERIAL_FIRE:
@@ -43,5 +33,15 @@ public class IcyBox extends AbstractMovableObject {
 	default:
 	    return this;
 	}
+    }
+
+    @Override
+    public final int getStringBaseID() {
+	return 21;
+    }
+
+    @Override
+    public void playSoundHook() {
+	SoundManager.playSound(SoundConstants.SOUND_PUSH_BOX);
     }
 }

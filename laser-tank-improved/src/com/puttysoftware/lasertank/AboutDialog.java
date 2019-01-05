@@ -26,6 +26,52 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class AboutDialog implements MenuSection {
+    private class EventHandler implements ActionListener {
+	public EventHandler() {
+	    // Do nothing
+	}
+
+	// Handle buttons
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    try {
+		final AboutDialog ad = AboutDialog.this;
+		final String cmd = e.getActionCommand();
+		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		    ad.hideAboutDialog();
+		}
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+    }
+
+    private class MenuHandler implements ActionListener {
+	public MenuHandler() {
+	    // Do nothing
+	}
+
+	// Handle menus
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    try {
+		final Application app = LaserTank.getApplication();
+		final String cmd = e.getActionCommand();
+		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+			StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK))) {
+		    app.getAboutDialog().showAboutDialog();
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+			StringConstants.MENU_STRING_ITEM_LASERTANK_HELP))) {
+		    app.getHelpManager().showHelp();
+		}
+		app.getMenuManager().checkFlags();
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+    }
+
     // Fields
     private JFrame aboutFrame;
     private JMenuItem helpAbout, helpHelp;
@@ -35,13 +81,71 @@ public class AboutDialog implements MenuSection {
 	this.setUpGUI(ver);
     }
 
-    // Methods
-    public void showAboutDialog() {
-	this.aboutFrame.setVisible(true);
+    @Override
+    public void attachAccelerators(final Accelerators accel) {
+	// Do nothing
+    }
+
+    @Override
+    public JMenu createCommandsMenu() {
+	final MenuHandler mhandler = new MenuHandler();
+	final JMenu helpMenu = new JMenu(
+		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_HELP));
+	this.helpAbout = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK));
+	this.helpHelp = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		StringConstants.MENU_STRING_ITEM_LASERTANK_HELP));
+	this.helpAbout.addActionListener(mhandler);
+	this.helpHelp.addActionListener(mhandler);
+	if (!System
+		.getProperty(
+			StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME))
+		.equalsIgnoreCase(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			StringConstants.NOTL_STRING_MAC_OS_X))) {
+	    helpMenu.add(this.helpAbout);
+	}
+	helpMenu.add(this.helpHelp);
+	return helpMenu;
+    }
+
+    @Override
+    public void disableDirtyCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void disableLoadedCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void disableModeCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableDirtyCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableLoadedCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableModeCommands() {
+	// Do nothing
     }
 
     void hideAboutDialog() {
 	this.aboutFrame.setVisible(false);
+    }
+
+    @Override
+    public void setInitialState() {
+	this.helpAbout.setEnabled(true);
+	this.helpHelp.setEnabled(true);
     }
 
     private void setUpGUI(final String ver) {
@@ -97,112 +201,8 @@ public class AboutDialog implements MenuSection {
 	this.aboutFrame.pack();
     }
 
-    private class EventHandler implements ActionListener {
-	public EventHandler() {
-	    // Do nothing
-	}
-
-	// Handle buttons
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final AboutDialog ad = AboutDialog.this;
-		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
-		    ad.hideAboutDialog();
-		}
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-    }
-
-    private class MenuHandler implements ActionListener {
-	public MenuHandler() {
-	    // Do nothing
-	}
-
-	// Handle menus
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final Application app = LaserTank.getApplication();
-		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK))) {
-		    app.getAboutDialog().showAboutDialog();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_LASERTANK_HELP))) {
-		    app.getHelpManager().showHelp();
-		}
-		app.getMenuManager().checkFlags();
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-    }
-
-    @Override
-    public void enableModeCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableModeCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void setInitialState() {
-	this.helpAbout.setEnabled(true);
-	this.helpHelp.setEnabled(true);
-    }
-
-    @Override
-    public JMenu createCommandsMenu() {
-	final MenuHandler mhandler = new MenuHandler();
-	final JMenu helpMenu = new JMenu(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_HELP));
-	this.helpAbout = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK));
-	this.helpHelp = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_LASERTANK_HELP));
-	this.helpAbout.addActionListener(mhandler);
-	this.helpHelp.addActionListener(mhandler);
-	if (!System
-		.getProperty(
-			StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-			StringConstants.NOTL_STRING_MAC_OS_X))) {
-	    helpMenu.add(this.helpAbout);
-	}
-	helpMenu.add(this.helpHelp);
-	return helpMenu;
-    }
-
-    @Override
-    public void attachAccelerators(final Accelerators accel) {
-	// Do nothing
-    }
-
-    @Override
-    public void enableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableDirtyCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableDirtyCommands() {
-	// Do nothing
+    // Methods
+    public void showAboutDialog() {
+	this.aboutFrame.setVisible(true);
     }
 }

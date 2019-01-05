@@ -13,15 +13,15 @@ import com.puttysoftware.lasertank.utilities.ActionConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 
 public class PowerfulTank extends AbstractCharacter {
-    // Constructors
-    public PowerfulTank(final int number) {
-	super(number);
-	this.activateTimer(50);
-    }
-
     public PowerfulTank(final Direction dir, final int number) {
 	super(number);
 	this.setDirection(dir);
+	this.activateTimer(50);
+    }
+
+    // Constructors
+    public PowerfulTank(final int number) {
+	super(number);
 	this.activateTimer(50);
     }
 
@@ -31,13 +31,13 @@ public class PowerfulTank extends AbstractCharacter {
     }
 
     @Override
-    public void timerExpiredAction(final int x, final int y) {
-	SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
-	LaserTank.getApplication().getGameManager().setNormalTank();
+    public final int getStringBaseID() {
+	return 138;
     }
 
     @Override
-    public final int getStringBaseID() {
-	return 138;
+    public void timerExpiredAction(final int x, final int y) {
+	SoundManager.playSound(SoundConstants.SOUND_DISRUPT_END);
+	LaserTank.getApplication().getGameManager().setNormalTank();
     }
 }

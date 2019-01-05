@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import com.puttysoftware.lasertank.improved.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.improved.fileio.ResourceStreamReader;
+import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.fileio.ResourceStreamReader;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -26,28 +26,6 @@ final class CheatManager {
 	this.cheatCount = 0;
 	this.cheatCache = new ArrayList<>();
 	this.loadCheatCache();
-    }
-
-    // Methods
-    private void loadCheatCache() {
-	try (InputStream is = CheatManager.class.getResourceAsStream(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_CHEATS_PATH));
-		ResourceStreamReader rsr = new ResourceStreamReader(is)) {
-	    String line = StringConstants.COMMON_STRING_EMPTY;
-	    while (line != null) {
-		line = rsr.readString();
-		if (line != null) {
-		    this.cheatCache.add(line);
-		    this.cheatCount++;
-		}
-	    }
-	    rsr.close();
-	    is.close();
-	} catch (final IOException e) {
-	    // Ignore
-	} catch (final NullPointerException e) {
-	    // Ignore
-	}
     }
 
     String enterCheat() {
@@ -86,6 +64,28 @@ final class CheatManager {
 
     int getCheatCount() {
 	return this.cheatCount;
+    }
+
+    // Methods
+    private void loadCheatCache() {
+	try (InputStream is = CheatManager.class.getResourceAsStream(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_CHEATS_PATH));
+		ResourceStreamReader rsr = new ResourceStreamReader(is)) {
+	    String line = StringConstants.COMMON_STRING_EMPTY;
+	    while (line != null) {
+		line = rsr.readString();
+		if (line != null) {
+		    this.cheatCache.add(line);
+		    this.cheatCount++;
+		}
+	    }
+	    rsr.close();
+	    is.close();
+	} catch (final IOException e) {
+	    // Ignore
+	} catch (final NullPointerException e) {
+	    // Ignore
+	}
     }
 
     int queryCheatCache(final String query) {
