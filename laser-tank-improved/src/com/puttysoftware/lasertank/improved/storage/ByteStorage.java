@@ -2,9 +2,9 @@ package com.puttysoftware.lasertank.improved.storage;
 
 import java.util.Arrays;
 
-public final class ByteStorage {
+public class ByteStorage {
     // Fields
-    private final byte[] dataStore;
+    protected final byte[] dataStore;
     private final int[] dataShape;
     private final int[] interProd;
 
@@ -32,6 +32,19 @@ public final class ByteStorage {
 	this.dataStore = Arrays.copyOf(source.dataStore, product);
     }
 
+    // Protected copy constructor
+    protected ByteStorage(final byte[] source, final int... shape) {
+	this.dataShape = shape;
+	this.interProd = new int[this.dataShape.length];
+	int product = 1;
+	for (int x = 0; x < this.dataShape.length; x++) {
+	    this.interProd[x] = product;
+	    product *= this.dataShape[x];
+	}
+	this.dataStore = Arrays.copyOf(source, product);
+    }
+
+    // Methods
     @Override
     public boolean equals(final Object obj) {
 	if (this == obj) {
@@ -50,18 +63,26 @@ public final class ByteStorage {
 	return true;
     }
 
-    public void fill(final byte obj) {
+    public final void fill(final byte obj) {
 	for (int x = 0; x < this.dataStore.length; x++) {
 	    this.dataStore[x] = obj;
 	}
     }
 
-    public byte getCell(final int... loc) {
+    public final byte getCell(final int... loc) {
 	final int aloc = this.ravelLocation(loc);
 	return this.dataStore[aloc];
     }
 
-    public int[] getShape() {
+    protected final byte getRawCell(final int rawLoc) {
+	return this.dataStore[rawLoc];
+    }
+
+    protected final int getRawLength() {
+	return this.dataStore.length;
+    }
+
+    public final int[] getShape() {
 	return this.dataShape;
     }
 
@@ -72,8 +93,7 @@ public final class ByteStorage {
 	return prime * result + Arrays.hashCode(this.dataStore);
     }
 
-    // Methods
-    private int ravelLocation(final int... loc) {
+    protected final int ravelLocation(final int... loc) {
 	int res = 0;
 	// Sanity check #1
 	if (loc.length != this.interProd.length) {
@@ -89,8 +109,12 @@ public final class ByteStorage {
 	return res;
     }
 
-    public void setCell(final byte obj, final int... loc) {
+    public final void setCell(final byte obj, final int... loc) {
 	final int aloc = this.ravelLocation(loc);
 	this.dataStore[aloc] = obj;
+    }
+
+    protected final void setRawCell(final byte obj, final int rawLoc) {
+	this.dataStore[rawLoc] = obj;
     }
 }

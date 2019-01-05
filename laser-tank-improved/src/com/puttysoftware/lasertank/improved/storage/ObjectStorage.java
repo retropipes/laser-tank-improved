@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class ObjectStorage {
     // Fields
-    private final Object[] dataStore;
+    protected final Object[] dataStore;
     private final int[] dataShape;
     private final int[] interProd;
 
@@ -32,6 +32,19 @@ public class ObjectStorage {
 	this.dataStore = Arrays.copyOf(source.dataStore, product);
     }
 
+    // Protected copy constructor
+    protected ObjectStorage(final Object[] source, final int... shape) {
+	this.dataShape = shape;
+	this.interProd = new int[this.dataShape.length];
+	int product = 1;
+	for (int x = 0; x < this.dataShape.length; x++) {
+	    this.interProd[x] = product;
+	    product *= this.dataShape[x];
+	}
+	this.dataStore = Arrays.copyOf(source, product);
+    }
+
+    // Methods
     @Override
     public boolean equals(final Object obj) {
 	if (this == obj) {
@@ -50,20 +63,20 @@ public class ObjectStorage {
 	return true;
     }
 
-    public Object getCell(final int... loc) {
+    public final Object getCell(final int... loc) {
 	final int aloc = this.ravelLocation(loc);
 	return this.dataStore[aloc];
     }
 
-    protected Object getRawCell(final int rawLoc) {
+    protected final Object getRawCell(final int rawLoc) {
 	return this.dataStore[rawLoc];
     }
 
-    protected int getRawLength() {
+    protected final int getRawLength() {
 	return this.dataStore.length;
     }
 
-    public int[] getShape() {
+    public final int[] getShape() {
 	return this.dataShape;
     }
 
@@ -75,7 +88,7 @@ public class ObjectStorage {
     }
 
     // Methods
-    private int ravelLocation(final int... loc) {
+    protected final int ravelLocation(final int... loc) {
 	int res = 0;
 	// Sanity check #1
 	if (loc.length != this.interProd.length) {
@@ -91,12 +104,12 @@ public class ObjectStorage {
 	return res;
     }
 
-    public void setCell(final Object obj, final int... loc) {
+    public final void setCell(final Object obj, final int... loc) {
 	final int aloc = this.ravelLocation(loc);
 	this.dataStore[aloc] = obj;
     }
 
-    protected void setRawCell(final Object obj, final int rawLoc) {
+    protected final void setRawCell(final Object obj, final int rawLoc) {
 	this.dataStore[rawLoc] = obj;
     }
 }
