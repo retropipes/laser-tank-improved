@@ -7,7 +7,6 @@ package com.puttysoftware.lasertank.editor;
 
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -58,8 +57,6 @@ import com.puttysoftware.lasertank.utilities.EditorLayoutConstants;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 import com.puttysoftware.lasertank.utilities.RCLGenerator;
 import com.puttysoftware.pickers.PicturePicker;
-import com.puttysoftware.pickers.SXSPicturePicker;
-import com.puttysoftware.pickers.StackedPicturePicker;
 
 public class ArenaEditor implements MenuSection {
     private class EventHandler implements MouseListener, MouseMotionListener, WindowListener {
@@ -418,7 +415,6 @@ public class ArenaEditor implements MenuSection {
 	}
     }
 
-    private static final int STACK_COUNT = 10;
     private static final String[] JUMP_LIST = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     // Declarations
     private JFrame outputFrame;
@@ -431,10 +427,7 @@ public class ArenaEditor implements MenuSection {
     private final EventHandler mhandler;
     private final StartEventHandler shandler;
     private final LevelPreferencesManager lPrefs;
-    private PicturePicker oldPicker;
-    private StackedPicturePicker newPicker11;
-    private SXSPicturePicker newPicker12;
-    private String[] names;
+    private PicturePicker picker;
     private AbstractArenaObject[] objects;
     private BufferedImageIcon[] editorAppearances;
     private boolean[] objectsEnabled;
@@ -456,7 +449,6 @@ public class ArenaEditor implements MenuSection {
 	this.shandler = new StartEventHandler();
 	this.engine = new EditorUndoRedoEngine();
 	final ArenaObjectList objectList = LaserTank.getApplication().getObjects();
-	this.names = objectList.getAllNamesOnLayer(ArenaConstants.LAYER_LOWER_GROUND);
 	this.objects = objectList.getAllObjectsOnLayer(ArenaConstants.LAYER_LOWER_GROUND,
 		PreferencesManager.getEditorShowAllObjects());
 	this.editorAppearances = objectList.getAllEditorAppearancesOnLayer(ArenaConstants.LAYER_LOWER_GROUND,
@@ -919,14 +911,7 @@ public class ArenaEditor implements MenuSection {
 
     void editObject(final int x, final int y) {
 	final Application app = LaserTank.getApplication();
-	int currentObjectIndex = 0;
-	if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_CLASSIC) {
-	    currentObjectIndex = this.oldPicker.getPicked();
-	} else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V11) {
-	    currentObjectIndex = this.newPicker11.getPicked();
-	} else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V12) {
-	    currentObjectIndex = this.newPicker12.getPicked();
-	}
+	int currentObjectIndex = this.picker.getPicked();
 	final int xOffset = this.vertScroll.getValue() - this.vertScroll.getMinimum();
 	final int yOffset = this.horzScroll.getValue() - this.horzScroll.getMinimum();
 	final int gridX = x / ImageManager.getGraphicSize() + EditorViewingWindowManager.getViewingWindowLocationX()
@@ -1439,13 +1424,7 @@ public class ArenaEditor implements MenuSection {
 	    this.borderPane.removeAll();
 	    this.borderPane.add(this.outerOutputPane, BorderLayout.CENTER);
 	    this.borderPane.add(this.messageLabel, BorderLayout.NORTH);
-	    if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_CLASSIC) {
-		this.borderPane.add(this.oldPicker.getPicker(), BorderLayout.EAST);
-	    } else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V11) {
-		this.borderPane.add(this.newPicker11.getPicker(), BorderLayout.EAST);
-	    } else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V12) {
-		this.borderPane.add(this.newPicker12.getPicker(), BorderLayout.EAST);
-	    }
+	    this.borderPane.add(this.picker.getPicker(), BorderLayout.EAST);
 	    this.borderPane.add(this.switcherPane, BorderLayout.SOUTH);
 	    this.outputFrame.pack();
 	}
@@ -1692,89 +1671,28 @@ public class ArenaEditor implements MenuSection {
 	this.redrawEditor();
     }
 
-    private void updateNewPicker11() {
-	final BufferedImageIcon[] newImages = this.editorAppearances;
-	final boolean[] enabled = this.objectsEnabled;
-	if (this.newPicker11 != null) {
-	    this.newPicker11.updatePicker(newImages, enabled);
-	} else {
-	    this.newPicker11 = new StackedPicturePicker(newImages, enabled, new Color(223, 223, 223),
-		    ArenaEditor.STACK_COUNT, ImageManager.getGraphicSize());
-	    this.newPicker11.changePickerColor(new Color(223, 223, 223));
-	}
-    }
-
-    private void updateNewPicker11Layout() {
-	if (this.newPicker11 != null) {
-	    this.newPicker11
-		    .updatePickerLayout(this.outputPane.getLayout().preferredLayoutSize(this.outputPane).height);
-	}
-    }
-
-    private void updateNewPicker12() {
-	final BufferedImageIcon[] newImages = this.editorAppearances;
-	final boolean[] enabled = this.objectsEnabled;
-	if (this.newPicker12 != null) {
-	    this.newPicker12.updatePicker(newImages, enabled);
-	} else {
-	    this.newPicker12 = new SXSPicturePicker(newImages, enabled, new Color(223, 223, 223),
-		    ArenaEditor.STACK_COUNT);
-	    this.newPicker12.changePickerColor(new Color(223, 223, 223));
-	}
-    }
-
-    private void updateNewPicker12Layout() {
-	if (this.newPicker12 != null) {
-	    this.newPicker12
-		    .updatePickerLayout(this.outputPane.getLayout().preferredLayoutSize(this.outputPane).height);
-	}
-    }
-
-    private void updateOldPicker() {
-	final BufferedImageIcon[] newImages = this.editorAppearances;
-	final String[] newNames = this.names;
-	final boolean[] enabled = this.objectsEnabled;
-	if (this.oldPicker != null) {
-	    this.oldPicker.updatePicker(newImages, newNames, enabled);
-	} else {
-	    this.oldPicker = new PicturePicker(newImages, newNames, enabled, new Color(223, 223, 223));
-	    this.oldPicker.changePickerColor(new Color(223, 223, 223));
-	}
-    }
-
-    private void updateOldPickerLayout() {
-	if (this.oldPicker != null) {
-	    this.oldPicker.updatePickerLayout(this.outputPane.getLayout().preferredLayoutSize(this.outputPane).height);
-	}
-    }
-
     private void updatePicker() {
 	if (this.elMgr != null) {
 	    final ArenaObjectList objectList = LaserTank.getApplication().getObjects();
-	    this.names = objectList.getAllNamesOnLayer(this.elMgr.getEditorLocationW());
 	    this.objects = objectList.getAllObjectsOnLayer(this.elMgr.getEditorLocationW(),
 		    PreferencesManager.getEditorShowAllObjects());
 	    this.editorAppearances = objectList.getAllEditorAppearancesOnLayer(this.elMgr.getEditorLocationW(),
 		    PreferencesManager.getEditorShowAllObjects());
 	    this.objectsEnabled = objectList.getObjectEnabledStatuses(this.elMgr.getEditorLocationW());
-	    if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_CLASSIC) {
-		this.updateOldPicker();
-	    } else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V11) {
-		this.updateNewPicker11();
-	    } else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V12) {
-		this.updateNewPicker12();
+	    final BufferedImageIcon[] newImages = this.editorAppearances;
+	    final boolean[] enabled = this.objectsEnabled;
+	    if (this.picker != null) {
+		this.picker.updatePicker(newImages, enabled);
+	    } else {
+		this.picker = new PicturePicker(newImages, enabled);
 	    }
 	    this.updatePickerLayout();
 	}
     }
 
     private void updatePickerLayout() {
-	if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_CLASSIC) {
-	    this.updateOldPickerLayout();
-	} else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V11) {
-	    this.updateNewPicker11Layout();
-	} else if (PreferencesManager.getEditorLayoutID() == EditorLayoutConstants.EDITOR_LAYOUT_MODERN_V12) {
-	    this.updateNewPicker12Layout();
+	if (this.picker != null) {
+	    this.picker.updatePickerLayout(this.outputPane.getLayout().preferredLayoutSize(this.outputPane).height);
 	}
     }
 
