@@ -46,19 +46,32 @@ public class HighScores {
 	ArrayList<Integer> moveTemp = new ArrayList<>();
 	ArrayList<Integer> shotTemp = new ArrayList<>();
 	boolean success = true;
+	int bytesRead = 0;
 	while (success) {
 	    try {
 		// Load name
 		byte[] nameData = new byte[HighScores.NAME_LEN];
-		fs.read(nameData);
+		bytesRead = fs.read(nameData);
+		if (bytesRead < HighScores.NAME_LEN) {
+		    success = false;
+		    break;
+		}
 		String loadName = GameIOUtilities.decodeWindowsStringData(nameData);
 		// Load moves
 		byte[] moveData = new byte[Short.BYTES];
-		fs.read(moveData);
+		bytesRead = fs.read(moveData);
+		if (bytesRead < Short.BYTES) {
+		    success = false;
+		    break;
+		}
 		int moves = ByteBuffer.wrap(moveData).asShortBuffer().get();
 		// Load shots
 		byte[] shotData = new byte[Short.BYTES];
-		fs.read(shotData);
+		bytesRead = fs.read(shotData);
+		if (bytesRead < Short.BYTES) {
+		    success = false;
+		    break;
+		}
 		int shots = ByteBuffer.wrap(shotData).asShortBuffer().get();
 		// Add values to temporary storage
 		nameTemp.add(loadName);
@@ -66,6 +79,7 @@ public class HighScores {
 		shotTemp.add(shots);
 	    } catch (EOFException e) {
 		success = false;
+		break;
 	    }
 	}
 	// Convert temporary storage to the correct format
