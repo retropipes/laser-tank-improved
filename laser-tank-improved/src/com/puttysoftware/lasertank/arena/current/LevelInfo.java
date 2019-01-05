@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.improved.storage.NumberStorage;
+import com.puttysoftware.storage.NumberStorage;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;

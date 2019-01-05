@@ -10,8 +10,8 @@ import java.util.ArrayDeque;
 
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.improved.storage.FlagStorage;
-import com.puttysoftware.lasertank.improved.storage.NumberStorage;
+import com.puttysoftware.storage.FlagStorage;
+import com.puttysoftware.storage.NumberStorage;
 import com.puttysoftware.ltremix.Application;
 import com.puttysoftware.ltremix.LTRemix;
 import com.puttysoftware.ltremix.arena.AbstractArenaData;

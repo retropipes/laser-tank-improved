@@ -29,7 +29,7 @@ import com.puttysoftware.lasertank.arena.objects.Wall;
 import com.puttysoftware.lasertank.game.GameManager;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.improved.storage.FlagStorage;
+import com.puttysoftware.storage.FlagStorage;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;

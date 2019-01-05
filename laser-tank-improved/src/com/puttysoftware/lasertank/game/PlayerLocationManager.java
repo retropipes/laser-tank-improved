@@ -7,7 +7,7 @@ package com.puttysoftware.lasertank.game;
 
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
-import com.puttysoftware.lasertank.improved.storage.NumberStorage;
+import com.puttysoftware.storage.NumberStorage;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 
 public final class PlayerLocationManager {

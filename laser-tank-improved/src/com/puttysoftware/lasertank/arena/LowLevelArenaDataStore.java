@@ -7,7 +7,7 @@ package com.puttysoftware.lasertank.arena;
 
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
 import com.puttysoftware.lasertank.improved.CloneableObject;
-import com.puttysoftware.lasertank.improved.storage.ObjectStorage;
+import com.puttysoftware.storage.ObjectStorage;
 
 public class LowLevelArenaDataStore extends ObjectStorage {
     // Constructor

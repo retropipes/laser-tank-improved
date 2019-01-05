@@ -5,7 +5,7 @@
  */
 package com.puttysoftware.ltremix.game;
 
-import com.puttysoftware.lasertank.improved.storage.NumberStorage;
+import com.puttysoftware.storage.NumberStorage;
 import com.puttysoftware.ltremix.LTRemix;
 import com.puttysoftware.ltremix.arena.AbstractArena;
 import com.puttysoftware.ltremix.arena.current.CurrentArenaData;
