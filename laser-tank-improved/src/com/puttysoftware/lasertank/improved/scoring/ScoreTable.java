@@ -71,6 +71,10 @@ public class ScoreTable {
     public void setEntryScore(final int pos, final long newScore) {
 	this.table.get(pos).setScore(newScore);
     }
+    
+    public void setEntryScore(final int pos, final int which, final long newScore) {
+	this.table.get(pos).setScore(which, newScore);
+    }
 
     public void setEntryName(final int pos, final String newName) {
 	this.table.get(pos).setName(newName);
