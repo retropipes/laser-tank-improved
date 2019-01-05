@@ -9,10 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.puttysoftware.lasertank.improved.IDGenerator;
 import com.puttysoftware.lasertank.improved.fileio.FileUtilities;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.improved.random.RandomLongRange;
 import com.puttysoftware.ltremix.LTRemix;
 import com.puttysoftware.ltremix.arena.AbstractArena;
 import com.puttysoftware.ltremix.arena.AbstractArenaData;
@@ -55,8 +55,7 @@ public class CurrentArena extends AbstractArena {
 	this.suffixHandler = null;
 	this.moveShootAllowed = false;
 	this.eraChangeAllowed = false;
-	final long random = new RandomLongRange(0, Long.MAX_VALUE).generate();
-	final String randomID = Long.toHexString(random);
+	final String randomID = IDGenerator.getRandomIDString(16);
 	this.basePath = System
 		.getProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 			StringConstants.NOTL_STRING_TEMP_DIR))

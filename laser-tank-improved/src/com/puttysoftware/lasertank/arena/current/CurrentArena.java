@@ -20,10 +20,10 @@ import com.puttysoftware.lasertank.arena.abstractobjects.AbstractButton;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractButtonDoor;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractCharacter;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractTunnel;
+import com.puttysoftware.lasertank.improved.IDGenerator;
 import com.puttysoftware.lasertank.improved.fileio.FileUtilities;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.improved.random.RandomLongRange;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
@@ -62,8 +62,7 @@ public class CurrentArena extends AbstractArena {
 	this.moveShootAllowed = false;
 	this.levelInfoData = new ArrayList<>();
 	this.levelInfoList = new ArrayList<>();
-	final long random = new RandomLongRange(0, Long.MAX_VALUE).generate();
-	final String randomID = Long.toHexString(random);
+	final String randomID = IDGenerator.getRandomIDString(16);
 	this.basePath = System
 		.getProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 			StringConstants.NOTL_STRING_TEMP_DIR))
