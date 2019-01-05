@@ -12,7 +12,6 @@ import java.util.BitSet;
 
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.objects.Empty;
-import com.puttysoftware.lasertank.improved.CloneableObject;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
@@ -28,6 +27,7 @@ import com.puttysoftware.lasertank.utilities.LaserTypeConstants;
 import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.RangeTypeConstants;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
+import com.puttysoftware.storage.CloneableObject;
 
 public abstract class AbstractArenaObject extends CloneableObject {
     // Properties

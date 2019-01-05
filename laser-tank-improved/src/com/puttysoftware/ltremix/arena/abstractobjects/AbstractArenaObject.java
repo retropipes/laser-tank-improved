@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.BitSet;
 
-import com.puttysoftware.lasertank.improved.CloneableObject;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileReader;
 import com.puttysoftware.lasertank.improved.fileio.XMLFileWriter;
 import com.puttysoftware.ltremix.LTRemix;
@@ -27,6 +26,7 @@ import com.puttysoftware.ltremix.utilities.LaserTypeConstants;
 import com.puttysoftware.ltremix.utilities.MaterialConstants;
 import com.puttysoftware.ltremix.utilities.RangeTypeConstants;
 import com.puttysoftware.ltremix.utilities.TypeConstants;
+import com.puttysoftware.storage.CloneableObject;
 
 public abstract class AbstractArenaObject extends CloneableObject {
     // Properties
