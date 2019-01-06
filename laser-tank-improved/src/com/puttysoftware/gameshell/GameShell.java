@@ -1,12 +1,9 @@
 package com.puttysoftware.gameshell;
 
-import java.util.HashMap;
-
 import javax.swing.JFrame;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.errors.ErrorLogger;
-import com.puttysoftware.gameshell.screens.ScreenController;
 
 public abstract class GameShell {
     // Fields
@@ -14,7 +11,6 @@ public abstract class GameShell {
     private final ErrorLogger logger;
     private final ExceptionMessageConfiguration errorConfig;
     private final ExceptionMessageConfiguration warningConfig;
-    private final HashMap<Integer, ScreenController> screens;
     protected final JFrame theFrame;
 
     // Constructor
@@ -26,7 +22,6 @@ public abstract class GameShell {
 	this.errorConfig = errorSettings;
 	this.warningConfig = warningSettings;
 	this.logger = new ErrorLogger(this.gameName);
-	this.screens = new HashMap<>();
     }
 
     // Methods
@@ -48,16 +43,8 @@ public abstract class GameShell {
 	this.logger.logNonFatalError(problem);
     }
 
-    public final void registerScreen(final int key, final ScreenController value) {
-	this.screens.put(key, value);
-    }
-
     public final JFrame getMasterFrame() {
 	return this.theFrame;
-    }
-
-    public final ScreenController getScreen(final int key) {
-	return this.screens.get(key);
     }
 
     public abstract MenuManagerShell getMenus();
