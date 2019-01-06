@@ -15,7 +15,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 public class CustomDialogs {
     public static int showDeadDialog() {
 	final Application app = LaserTank.getApplication();
-	return JOptionPane.showOptionDialog(app.getOutputFrame(),
+	return JOptionPane.showOptionDialog(app.getMasterFrame(),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_DEAD_MESSAGE),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_DEAD_TITLE),

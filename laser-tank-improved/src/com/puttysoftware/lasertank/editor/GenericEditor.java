@@ -16,7 +16,6 @@ import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 
@@ -64,8 +63,6 @@ public abstract class GenericEditor {
 
     // Methods
     public final void edit() {
-	final Application app = LaserTank.getApplication();
-	app.getGUIManager().hideGUI();
 	// Create the managers
 	if (this.objectChanged) {
 	    this.loadObject();
@@ -133,12 +130,8 @@ public abstract class GenericEditor {
     protected abstract void saveObject();
 
     protected void setUpGUI() {
-	// Destroy the old GUI, if one exists
-	if (this.outputFrame != null) {
-	    this.outputFrame.dispose();
-	}
 	this.messageLabel = new JLabel(" ");
-	this.outputFrame = new JFrame(this.getEditorSource());
+	this.outputFrame = LaserTank.getApplication().getMasterFrame();
 	this.outputPane = new Container();
 	this.borderPane = new Container();
 	this.borderPane.setLayout(new BorderLayout());
@@ -174,9 +167,6 @@ public abstract class GenericEditor {
     protected abstract void setUpGUIHook(Container output);
 
     public final void showOutput() {
-	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
-	this.outputFrame.setVisible(true);
 	this.outputFrame.pack();
     }
 

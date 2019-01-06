@@ -188,7 +188,7 @@ public class ArenaManager {
 	int status = 0;
 	boolean saved = true;
 	String filename, extension, file, dir;
-	final FileDialog fd = new FileDialog(app.getOutputFrame(),
+	final FileDialog fd = new FileDialog(app.getMasterFrame(),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD),
 		FileDialog.LOAD);
 	fd.setDirectory(initialDirectory);
@@ -302,7 +302,7 @@ public class ArenaManager {
 		StringConstants.NOTL_STRING_DOUBLE_BACKSLASH);
 	String extension, file, dir;
 	final String lastSave = PreferencesManager.getLastDirSave();
-	final FileDialog fd = new FileDialog(app.getOutputFrame(),
+	final FileDialog fd = new FileDialog(app.getMasterFrame(),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_SAVE),
 		FileDialog.SAVE);
 	fd.setDirectory(lastSave);
@@ -379,7 +379,7 @@ public class ArenaManager {
     public void setDirty(final boolean newDirty) {
 	final Application app = LaserTank.getApplication();
 	this.isDirty = newDirty;
-	final JFrame frame = app.getOutputFrame();
+	final JFrame frame = app.getMasterFrame();
 	if (frame != null) {
 	    frame.getRootPane().putClientProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 		    StringConstants.NOTL_STRING_WINDOW_MODIFIED), Boolean.valueOf(newDirty));

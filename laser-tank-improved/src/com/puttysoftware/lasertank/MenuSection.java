@@ -20,4 +20,8 @@ public interface MenuSection {
     void enableModeCommands();
 
     void setInitialState();
+    
+    void setUp(boolean force);
+    
+    void tearDown();
 }

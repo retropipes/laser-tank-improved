@@ -5,6 +5,7 @@
  */
 package com.puttysoftware.lasertank;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,6 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.game.GameManager;
-import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
@@ -175,6 +175,7 @@ public final class Application implements MenuSection {
     }
 
     // Fields
+    private final JFrame masterFrame;
     private AboutDialog about;
     private GameManager gameMgr;
     private ArenaManager arenaMgr;
@@ -189,9 +190,20 @@ public final class Application implements MenuSection {
 
     // Constructors
     public Application() {
+	this.masterFrame = new JFrame();
+	this.masterFrame.setResizable(false);
 	this.objects = new ArenaObjectList();
 	this.mode = Application.STATUS_NULL;
 	this.formerMode = Application.STATUS_NULL;
+	// Create Managers
+	this.menuMgr = new MenuManager();
+	this.about = new AboutDialog(Application.getVersionString());
+	this.guiMgr = new GUIManager();
+	this.helpMgr = new HelpManager();
+	this.gameMgr = new GameManager();
+	this.editor = new ArenaEditor();
+	// Cache Logo
+	this.guiMgr.updateLogo();
     }
 
     // Methods
@@ -212,11 +224,11 @@ public final class Application implements MenuSection {
 
     void exitCurrentMode() {
 	if (this.mode == Application.STATUS_GUI) {
-	    this.guiMgr.hideGUI();
+	    this.guiMgr.tearDown();
 	} else if (this.mode == Application.STATUS_GAME) {
-	    this.gameMgr.exitGame();
+	    this.gameMgr.tearDown();
 	} else if (this.mode == Application.STATUS_EDITOR) {
-	    this.editor.exitEditor();
+	    this.editor.tearDown();
 	}
     }
 
@@ -267,61 +279,47 @@ public final class Application implements MenuSection {
 	return this.objects;
     }
 
-    public JFrame getOutputFrame() {
-	try {
-	    if (this.getMode() == Application.STATUS_PREFS) {
-		return PreferencesManager.getPrefFrame();
-	    } else if (this.getMode() == Application.STATUS_GUI) {
-		return this.getGUIManager().getGUIFrame();
-	    } else if (this.getMode() == Application.STATUS_GAME) {
-		return this.getGameManager().getOutputFrame();
-	    } else if (this.getMode() == Application.STATUS_EDITOR) {
-		return this.getEditor().getOutputFrame();
-	    } else {
-		return null;
-	    }
-	} catch (final NullPointerException npe) {
-	    return null;
-	}
+    public JFrame getMasterFrame() {
+	return this.masterFrame;
     }
 
-    void postConstruct() {
-	// Create Managers
-	this.menuMgr = new MenuManager();
-	this.about = new AboutDialog(Application.getVersionString());
-	this.guiMgr = new GUIManager();
-	this.helpMgr = new HelpManager();
-	this.gameMgr = new GameManager();
-	this.editor = new ArenaEditor();
-	// Cache Logo
-	this.guiMgr.updateLogo();
-    }
-
-    public void setInEditor() {
+    public void setInEditor(final Container masterContent) {
+	this.formerMode = this.mode;
 	this.mode = Application.STATUS_EDITOR;
+	this.tearDownFormerMode();
 	this.menuMgr.modeChanged(this.editor);
+	this.masterFrame.setContentPane(masterContent);
     }
 
-    public void setInGame() {
+    public void setInGame(final Container masterContent) {
+	this.formerMode = this.mode;
 	this.mode = Application.STATUS_GAME;
+	this.tearDownFormerMode();
 	this.menuMgr.modeChanged(this.gameMgr);
+	this.masterFrame.setContentPane(masterContent);
     }
 
-    void setInGUI() {
+    void setInGUI(final Container masterContent) {
+	this.formerMode = this.mode;
 	this.mode = Application.STATUS_GUI;
+	this.tearDownFormerMode();
 	this.menuMgr.modeChanged(this.guiMgr);
+	this.masterFrame.setContentPane(masterContent);
     }
 
     public void setInHelp() {
 	this.formerMode = this.mode;
 	this.mode = Application.STATUS_HELP;
+	this.tearDownFormerMode();
 	this.menuMgr.modeChanged(null);
     }
 
-    public void setInPrefs() {
+    public void setInPrefs(final Container masterContent) {
 	this.formerMode = this.mode;
 	this.mode = Application.STATUS_PREFS;
+	this.tearDownFormerMode();
 	this.menuMgr.modeChanged(null);
+	this.masterFrame.setContentPane(masterContent);
     }
 
     public void showMessage(final String msg) {
@@ -329,6 +327,16 @@ public final class Application implements MenuSection {
 	    this.getEditor().setStatusMessage(msg);
 	} else {
 	    CommonDialogs.showDialog(msg);
+	}
+    }
+    
+    private void tearDownFormerMode() {
+	if (this.formerMode == Application.STATUS_GUI) {
+	    this.getGUIManager().tearDown();
+	} else if (this.formerMode == Application.STATUS_GAME) {
+	    this.getGameManager().tearDown();
+	} else if (this.formerMode == Application.STATUS_EDITOR) {
+	    this.getEditor().tearDown();
 	}
     }
 
@@ -347,5 +355,15 @@ public final class Application implements MenuSection {
 	loadFrame.setVisible(true);
 	this.arenaMgr.getArena().generateLevelInfoList();
 	loadFrame.setVisible(false);
+    }
+
+    @Override
+    public void setUp(boolean force) {
+	// Do nothing
+    }
+
+    @Override
+    public void tearDown() {
+	// Do nothing
     }
 }

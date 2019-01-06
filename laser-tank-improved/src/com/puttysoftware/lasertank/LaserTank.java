@@ -63,7 +63,6 @@ public class LaserTank {
 	    }
 	    // Create and initialize application
 	    LaserTank.application = new Application();
-	    LaserTank.application.postConstruct();
 	    // Set Up Common Dialogs
 	    CommonDialogs.setDefaultTitle(LaserTank.PROGRAM_NAME);
 	    // Initialize preferences

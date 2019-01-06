@@ -19,7 +19,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
@@ -90,7 +89,6 @@ class PreferencesGUIManager {
 
     private static final int GRID_LENGTH = 12;
     // Fields
-    private JFrame prefFrame;
     private JCheckBox sounds;
     private JCheckBox music;
     private JCheckBox checkUpdatesStartup;
@@ -100,44 +98,28 @@ class PreferencesGUIManager {
     private JComboBox<String> languageList;
     private JComboBox<String> editorLayoutList;
     private JCheckBox editorShowAllObjects;
+    private final EventHandler handler;
+    private final Container mainPrefPane;
 
     // Constructors
     PreferencesGUIManager() {
+	this.handler = new EventHandler();
+	this.mainPrefPane = new Container();
 	this.setUpGUI();
 	this.setDefaultPrefs();
     }
 
     // Methods
     void activeLanguageChanged() {
-	// Dispose of old GUI
-	if (this.prefFrame != null) {
-	    this.prefFrame.dispose();
-	}
 	this.setUpGUI();
 	PreferencesManager.writePrefs();
 	this.loadPrefs();
     }
 
-    public JFrame getPrefFrame() {
-	if (this.prefFrame != null && this.prefFrame.isVisible()) {
-	    return this.prefFrame;
-	} else {
-	    return null;
-	}
-    }
-
     void hidePrefs() {
-	final Application app = LaserTank.getApplication();
-	this.prefFrame.setVisible(false);
 	PreferencesManager.writePrefs();
-	final int formerMode = app.getFormerMode();
-	if (formerMode == Application.STATUS_GUI) {
-	    app.getGUIManager().showGUI();
-	} else if (formerMode == Application.STATUS_GAME) {
-	    app.getGameManager().showOutput();
-	} else if (formerMode == Application.STATUS_EDITOR) {
-	    app.getEditor().showOutput();
-	}
+	JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
+	masterFrame.removeWindowListener(this.handler);
     }
 
     private void loadPrefs() {
@@ -171,16 +153,15 @@ class PreferencesGUIManager {
     }
 
     private void setUpGUI() {
-	final EventHandler handler = new EventHandler();
-	this.prefFrame = new JFrame(
+	JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
+	masterFrame.setTitle(
 		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_TITLE));
-	final Container mainPrefPane = new Container();
 	final Container buttonPane = new Container();
 	final Container settingsPane = new Container();
 	final JButton prefsOK = new JButton(
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
-	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
+	masterFrame.getRootPane().setDefaultButton(prefsOK);
 	final JButton prefsCancel = new JButton(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
@@ -207,11 +188,8 @@ class PreferencesGUIManager {
 	this.editorLayoutList = new JComboBox<>(EditorLayoutConstants.getEditorLayoutList());
 	this.editorShowAllObjects = new JCheckBox(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
 		StringConstants.PREFS_STRING_SHOW_ALL_OBJECTS), true);
-	this.prefFrame.setContentPane(mainPrefPane);
-	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-	this.prefFrame.addWindowListener(handler);
-	mainPrefPane.setLayout(new BorderLayout());
-	this.prefFrame.setResizable(false);
+	masterFrame.addWindowListener(this.handler);
+	this.mainPrefPane.setLayout(new BorderLayout());
 	settingsPane.setLayout(new GridLayout(PreferencesGUIManager.GRID_LENGTH, 1));
 	settingsPane.add(this.sounds);
 	settingsPane.add(this.music);
@@ -231,24 +209,15 @@ class PreferencesGUIManager {
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(prefsOK);
 	buttonPane.add(prefsCancel);
-	mainPrefPane.add(settingsPane, BorderLayout.CENTER);
-	mainPrefPane.add(buttonPane, BorderLayout.SOUTH);
-	prefsOK.addActionListener(handler);
-	prefsCancel.addActionListener(handler);
-	this.prefFrame.pack();
+	this.mainPrefPane.add(settingsPane, BorderLayout.CENTER);
+	this.mainPrefPane.add(buttonPane, BorderLayout.SOUTH);
+	prefsOK.addActionListener(this.handler);
+	prefsCancel.addActionListener(this.handler);
+	masterFrame.pack();
     }
 
     public void showPrefs() {
 	final Application app = LaserTank.getApplication();
-	app.setInPrefs();
-	this.prefFrame.setVisible(true);
-	final int formerMode = app.getFormerMode();
-	if (formerMode == Application.STATUS_GUI) {
-	    app.getGUIManager().hideGUI();
-	} else if (formerMode == Application.STATUS_GAME) {
-	    app.getGameManager().hideOutput();
-	} else if (formerMode == Application.STATUS_EDITOR) {
-	    app.getEditor().hideOutput();
-	}
+	app.setInPrefs(this.mainPrefPane);
     }
 }

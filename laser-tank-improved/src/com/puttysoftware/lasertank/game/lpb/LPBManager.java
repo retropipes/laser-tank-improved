@@ -66,7 +66,7 @@ public class LPBManager {
 	final Application app = LaserTank.getApplication();
 	String filename, extension, file, dir;
 	final String lastOpen = PreferencesManager.getLastDirOpen();
-	final FileDialog fd = new FileDialog(app.getOutputFrame(),
+	final FileDialog fd = new FileDialog(app.getMasterFrame(),
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_LOAD_PLAYBACK),
 		FileDialog.LOAD);
 	fd.setDirectory(lastOpen);

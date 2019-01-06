@@ -202,4 +202,14 @@ public class AboutDialog implements MenuSection, AboutHandler {
     public void handleAbout(AboutEvent e) {
 	this.aboutFrame.setVisible(true);
     }
+
+    @Override
+    public void setUp(boolean force) {
+	// Do nothing
+    }
+
+    @Override
+    public void tearDown() {
+	// Do nothing
+    }
 }

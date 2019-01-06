@@ -11,8 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.swing.JFrame;
-
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
 import com.puttysoftware.lasertank.arena.objects.Ground;
@@ -81,10 +79,6 @@ public class PreferencesManager {
     public static boolean getMusicEnabled() {
 	return PreferencesManager.storeMgr.getBoolean(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 		StringConstants.NOTL_STRING_PREFS_KEY_ENABLE_MUSIC), true);
-    }
-
-    public static JFrame getPrefFrame() {
-	return PreferencesManager.guiMgr.getPrefFrame();
     }
 
     private static String getPrefsDirectory() {
