@@ -19,8 +19,8 @@ public abstract class ScreenController implements WindowListener {
 
     // Methods
     public final void showScreen() {
+	this.view.setUpView(this.model, new WeakReference<>(this));
 	if (!this.viewReady) {
-	    this.view.setUpView(this.model, new WeakReference<>(this));
 	    this.viewReady = true;
 	}
 	this.view.showScreen();
