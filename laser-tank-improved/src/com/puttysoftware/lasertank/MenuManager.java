@@ -8,17 +8,19 @@ package com.puttysoftware.lasertank;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
-import com.puttysoftware.gameshell.MenuManagerShell;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 
-public class MenuManager extends MenuManagerShell {
+public class MenuManager {
     // Fields
+    private final JMenuBar menuBar;
     private final ArrayList<MenuSection> modeMgrs;
     private Accelerators accel;
 
     // Constructors
     public MenuManager() {
+	this.menuBar = new JMenuBar();
 	this.modeMgrs = new ArrayList<>();
 	if (PreferencesManager.useClassicAccelerators()) {
 	    this.accel = new ClassicAccelerators();
@@ -27,7 +29,6 @@ public class MenuManager extends MenuManagerShell {
 	}
     }
 
-    @Override
     public void updateMenuItemState() {
 	final Application app = LaserTank.getApplication();
 	if (app.getArenaManager().getLoaded()) {
@@ -49,9 +50,12 @@ public class MenuManager extends MenuManagerShell {
 	    }
 	}
     }
+    
+    public final JMenuBar getMenuBar() {
+	return this.menuBar;
+    }
 
     // Methods
-    @Override
     public void populateMenuBar() {
 	for (final MenuSection mgr : this.modeMgrs) {
 	    final JMenu menu = mgr.createCommandsMenu();
