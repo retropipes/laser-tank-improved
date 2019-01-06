@@ -9,7 +9,6 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.errors.ErrorLogger;
 //import com.puttysoftware.lasertank.improved.integration.NativeIntegration;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -63,7 +62,6 @@ public class LaserTank {
 	    LaserTank.application.postConstruct();
 	    // Set Up Common Dialogs
 	    CommonDialogs.setDefaultTitle(LaserTank.PROGRAM_NAME);
-	    CommonDialogs.setIcon(LogoManager.getMicroLogo());
 	    // Initialize preferences
 	    PreferencesManager.readPrefs();
 	    StringLoader.activeLanguageChanged(PreferencesManager.getLanguageID());

@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -47,7 +46,6 @@ import com.puttysoftware.lasertank.arena.objects.Tank;
 import com.puttysoftware.lasertank.game.GameManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
@@ -1560,8 +1558,6 @@ public class ArenaEditor implements MenuSection {
 	this.messageLabel = new JLabel(StringConstants.COMMON_STRING_SPACE);
 	this.outputFrame = new JFrame(
 		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE, StringConstants.EDITOR_STRING_EDITOR));
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.outputFrame.setIconImage(iconlogo);
 	this.outputPane = new EditorDraw();
 	this.secondaryPane = new Container();
 	this.borderPane = new Container();

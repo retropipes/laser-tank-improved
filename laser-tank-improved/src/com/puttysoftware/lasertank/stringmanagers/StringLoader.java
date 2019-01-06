@@ -14,7 +14,7 @@ import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 
 public class StringLoader {
-    private static final String LOAD_PATH = "/com/puttysoftware/lasertank/strings/";
+    private static final String LOAD_PATH = "/assets/locale/";
     private static Class<?> LOAD_CLASS = StringLoader.class;
     private static ArrayList<HashMap<Integer, String>> STRING_CACHE;
     private static ArrayList<HashMap<Integer, String>> LANGUAGE_STRING_CACHE;
@@ -33,6 +33,10 @@ public class StringLoader {
 	LaserTank.getApplication().activeLanguageChanged();
 	PreferencesManager.activeLanguageChanged();
 	ImageManager.activeLanguageChanged();
+    }
+
+    public static String getLanguageName() {
+	return StringLoader.LANGUAGE_NAME;
     }
 
     private static void cacheLanguageStringFile(final int fileID) {

@@ -8,7 +8,6 @@ package com.puttysoftware.lasertank.editor;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
@@ -20,7 +19,6 @@ import javax.swing.WindowConstants;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 
 public abstract class GenericEditor {
     // Fields
@@ -141,8 +139,6 @@ public abstract class GenericEditor {
 	}
 	this.messageLabel = new JLabel(" ");
 	this.outputFrame = new JFrame(this.getEditorSource());
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.outputFrame.setIconImage(iconlogo);
 	this.outputPane = new Container();
 	this.borderPane = new Container();
 	this.borderPane.setLayout(new BorderLayout());

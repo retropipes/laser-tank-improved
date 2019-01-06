@@ -8,7 +8,6 @@ package com.puttysoftware.lasertank.editor;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -26,7 +25,6 @@ import javax.swing.WindowConstants;
 
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
@@ -159,8 +157,6 @@ class LevelPreferencesManager {
 	final EventHandler handler = new EventHandler();
 	this.prefFrame = new JFrame(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
 		StringConstants.EDITOR_STRING_LEVEL_PREFERENCES));
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.prefFrame.setIconImage(iconlogo);
 	mainPrefPane = new Container();
 	contentPane = new Container();
 	buttonPane = new Container();

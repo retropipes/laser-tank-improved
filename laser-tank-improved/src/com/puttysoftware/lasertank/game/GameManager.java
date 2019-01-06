@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -54,7 +53,6 @@ import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.game.lpb.LPBManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
@@ -2129,8 +2127,6 @@ public class GameManager implements MenuSection {
 	this.borderPane.setLayout(new BorderLayout());
 	this.outputFrame = new JFrame(
 		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.outputFrame.setIconImage(iconlogo);
 	this.outerOutputPane = RCLGenerator.generateRowColumnLabels();
 	this.outputPane = new GameDraw();
 	this.outputFrame.setContentPane(this.borderPane);

@@ -18,7 +18,6 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
@@ -40,7 +39,6 @@ public class LoadTask extends Thread {
 		StringConstants.NOTL_STRING_NEW_AG_LOADER_NAME));
 	this.loadFrame = new JFrame(
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOADING));
-	this.loadFrame.setIconImage(LogoManager.getIconLogo());
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	this.loadFrame.getContentPane().add(loadBar);

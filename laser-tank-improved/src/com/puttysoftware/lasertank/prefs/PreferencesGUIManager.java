@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -24,7 +23,6 @@ import javax.swing.WindowConstants;
 
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.EditorLayoutConstants;
@@ -237,8 +235,6 @@ class PreferencesGUIManager {
 	mainPrefPane.add(buttonPane, BorderLayout.SOUTH);
 	prefsOK.addActionListener(handler);
 	prefsCancel.addActionListener(handler);
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.prefFrame.setIconImage(iconlogo);
 	this.prefFrame.pack();
     }
 

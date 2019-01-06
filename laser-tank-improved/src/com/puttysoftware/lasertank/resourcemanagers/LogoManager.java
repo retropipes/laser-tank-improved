@@ -8,7 +8,6 @@ package com.puttysoftware.lasertank.resourcemanagers;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,49 +17,45 @@ import javax.imageio.ImageIO;
 
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.Application;
+import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class LogoManager {
-    private static final String DEFAULT_LOAD_PATH = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-	    StringConstants.NOTL_STRING_GRAPHICS_PATH);
+    private static final String DEFAULT_LOAD_PATH = "/assets/locale/";
     private static Class<?> LOAD_CLASS = LogoManager.class;
     private static Font LOGO_DRAW_FONT = null;
     private static final String LOGO_DRAW_FONT_FALLBACK = "Times-BOLD-12";
-    private static final int LOGO_DRAW_HORZ = 98;
-    private static final int LOGO_DRAW_HORZ_MAX = 8;
-    private static final int LOGO_DRAW_HORZ_PCO = 4;
-    private static final int LOGO_DRAW_VERT = 76;
+    private static final int LOGO_DRAW_HORZ = 196;
+    private static final int LOGO_DRAW_HORZ_MAX = 16;
+    private static final int LOGO_DRAW_HORZ_PCO = 8;
+    private static final int LOGO_DRAW_VERT = 152;
+    private static BufferedImageIcon openingCache, controlCache;
 
-    public static Image getIconLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ICONLOGO),
-		false);
+    public static BufferedImageIcon getOpening() {
+	if (LogoManager.openingCache == null) {
+	    LogoManager.openingCache = LogoManager.getLogo("opening.png", true);
+	}
+	return LogoManager.openingCache;
     }
 
-    public static BufferedImageIcon getLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_LOGO), true);
+    public static BufferedImageIcon getControl() {
+	if (LogoManager.controlCache == null) {
+	    LogoManager.controlCache = LogoManager.getLogo("control.png", false);
+	}
+	return LogoManager.controlCache;
     }
 
-    public static BufferedImageIcon getMicroLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MICROLOGO),
-		false);
+    public static void activeLanguageChanged() {
+	// Invalidate caches
+	LogoManager.openingCache = null;
+	LogoManager.controlCache = null;
     }
 
-    public static BufferedImageIcon getMiniatureLogo() {
-	return LogoCache.getCachedLogo(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MINILOGO),
-		false);
-    }
-
-    static BufferedImageIcon getUncachedLogo(final String name, final boolean drawing) {
+    private static BufferedImageIcon getLogo(final String name, final boolean drawing) {
 	try {
-	    final URL url = LogoManager.LOAD_CLASS.getResource(LogoManager.DEFAULT_LOAD_PATH
-		    + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-			    StringConstants.NOTL_STRING_LOGO_SUBPATH)
-		    + name + StringConstants.COMMON_STRING_NOTL_IMAGE_EXTENSION_PNG);
+	    final URL url = LogoManager.LOAD_CLASS
+		    .getResource(LogoManager.DEFAULT_LOAD_PATH + StringLoader.getLanguageName() + name);
 	    final BufferedImage image = ImageIO.read(url);
 	    if (drawing) {
 		if (LogoManager.LOGO_DRAW_FONT == null) {
@@ -85,10 +80,7 @@ public class LogoManager {
 	    }
 	    return new BufferedImageIcon(image);
 	} catch (final IOException ie) {
-	    return null;
-	} catch (final NullPointerException np) {
-	    return null;
-	} catch (final IllegalArgumentException ia) {
+	    LaserTank.getErrorLogger().logError(ie);
 	    return null;
 	}
     }

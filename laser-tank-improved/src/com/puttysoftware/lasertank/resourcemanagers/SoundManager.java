@@ -13,8 +13,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.sound.SoundFactory;
 
 public class SoundManager {
-    private static final String DEFAULT_LOAD_PATH = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-	    StringConstants.NOTL_STRING_SOUND_PATH);
+    private static final String DEFAULT_LOAD_PATH = "/assets/sounds/";
     private static String LOAD_PATH = SoundManager.DEFAULT_LOAD_PATH;
     private static Class<?> LOAD_CLASS = SoundManager.class;
 

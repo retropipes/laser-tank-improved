@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -20,7 +19,7 @@ public class CustomDialogs {
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_DEAD_MESSAGE),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_DEAD_TITLE),
-		JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, LogoManager.getMicroLogo(),
+		JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		new String[] {
 			StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 				StringConstants.DIALOG_STRING_UNDO_BUTTON),

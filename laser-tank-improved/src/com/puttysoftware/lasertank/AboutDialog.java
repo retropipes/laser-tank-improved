@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,10 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
@@ -152,28 +149,21 @@ public class AboutDialog implements MenuSection {
 	Container aboutPane, textPane, buttonPane, logoPane;
 	JButton aboutOK;
 	EventHandler handler;
-	JLabel miniLabel;
 	handler = new EventHandler();
 	this.aboutFrame = new JFrame(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		StringConstants.DIALOG_STRING_ABOUT) + StringConstants.COMMON_STRING_SPACE
 		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
-	final Image iconlogo = LogoManager.getIconLogo();
-	this.aboutFrame.setIconImage(iconlogo);
 	aboutPane = new Container();
 	textPane = new Container();
 	buttonPane = new Container();
 	logoPane = new Container();
 	aboutOK = new JButton(
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
-	miniLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, LogoManager.getMiniatureLogo(),
-		SwingConstants.LEFT);
-	miniLabel.setLabelFor(null);
 	aboutOK.setDefaultCapable(true);
 	this.aboutFrame.getRootPane().setDefaultButton(aboutOK);
 	this.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	aboutPane.setLayout(new BorderLayout());
 	logoPane.setLayout(new FlowLayout());
-	logoPane.add(miniLabel);
 	textPane.setLayout(new GridLayout(4, 1));
 	textPane.add(new JLabel(
 		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME)

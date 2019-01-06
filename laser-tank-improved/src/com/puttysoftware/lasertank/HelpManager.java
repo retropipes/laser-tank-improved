@@ -7,7 +7,6 @@ package com.puttysoftware.lasertank;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +17,6 @@ import javax.swing.WindowConstants;
 import com.puttysoftware.help.GraphicalHelpViewer;
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
@@ -62,8 +60,6 @@ class HelpManager {
 	    this.helpFrame = new JFrame(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 		    StringConstants.NOTL_STRING_PROGRAM_NAME) + StringConstants.COMMON_STRING_SPACE
 		    + StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_HELP));
-	    final Image iconlogo = LogoManager.getIconLogo();
-	    this.helpFrame.setIconImage(iconlogo);
 	    this.helpFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	    this.helpFrame.setLayout(new BorderLayout());
 	    this.helpFrame.add(this.hv.getHelp(), BorderLayout.CENTER);

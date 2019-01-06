@@ -27,8 +27,7 @@ import com.puttysoftware.lasertank.utilities.TypeConstants;
 public class ImageManager {
     public static final int MAX_WINDOW_SIZE = 700;
     private static final Color TRANSPARENT = new Color(200, 100, 100);
-    private static final String DEFAULT_LOAD_PATH = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-	    StringConstants.NOTL_STRING_GRAPHICS_PATH);
+    private static final String DEFAULT_LOAD_PATH = "/assets/images/";
     private static String LOAD_PATH = ImageManager.DEFAULT_LOAD_PATH;
     private static Class<?> LOAD_CLASS = ImageManager.class;
     private static Font DRAW_FONT = null;
