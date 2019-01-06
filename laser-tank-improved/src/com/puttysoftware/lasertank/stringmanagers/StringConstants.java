@@ -2,7 +2,7 @@ package com.puttysoftware.lasertank.stringmanagers;
 
 public class StringConstants {
     // File Constants
-    static final String STRINGS_EXTENSION = ".properties";
+    static final String STRINGS_EXTENSION = ".strings";
     public static final int DIFFICULTY_STRINGS_FILE = 0;
     public static final int ERROR_STRINGS_FILE = 1;
     public static final int PREFS_STRINGS_FILE = 2;

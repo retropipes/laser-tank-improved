@@ -1,0 +1,16 @@
+0=LaserTank Error
+1=Perhaps a bug is to blame for this error message. Include the debug log with your bug report. Email bug reports to: products@puttysoftware.com Subject: LaserTank Bug Report
+2=Tank location NOT found!
+3=Couldn't create temporary folder!
+4=The code entered is not a valid cheat code!
+5=Playback File Loading Failed!
+6=No Previous Level!
+7=No Solution File Exists!
+8=Graphics File Loading Failed!
+9=Printing Failed!
+10=Unknown arena format version!
+11=Unknown object encountered.
+12=Failed to load image:
+13=, because:
+14=Incorrect Protection Key!
+15=Protection
