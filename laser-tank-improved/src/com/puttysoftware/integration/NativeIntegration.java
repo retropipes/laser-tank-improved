@@ -304,11 +304,15 @@ public class NativeIntegration {
 	}
     }
 
-    public void setDefaultMenuBar(final JMenuBar defaultMenuBar) {
+    public void setDefaultMenuBar(final JMenuBar defaultMenuBar, final JFrame frame) {
 	if (this.supported) {
 	    if (this.desktop.isSupported(Desktop.Action.APP_MENU_BAR)) {
 		this.desktop.setDefaultMenuBar(defaultMenuBar);
+	    } else {
+		frame.setJMenuBar(defaultMenuBar);
 	    }
+	} else {
+	    frame.setJMenuBar(defaultMenuBar);
 	}
     }
 
