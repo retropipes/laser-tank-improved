@@ -338,7 +338,7 @@ public class ArenaEditor implements MenuSection {
 		    editor.editorEraFuture.setSelected(false);
 		    editor.editorEraDistantFuture.setSelected(true);
 		}
-		app.getMenuManager().checkFlags();
+		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
 		LaserTank.getErrorLogger().logError(ex);
 	    }
@@ -510,7 +510,7 @@ public class ArenaEditor implements MenuSection {
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
 	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void changeLayer() {
@@ -1616,7 +1616,7 @@ public class ArenaEditor implements MenuSection {
     public void showOutput() {
 	final Application app = LaserTank.getApplication();
 	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
 	this.outputFrame.setVisible(true);
 	this.outputFrame.pack();
     }

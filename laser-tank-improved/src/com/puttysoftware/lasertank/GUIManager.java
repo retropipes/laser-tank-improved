@@ -186,7 +186,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 			System.exit(0);
 		    }
 		}
-		app.getMenuManager().checkFlags();
+		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
 		LaserTank.getErrorLogger().logError(ex);
 	    }
@@ -240,7 +240,7 @@ public class GUIManager implements MenuSection, QuitHandler {
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
 	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     @Override
@@ -331,7 +331,6 @@ public class GUIManager implements MenuSection, QuitHandler {
 	this.fileNew.setEnabled(false);
 	this.fileOpen.setEnabled(false);
 	this.fileOpenDefault.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableModeCommands();
     }
 
     @Override
@@ -360,7 +359,6 @@ public class GUIManager implements MenuSection, QuitHandler {
 	this.fileNew.setEnabled(true);
 	this.fileOpen.setEnabled(true);
 	this.fileOpenDefault.setEnabled(true);
-	LaserTank.getApplication().getMenuManager().enableModeCommands();
     }
 
     // Methods
@@ -418,7 +416,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
 	this.guiFrame.setVisible(true);
 	this.guiFrame.pack();
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     void updateLogo() {

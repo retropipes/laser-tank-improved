@@ -726,7 +726,7 @@ public class GameManager implements MenuSection {
 		    game.gameEraFuture.setSelected(false);
 		    game.gameEraDistantFuture.setSelected(true);
 		}
-		app.getMenuManager().checkFlags();
+		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
 		LaserTank.getErrorLogger().logError(ex);
 	    }
@@ -948,7 +948,7 @@ public class GameManager implements MenuSection {
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
 	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     void cancelButtonClicked() {
@@ -2192,7 +2192,7 @@ public class GameManager implements MenuSection {
 
     public void showOutput() {
 	final Application app = LaserTank.getApplication();
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
 	GameManager.checkMenus();
 	this.outputFrame.setVisible(true);
 	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());

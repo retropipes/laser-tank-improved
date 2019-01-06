@@ -162,7 +162,7 @@ public class ArenaManager {
 	}
 	this.setDirty(false);
 	LaserTank.getApplication().getEditor().arenaChanged();
-	LaserTank.getApplication().getMenuManager().checkFlags();
+	LaserTank.getApplication().getMenuManager().updateMenuItemState();
     }
 
     public boolean isArenaProtected() {
@@ -384,7 +384,7 @@ public class ArenaManager {
 	    frame.getRootPane().putClientProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 		    StringConstants.NOTL_STRING_WINDOW_MODIFIED), Boolean.valueOf(newDirty));
 	}
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void setLastUsedArena(final String newFile) {
@@ -398,7 +398,7 @@ public class ArenaManager {
     public void setLoaded(final boolean status) {
 	final Application app = LaserTank.getApplication();
 	this.loaded = status;
-	app.getMenuManager().checkFlags();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void setScoresFileName(final String filename) {

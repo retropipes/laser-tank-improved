@@ -64,7 +64,7 @@ public class AboutDialog implements MenuSection, AboutHandler {
 			StringConstants.MENU_STRING_ITEM_LASERTANK_HELP))) {
 		    app.getHelpManager().showHelp();
 		}
-		app.getMenuManager().checkFlags();
+		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
 		LaserTank.getErrorLogger().logError(ex);
 	    }

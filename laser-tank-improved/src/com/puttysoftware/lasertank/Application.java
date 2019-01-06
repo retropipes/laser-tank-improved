@@ -6,8 +6,13 @@
 package com.puttysoftware.lasertank;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
@@ -20,7 +25,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
-public final class Application {
+public final class Application implements MenuSection {
     private static final int VERSION_MAJOR = 1;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
@@ -31,6 +36,112 @@ public final class Application {
     public static final int STATUS_PREFS = 3;
     public static final int STATUS_HELP = 4;
     private static final int STATUS_NULL = 5;
+
+    private class EventHandler implements ActionListener {
+	public EventHandler() {
+	    // Do nothing
+	}
+
+	// Handle menus
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+	    try {
+		final Application app = LaserTank.getApplication();
+		final String cmd = e.getActionCommand();
+		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+			StringConstants.MENU_STRING_ITEM_PLAY))) {
+		    // Play the current arena
+		    final boolean proceed = app.getGameManager().newGame();
+		    if (proceed) {
+			app.exitCurrentMode();
+			app.getGameManager().playArena();
+		    }
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+			StringConstants.MENU_STRING_ITEM_EDIT))) {
+		    // Edit the current arena
+		    app.exitCurrentMode();
+		    app.getEditor().editArena();
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+			StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS))) {
+		    // Toggle accelerators
+		    app.getMenuManager().toggleAccelerators();
+		}
+		app.getMenuManager().updateMenuItemState();
+	    } catch (final Exception ex) {
+		LaserTank.getErrorLogger().logError(ex);
+	    }
+	}
+    }
+
+    @Override
+    public void attachAccelerators(final Accelerators accel) {
+	this.playPlay.setAccelerator(accel.playPlayArenaAccel);
+	this.playEdit.setAccelerator(accel.playEditArenaAccel);
+    }
+
+    @Override
+    public JMenu createCommandsMenu() {
+	final EventHandler mhandler = new EventHandler();
+	final JMenu playMenu = new JMenu(
+		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_PLAY));
+	this.playPlay = new JMenuItem(
+		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_PLAY));
+	this.playEdit = new JMenuItem(
+		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_EDIT));
+	this.playToggleAccelerators = new JCheckBoxMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS));
+	this.playPlay.addActionListener(mhandler);
+	this.playEdit.addActionListener(mhandler);
+	this.playToggleAccelerators.addActionListener(mhandler);
+	playMenu.add(this.playPlay);
+	playMenu.add(this.playEdit);
+	playMenu.add(this.playToggleAccelerators);
+	return playMenu;
+    }
+
+    @Override
+    public void disableDirtyCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void disableLoadedCommands() {
+	this.playPlay.setEnabled(false);
+	this.playEdit.setEnabled(false);
+    }
+
+    @Override
+    public void disableModeCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableDirtyCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void enableLoadedCommands() {
+	final Application app = LaserTank.getApplication();
+	if (app.getArenaManager().getArena().doesPlayerExist(0)) {
+	    this.playPlay.setEnabled(true);
+	} else {
+	    this.playPlay.setEnabled(false);
+	}
+	this.playEdit.setEnabled(true);
+    }
+
+    @Override
+    public void enableModeCommands() {
+	// Do nothing
+    }
+
+    @Override
+    public void setInitialState() {
+	this.playPlay.setEnabled(false);
+	this.playEdit.setEnabled(false);
+	this.playToggleAccelerators.setEnabled(true);
+    }
 
     public static String getLogoVersionString() {
 	if (Application.isBetaModeEnabled()) {
@@ -73,6 +184,8 @@ public final class Application {
     private GUIManager guiMgr;
     private int mode, formerMode;
     private final ArenaObjectList objects;
+    private JMenuItem playPlay, playEdit;
+    private JCheckBoxMenuItem playToggleAccelerators;
 
     // Constructors
     public Application() {
@@ -86,10 +199,11 @@ public final class Application {
 	// Rebuild menus
 	this.menuMgr.unregisterAllModeManagers();
 	this.menuMgr.registerModeManager(this.guiMgr);
-	this.menuMgr.initMenus();
+	this.menuMgr.registerModeManager(this);
 	this.menuMgr.registerModeManager(this.gameMgr);
 	this.menuMgr.registerModeManager(this.editor);
 	this.menuMgr.registerModeManager(this.about);
+	this.menuMgr.populateMenuBar();
 	// Fire hooks
 	this.getHelpManager().activeLanguageChanged();
 	this.getGameManager().activeLanguageChanged();
