@@ -25,7 +25,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
 public final class Application {
-    private static final int VERSION_MAJOR = 1;
+    private static final int VERSION_MAJOR = 0;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
     private static final int VERSION_BETA = 1;
