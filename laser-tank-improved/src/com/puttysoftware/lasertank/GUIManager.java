@@ -7,6 +7,9 @@ package com.puttysoftware.lasertank;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.desktop.QuitEvent;
+import java.awt.desktop.QuitHandler;
+import java.awt.desktop.QuitResponse;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -32,7 +35,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.BoardPrinter;
 import com.puttysoftware.lasertank.utilities.CleanupTask;
 
-public class GUIManager implements MenuSection {
+public class GUIManager implements MenuSection, QuitHandler {
     private class CloseHandler implements WindowListener {
 	public CloseHandler() {
 	    // Do nothing
@@ -422,5 +425,15 @@ public class GUIManager implements MenuSection {
 	final BufferedImageIcon logo = LogoManager.getOpening();
 	this.logoLabel.setIcon(logo);
 	this.guiFrame.pack();
+    }
+
+    @Override
+    public void handleQuitRequestWith(QuitEvent e, QuitResponse response) {
+	boolean okToQuit = this.quitHandler();
+	if (okToQuit) {
+	    response.performQuit();
+	} else {
+	    response.cancelQuit();
+	}
     }
 }

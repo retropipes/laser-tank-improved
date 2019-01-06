@@ -5,9 +5,12 @@
  */
 package com.puttysoftware.lasertank;
 
+import java.awt.desktop.PreferencesEvent;
+import java.awt.desktop.PreferencesHandler;
+
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.errors.ErrorLogger;
-//import com.puttysoftware.lasertank.improved.integration.NativeIntegration;
+import com.puttysoftware.integration.NativeIntegration;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
@@ -45,7 +48,8 @@ public class LaserTank {
     public static void main(final String[] args) {
 	try {
 	    // Integrate with host platform
-	    // NativeIntegration.hookLAF(LaserTank.PROGRAM_NAME);
+	    NativeIntegration ni = new NativeIntegration();
+	    ni.configureLookAndFeel();
 	    try {
 		// Initialize strings
 		LaserTank.initStrings();
@@ -55,7 +59,7 @@ public class LaserTank {
 		// Something has gone horribly wrong
 		CommonDialogs.showErrorDialog("Something has gone horribly wrong trying to load the string data!",
 			"FATAL ERROR");
-		System.exit(1);
+		LaserTank.getErrorLoggerDirectly().logError(re);
 	    }
 	    // Create and initialize application
 	    LaserTank.application = new Application();
@@ -66,20 +70,9 @@ public class LaserTank {
 	    PreferencesManager.readPrefs();
 	    StringLoader.activeLanguageChanged(PreferencesManager.getLanguageID());
 	    // Register platform hooks
-//            NativeIntegration.hookAbout(LaserTank.application.getAboutDialog(),
-//                    LaserTank.application.getAboutDialog().getClass()
-//                            .getDeclaredMethod(StringLoader.loadString(
-//                                    StringConstants.NOTL_STRINGS_FILE,
-//                                    StringConstants.NOTL_STRING_SHOW_ABOUT_DIALOG_METHOD)));
-//            NativeIntegration.hookPreferences(PreferencesManager.class,
-//                    PreferencesManager.class.getDeclaredMethod(StringLoader
-//                            .loadString(StringConstants.NOTL_STRINGS_FILE,
-//                                    StringConstants.NOTL_STRING_SHOW_PREFERENCES_METHOD)));
-//            NativeIntegration.hookQuit(LaserTank.application.getGUIManager(),
-//                    LaserTank.application.getGUIManager().getClass()
-//                            .getDeclaredMethod(StringLoader.loadString(
-//                                    StringConstants.NOTL_STRINGS_FILE,
-//                                    StringConstants.NOTL_STRING_QUIT_HANDLER_METHOD)));
+	    ni.setAboutHandler(LaserTank.application.getAboutDialog());
+	    ni.setPreferencesHandler(new PreferencesInvoker());
+	    ni.setQuitHandler(LaserTank.application.getGUIManager());
 	    // Display GUI
 	    LaserTank.application.getGUIManager().showGUI();
 	} catch (final Throwable t) {
@@ -89,5 +82,16 @@ public class LaserTank {
 
     private LaserTank() {
 	// Do nothing
+    }
+
+    private static class PreferencesInvoker implements PreferencesHandler {
+	public PreferencesInvoker() {
+	    super();
+	}
+
+	@Override
+	public void handlePreferences(PreferencesEvent e) {
+	    PreferencesManager.showPrefs();
+	}
     }
 }

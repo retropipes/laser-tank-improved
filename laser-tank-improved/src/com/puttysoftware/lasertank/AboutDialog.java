@@ -9,6 +9,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.desktop.AboutEvent;
+import java.awt.desktop.AboutHandler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +24,7 @@ import javax.swing.WindowConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
-public class AboutDialog implements MenuSection {
+public class AboutDialog implements MenuSection, AboutHandler {
     private class EventHandler implements ActionListener {
 	public EventHandler() {
 	    // Do nothing
@@ -193,6 +195,11 @@ public class AboutDialog implements MenuSection {
 
     // Methods
     public void showAboutDialog() {
+	this.aboutFrame.setVisible(true);
+    }
+
+    @Override
+    public void handleAbout(AboutEvent e) {
 	this.aboutFrame.setVisible(true);
     }
 }
