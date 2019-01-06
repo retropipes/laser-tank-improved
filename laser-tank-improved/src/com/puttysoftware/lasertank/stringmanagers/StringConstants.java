@@ -429,6 +429,7 @@ public class StringConstants {
     public static final int EDITOR_STRING_CHANGE_LAYER_PROMPT = 41;
     public static final int EDITOR_STRING_ENABLE_MOVE_SHOOT = 42;
     // Common String Constants
+    public static final String COMMON_STRING_LOGO_VERSION_PREFIX = "V";
     public static final String COMMON_STRING_EMPTY = "";
     public static final String COMMON_STRING_SPACE = " ";
     public static final String COMMON_STRING_UNDERSCORE = "_";

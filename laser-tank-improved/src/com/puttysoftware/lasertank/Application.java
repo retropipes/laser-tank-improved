@@ -21,7 +21,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
 public final class Application {
-    private static final int VERSION_MAJOR = 17;
+    private static final int VERSION_MAJOR = 1;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
     private static final int VERSION_BETA = 1;
@@ -34,12 +34,12 @@ public final class Application {
 
     public static String getLogoVersionString() {
 	if (Application.isBetaModeEnabled()) {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+	    return StringConstants.COMMON_STRING_LOGO_VERSION_PREFIX + Application.VERSION_MAJOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
 		    + StringConstants.COMMON_STRING_BETA_SHORT + Application.VERSION_BETA;
 	} else {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
+	    return StringConstants.COMMON_STRING_LOGO_VERSION_PREFIX + Application.VERSION_MAJOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
 	}

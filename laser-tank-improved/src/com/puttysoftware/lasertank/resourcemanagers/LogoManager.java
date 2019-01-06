@@ -25,11 +25,15 @@ public class LogoManager {
     private static final String DEFAULT_LOAD_PATH = "/assets/locale/";
     private static Class<?> LOAD_CLASS = LogoManager.class;
     private static Font LOGO_DRAW_FONT = null;
-    private static final String LOGO_DRAW_FONT_FALLBACK = "Times-BOLD-12";
-    private static final int LOGO_DRAW_HORZ = 196;
-    private static final int LOGO_DRAW_HORZ_MAX = 16;
-    private static final int LOGO_DRAW_HORZ_PCO = 8;
-    private static final int LOGO_DRAW_VERT = 152;
+    private static final String LOGO_DRAW_FONT_FALLBACK = "Times-BOLD-24";
+    private static final int LOGO_FALLBACK_DRAW_HORZ = 196;
+    private static final int LOGO_FALLBACK_DRAW_HORZ_MAX = 16;
+    private static final int LOGO_FALLBACK_DRAW_HORZ_PCO = 8;
+    private static final int LOGO_FALLBACK_DRAW_VERT = 152;
+    private static final int LOGO_DRAW_HORZ = 156;
+    private static final int LOGO_DRAW_HORZ_MAX = 2;
+    private static final int LOGO_DRAW_HORZ_PCO = 2;
+    private static final int LOGO_DRAW_VERT = 146;
     private static BufferedImageIcon openingCache, controlCache;
 
     public static BufferedImageIcon getOpening() {
@@ -57,6 +61,9 @@ public class LogoManager {
 	    final URL url = LogoManager.LOAD_CLASS
 		    .getResource(LogoManager.DEFAULT_LOAD_PATH + StringLoader.getLanguageName() + name);
 	    final BufferedImage image = ImageIO.read(url);
+	    final Graphics2D g2 = image.createGraphics();
+	    g2.setColor(Color.yellow);
+	    final String logoVer = Application.getLogoVersionString();
 	    if (drawing) {
 		if (LogoManager.LOGO_DRAW_FONT == null) {
 		    try (InputStream is = LogoManager.class.getResourceAsStream(StringLoader
@@ -64,19 +71,21 @@ public class LogoManager {
 			    + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
 				    StringConstants.NOTL_STRING_FONT_FILENAME))) {
 			final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
-			LogoManager.LOGO_DRAW_FONT = baseFont.deriveFont((float) 18);
+			LogoManager.LOGO_DRAW_FONT = baseFont.deriveFont((float) 24);
+			g2.setFont(LogoManager.LOGO_DRAW_FONT);
+			g2.drawString(logoVer, LogoManager.LOGO_DRAW_HORZ
+				+ (LogoManager.LOGO_DRAW_HORZ_MAX - logoVer.length()) * LogoManager.LOGO_DRAW_HORZ_PCO,
+				LogoManager.LOGO_DRAW_VERT);
 		    } catch (final Exception ex) {
 			LogoManager.LOGO_DRAW_FONT = Font.decode(LogoManager.LOGO_DRAW_FONT_FALLBACK);
+			g2.setFont(LogoManager.LOGO_DRAW_FONT);
+			g2.drawString(logoVer,
+				LogoManager.LOGO_FALLBACK_DRAW_HORZ
+					+ (LogoManager.LOGO_FALLBACK_DRAW_HORZ_MAX - logoVer.length())
+						* LogoManager.LOGO_FALLBACK_DRAW_HORZ_PCO,
+				LogoManager.LOGO_FALLBACK_DRAW_VERT);
 		    }
 		}
-		final Graphics2D g2 = image.createGraphics();
-		g2.setFont(LogoManager.LOGO_DRAW_FONT);
-		g2.setColor(Color.yellow);
-		final String logoVer = Application.getLogoVersionString();
-		g2.drawString(logoVer,
-			LogoManager.LOGO_DRAW_HORZ
-				+ (LogoManager.LOGO_DRAW_HORZ_MAX - logoVer.length()) * LogoManager.LOGO_DRAW_HORZ_PCO,
-			LogoManager.LOGO_DRAW_VERT);
 	    }
 	    return new BufferedImageIcon(image);
 	} catch (final IOException ie) {
