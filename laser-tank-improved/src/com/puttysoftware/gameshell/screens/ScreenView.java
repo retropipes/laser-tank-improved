@@ -29,6 +29,7 @@ public abstract class ScreenView {
     }
 
     final void setUpView(final ScreenModel model, final WeakReference<ScreenController> controllerRef) {
+	this.theFrame.getRootPane().removeAll();
 	if (model.isCustomUI()) {
 	    this.theFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 	} else {
