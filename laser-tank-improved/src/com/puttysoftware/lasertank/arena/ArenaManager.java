@@ -93,12 +93,11 @@ public class ArenaManager {
     public static int showSaveDialog() {
 	String type, source;
 	final Application app = LaserTank.getApplication();
-	final int mode = app.getMode();
-	if (mode == Application.STATUS_EDITOR) {
+	if (app.isInEditorMode()) {
 	    type = StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		    StringConstants.DIALOG_STRING_PROMPT_SAVE_ARENA);
 	    source = StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE, StringConstants.EDITOR_STRING_EDITOR);
-	} else if (mode == Application.STATUS_GAME) {
+	} else if (app.isInGameMode()) {
 	    type = StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		    StringConstants.DIALOG_STRING_PROMPT_SAVE_GAME);
 	    source = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
@@ -184,11 +183,10 @@ public class ArenaManager {
     }
 
     private boolean loadArenaImpl(final String initialDirectory) {
-	final Application app = LaserTank.getApplication();
 	int status = 0;
 	boolean saved = true;
 	String filename, extension, file, dir;
-	final FileDialog fd = new FileDialog(app.getMasterFrame(),
+	final FileDialog fd = new FileDialog((JFrame) null,
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD),
 		FileDialog.LOAD);
 	fd.setDirectory(initialDirectory);
@@ -242,7 +240,7 @@ public class ArenaManager {
 
     public boolean saveArena(final boolean protect) {
 	final Application app = LaserTank.getApplication();
-	if (app.getMode() == Application.STATUS_GAME) {
+	if (app.isInGameMode()) {
 	    if (this.lastUsedGameFile != null && !this.lastUsedGameFile.equals(StringConstants.COMMON_STRING_EMPTY)) {
 		final String extension = ArenaManager.getExtension(this.lastUsedGameFile);
 		if (extension != null) {
@@ -302,7 +300,7 @@ public class ArenaManager {
 		StringConstants.NOTL_STRING_DOUBLE_BACKSLASH);
 	String extension, file, dir;
 	final String lastSave = PreferencesManager.getLastDirSave();
-	final FileDialog fd = new FileDialog(app.getMasterFrame(),
+	final FileDialog fd = new FileDialog((JFrame) null,
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_SAVE),
 		FileDialog.SAVE);
 	fd.setDirectory(lastSave);
@@ -322,7 +320,7 @@ public class ArenaManager {
 				    StringConstants.DIALOG_STRING_SAVE));
 		} else {
 		    PreferencesManager.setLastDirSave(dir);
-		    if (app.getMode() == Application.STATUS_GAME) {
+		    if (app.isInGameMode()) {
 			if (extension != null) {
 			    if (!extension.equals(Extension.getGameExtension())) {
 				filename = ArenaManager.getNameWithoutExtension(file)
@@ -379,11 +377,7 @@ public class ArenaManager {
     public void setDirty(final boolean newDirty) {
 	final Application app = LaserTank.getApplication();
 	this.isDirty = newDirty;
-	final JFrame frame = app.getMasterFrame();
-	if (frame != null) {
-	    frame.getRootPane().putClientProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		    StringConstants.NOTL_STRING_WINDOW_MODIFIED), Boolean.valueOf(newDirty));
-	}
+	app.updateDirtyWindow(newDirty);
 	app.getMenuManager().updateMenuItemState();
     }
 

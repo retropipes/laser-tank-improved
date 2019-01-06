@@ -62,7 +62,8 @@ public class LaserTank {
 		LaserTank.getErrorLoggerDirectly().logError(re);
 	    }
 	    // Create and initialize application
-	    LaserTank.application = new Application();
+	    LaserTank.application = new Application(ni);
+	    LaserTank.application.init();
 	    // Set Up Common Dialogs
 	    CommonDialogs.setDefaultTitle(LaserTank.PROGRAM_NAME);
 	    // Initialize preferences

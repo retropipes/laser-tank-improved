@@ -16,7 +16,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -85,8 +84,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 
 	@Override
 	public void windowGainedFocus(final WindowEvent e) {
-	    final Application app = LaserTank.getApplication();
-	    app.getMenuManager().updateMenuItemState();
+	    LaserTank.getApplication().getMenuManager().updateMenuItemState();
 	}
 
 	@Override
@@ -122,9 +120,9 @@ public class GUIManager implements MenuSection, QuitHandler {
 		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_CLOSE))) {
 		    // Close the window
-		    if (app.getMode() == Application.STATUS_EDITOR) {
+		    if (app.isInEditorMode()) {
 			app.getEditor().handleCloseWindow();
-		    } else if (app.getMode() == Application.STATUS_GAME) {
+		    } else if (app.isInGameMode()) {
 			boolean saved = true;
 			int status = 0;
 			if (app.getArenaManager().getDirty()) {
@@ -172,7 +170,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 		    PreferencesManager.showPrefs();
 		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD))) {
-		    BoardPrinter.printBoard(app.getMasterFrame());
+		    BoardPrinter.printBoard(app.getMasterContent());
 		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_EXIT))) {
 		    // Exit program
@@ -203,7 +201,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 
     // Constructors
     public GUIManager() {
-	this.setUp(false);
+	this.setUpGUI();
     }
 
     @Override
@@ -298,7 +296,6 @@ public class GUIManager implements MenuSection, QuitHandler {
     @Override
     public void disableDirtyCommands() {
 	this.fileSave.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableDirtyCommands();
     }
 
     @Override
@@ -306,7 +303,6 @@ public class GUIManager implements MenuSection, QuitHandler {
 	this.fileClose.setEnabled(false);
 	this.fileSaveAs.setEnabled(false);
 	this.fileSaveAsProtected.setEnabled(false);
-	LaserTank.getApplication().getMenuManager().disableLoadedCommands();
     }
 
     @Override
@@ -319,13 +315,12 @@ public class GUIManager implements MenuSection, QuitHandler {
     @Override
     public void enableDirtyCommands() {
 	this.fileSave.setEnabled(true);
-	LaserTank.getApplication().getMenuManager().enableDirtyCommands();
     }
 
     @Override
     public void enableLoadedCommands() {
 	final Application app = LaserTank.getApplication();
-	if (app.getMode() == Application.STATUS_GUI) {
+	if (app.isInGUIMode()) {
 	    this.fileClose.setEnabled(false);
 	    this.fileSaveAs.setEnabled(false);
 	    this.fileSaveAsProtected.setEnabled(false);
@@ -334,7 +329,6 @@ public class GUIManager implements MenuSection, QuitHandler {
 	    this.fileSaveAs.setEnabled(true);
 	    this.fileSaveAsProtected.setEnabled(true);
 	}
-	LaserTank.getApplication().getMenuManager().enableLoadedCommands();
     }
 
     @Override
@@ -381,17 +375,26 @@ public class GUIManager implements MenuSection, QuitHandler {
 	this.fileExit.setEnabled(true);
     }
 
+    private void setUpGUI() {
+	this.guiPane.setLayout(new GridLayout(1, 1));
+	this.logoLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, null, SwingConstants.CENTER);
+	this.logoLabel.setLabelFor(null);
+	this.logoLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
+	final BufferedImageIcon logo = LogoManager.getOpening();
+	this.logoLabel.setIcon(logo);
+	this.guiPane.add(this.logoLabel);
+    }
+
     public void showGUI() {
 	final Application app = LaserTank.getApplication();
 	app.setInGUI(this.guiPane);
-	app.getMasterFrame().pack();
-	app.getMenuManager().updateMenuItemState();
     }
 
     void updateLogo() {
+	final Application app = LaserTank.getApplication();
 	final BufferedImageIcon logo = LogoManager.getOpening();
 	this.logoLabel.setIcon(logo);
-	LaserTank.getApplication().getMasterFrame().pack();
+	app.pack();
     }
 
     @Override
@@ -405,23 +408,18 @@ public class GUIManager implements MenuSection, QuitHandler {
     }
 
     @Override
-    public void setUp(boolean force) {
-	final JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
-	masterFrame.setTitle(
+    public void setUp() {
+	final Application app = LaserTank.getApplication();
+	app.setTitle(
 		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
-	this.guiPane.setLayout(new GridLayout(1, 1));
-	this.logoLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, null, SwingConstants.CENTER);
-	this.logoLabel.setLabelFor(null);
-	this.logoLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
-	this.guiPane.add(this.logoLabel);
-	masterFrame.addWindowListener(this.cHandler);
-	masterFrame.addWindowFocusListener(this.fHandler);
+	app.addWindowListener(this.cHandler);
+	app.addWindowFocusListener(this.fHandler);
     }
 
     @Override
     public void tearDown() {
-	final JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
-	masterFrame.removeWindowListener(this.cHandler);
-	masterFrame.removeWindowFocusListener(this.fHandler);
+	final Application app = LaserTank.getApplication();
+	app.removeWindowListener(this.cHandler);
+	app.removeWindowFocusListener(this.fHandler);
     }
 }

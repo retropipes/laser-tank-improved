@@ -602,7 +602,7 @@ public class GameManager implements MenuSection {
 
 	@Override
 	public void windowGainedFocus(final WindowEvent e) {
-	    LaserTank.getApplication().getMenuManager().updateMenuItemState();
+	    GameManager.checkMenus();
 	}
 
 	@Override
@@ -772,6 +772,8 @@ public class GameManager implements MenuSection {
     }
 
     private static void checkMenus() {
+	final Application app = LaserTank.getApplication();
+	app.getMenuManager().updateMenuItemState();
 	final ArenaEditor edit = LaserTank.getApplication().getEditor();
 	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
 	if (a.tryUndo()) {
@@ -871,17 +873,15 @@ public class GameManager implements MenuSection {
 	    gameLoadLevel, gameShowHint, gameCheats, gameChangeOtherAmmoMode, gameChangeOtherToolMode,
 	    gameChangeOtherRangeMode;
     private JCheckBoxMenuItem gameRecordSolution;
-    private final EventHandler handler;
-    private final FocusHandler fHandler;
+    private final EventHandler handler = new EventHandler();
+    private final FocusHandler fHandler = new FocusHandler();
 
     // Constructors
     public GameManager() {
-	this.handler = new EventHandler();
-	this.fHandler = new FocusHandler();
 	this.plMgr = new PlayerLocationManager();
 	this.cMgr = new CheatManager();
 	this.st = new ScoreTracker();
-	this.setUp(false);
+	this.setUpGUI();
 	this.savedGameFlag = false;
 	this.delayedDecayActive = false;
 	this.delayedDecayObject = null;
@@ -1604,11 +1604,11 @@ public class GameManager implements MenuSection {
 		this.borderPane.add(this.outerOutputPane, BorderLayout.CENTER);
 		this.borderPane.add(this.scorePane, BorderLayout.NORTH);
 		this.borderPane.add(this.infoPane, BorderLayout.SOUTH);
-		app.getMenuManager().updateMenuItemState();
+		GameManager.checkMenus();
 		app.getArenaManager().getArena().setDirtyFlags(this.plMgr.getPlayerLocationZ());
 		this.redrawArena();
 		this.updateScoreText();
-		app.getMasterFrame().pack();
+		app.pack();
 		this.replaying = false;
 		// Start animator, if enabled
 		if (PreferencesManager.enableAnimation()) {
@@ -2074,8 +2074,8 @@ public class GameManager implements MenuSection {
     private void setUpDifficultyDialog() {
 	// Set up Difficulty Dialog
 	final DifficultyEventHandler dhandler = new DifficultyEventHandler();
-	this.difficultyFrame = new JDialog(LaserTank.getApplication().getMasterFrame(), StringLoader
-		.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_SELECT_DIFFICULTY));
+	this.difficultyFrame = new JDialog((JFrame) null, StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
+		StringConstants.GAME_STRING_SELECT_DIFFICULTY));
 	final Container difficultyPane = new Container();
 	final Container listPane = new Container();
 	final Container buttonPane = new Container();
@@ -2103,6 +2103,64 @@ public class GameManager implements MenuSection {
 	cancelButton.addActionListener(dhandler);
 	this.difficultyFrame.setContentPane(difficultyPane);
 	this.difficultyFrame.pack();
+    }
+
+    private void setUpGUI() {
+	this.borderPane = new Container();
+	this.borderPane.setLayout(new BorderLayout());
+	this.outerOutputPane = RCLGenerator.generateRowColumnLabels();
+	this.outputPane = new GameDraw();
+	this.outputPane.setLayout(new GridLayout(GameViewingWindowManager.getViewingWindowSizeX(),
+		GameViewingWindowManager.getViewingWindowSizeY()));
+	this.outputPane.addMouseListener(this.handler);
+	this.scoreMoves = new JLabel(
+		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_MOVES)
+			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+			+ StringConstants.COMMON_STRING_ZERO);
+	this.scoreShots = new JLabel(
+		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_SHOTS)
+			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+			+ StringConstants.COMMON_STRING_ZERO);
+	this.scoreOthers = new JLabel(
+		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_OTHERS)
+			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+			+ StringConstants.COMMON_STRING_ZERO);
+	this.otherAmmoLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
+		+ StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_MISSILES)
+		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+	this.otherToolsLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
+		+ StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_BOOSTS)
+		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+	this.otherRangesLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
+		+ StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_BOMBS)
+		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
+		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+	this.scorePane = new Container();
+	this.scorePane.setLayout(new FlowLayout());
+	this.scorePane.add(this.scoreMoves);
+	this.scorePane.add(this.scoreShots);
+	this.scorePane.add(this.scoreOthers);
+	this.scorePane.add(this.otherAmmoLeft);
+	this.scorePane.add(this.otherToolsLeft);
+	this.scorePane.add(this.otherRangesLeft);
+	this.levelInfo = new JLabel(StringConstants.COMMON_STRING_SPACE);
+	this.infoPane = new Container();
+	this.infoPane.setLayout(new FlowLayout());
+	this.infoPane.add(this.levelInfo);
+	this.scoreMoves.setLabelFor(this.outputPane);
+	this.scoreShots.setLabelFor(this.outputPane);
+	this.scoreOthers.setLabelFor(this.outputPane);
+	this.otherAmmoLeft.setLabelFor(this.outputPane);
+	this.otherToolsLeft.setLabelFor(this.outputPane);
+	this.otherRangesLeft.setLabelFor(this.outputPane);
+	this.levelInfo.setLabelFor(this.outputPane);
+	this.outerOutputPane.add(this.outputPane, BorderLayout.CENTER);
+	this.borderPane.add(this.outerOutputPane, BorderLayout.CENTER);
+	this.borderPane.add(this.scorePane, BorderLayout.NORTH);
+	this.borderPane.add(this.infoPane, BorderLayout.SOUTH);
+	this.setUpDifficultyDialog();
     }
 
     public void showScoreTable() {
@@ -2654,79 +2712,20 @@ public class GameManager implements MenuSection {
     }
 
     @Override
-    public void setUp(boolean force) {
+    public void setUp() {
 	Application app = LaserTank.getApplication();
-	JFrame masterFrame = app.getMasterFrame();
-	if (force || this.borderPane == null) {
-	    this.borderPane = new Container();
-	    this.borderPane.setLayout(new BorderLayout());
-	    masterFrame.setTitle(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-		    StringConstants.NOTL_STRING_PROGRAM_NAME));
-	    this.outerOutputPane = RCLGenerator.generateRowColumnLabels();
-	    this.outputPane = new GameDraw();
-	    this.outputPane.setLayout(new GridLayout(GameViewingWindowManager.getViewingWindowSizeX(),
-		    GameViewingWindowManager.getViewingWindowSizeY()));
-	    this.outputPane.addMouseListener(this.handler);
-	    this.scoreMoves = new JLabel(
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_MOVES)
-			    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			    + StringConstants.COMMON_STRING_ZERO);
-	    this.scoreShots = new JLabel(
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_SHOTS)
-			    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			    + StringConstants.COMMON_STRING_ZERO);
-	    this.scoreOthers = new JLabel(
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_OTHERS)
-			    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			    + StringConstants.COMMON_STRING_ZERO);
-	    this.otherAmmoLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		    + StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_MISSILES)
-		    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		    + StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
-	    this.otherToolsLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		    + StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_BOOSTS)
-		    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		    + StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
-	    this.otherRangesLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		    + StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_BOMBS)
-		    + StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		    + StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
-	    this.scorePane = new Container();
-	    this.scorePane.setLayout(new FlowLayout());
-	    this.scorePane.add(this.scoreMoves);
-	    this.scorePane.add(this.scoreShots);
-	    this.scorePane.add(this.scoreOthers);
-	    this.scorePane.add(this.otherAmmoLeft);
-	    this.scorePane.add(this.otherToolsLeft);
-	    this.scorePane.add(this.otherRangesLeft);
-	    this.levelInfo = new JLabel(StringConstants.COMMON_STRING_SPACE);
-	    this.infoPane = new Container();
-	    this.infoPane.setLayout(new FlowLayout());
-	    this.infoPane.add(this.levelInfo);
-	    this.scoreMoves.setLabelFor(this.outputPane);
-	    this.scoreShots.setLabelFor(this.outputPane);
-	    this.scoreOthers.setLabelFor(this.outputPane);
-	    this.otherAmmoLeft.setLabelFor(this.outputPane);
-	    this.otherToolsLeft.setLabelFor(this.outputPane);
-	    this.otherRangesLeft.setLabelFor(this.outputPane);
-	    this.levelInfo.setLabelFor(this.outputPane);
-	    this.outerOutputPane.add(this.outputPane, BorderLayout.CENTER);
-	    this.borderPane.add(this.outerOutputPane, BorderLayout.CENTER);
-	    this.borderPane.add(this.scorePane, BorderLayout.NORTH);
-	    this.borderPane.add(this.infoPane, BorderLayout.SOUTH);
-	    this.setUpDifficultyDialog();
-	}
-	masterFrame.addKeyListener(this.handler);
-	masterFrame.addWindowListener(this.handler);
-	masterFrame.addWindowFocusListener(this.fHandler);
+	app.setTitle(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
+	app.addKeyListener(this.handler);
+	app.addWindowListener(this.handler);
+	app.addWindowFocusListener(this.fHandler);
     }
 
     @Override
     public void tearDown() {
 	Application app = LaserTank.getApplication();
-	JFrame masterFrame = app.getMasterFrame();
-	masterFrame.removeKeyListener(this.handler);
-	masterFrame.removeWindowListener(this.handler);
-	masterFrame.removeWindowFocusListener(this.fHandler);
+	app.removeKeyListener(this.handler);
+	app.removeWindowListener(this.handler);
+	app.removeWindowFocusListener(this.fHandler);
     }
 }

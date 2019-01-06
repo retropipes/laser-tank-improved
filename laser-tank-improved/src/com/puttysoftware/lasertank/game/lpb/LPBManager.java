@@ -8,10 +8,10 @@ package com.puttysoftware.lasertank.game.lpb;
 import java.awt.FileDialog;
 import java.io.File;
 
+import javax.swing.JFrame;
+
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.FilenameChecker;
-import com.puttysoftware.lasertank.Application;
-import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
@@ -63,10 +63,9 @@ public class LPBManager {
 
     // Methods
     public static void loadLPB() {
-	final Application app = LaserTank.getApplication();
 	String filename, extension, file, dir;
 	final String lastOpen = PreferencesManager.getLastDirOpen();
-	final FileDialog fd = new FileDialog(app.getMasterFrame(),
+	final FileDialog fd = new FileDialog((JFrame) null,
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_LOAD_PLAYBACK),
 		FileDialog.LOAD);
 	fd.setDirectory(lastOpen);

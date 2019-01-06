@@ -24,16 +24,14 @@ import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.swing.JFrame;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class BoardPrinter {
-    public static void printBoard(final JFrame j) {
+    public static void printBoard(final Container c) {
 	try {
-	    final Container c = j.getContentPane();
 	    final Dimension d = c.getPreferredSize();
 	    final BufferedImage bi = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 	    c.paintComponents(bi.createGraphics());

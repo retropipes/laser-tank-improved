@@ -204,7 +204,7 @@ public class AboutDialog implements MenuSection, AboutHandler {
     }
 
     @Override
-    public void setUp(boolean force) {
+    public void setUp() {
 	// Do nothing
     }
 

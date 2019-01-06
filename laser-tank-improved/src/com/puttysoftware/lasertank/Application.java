@@ -7,17 +7,16 @@ package com.puttysoftware.lasertank;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
 import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.integration.NativeIntegration;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.game.GameManager;
@@ -25,123 +24,15 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
-public final class Application implements MenuSection {
+public final class Application {
     private static final int VERSION_MAJOR = 1;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
     private static final int VERSION_BETA = 1;
-    public static final int STATUS_GUI = 0;
-    public static final int STATUS_GAME = 1;
-    public static final int STATUS_EDITOR = 2;
-    public static final int STATUS_PREFS = 3;
-    public static final int STATUS_HELP = 4;
-    private static final int STATUS_NULL = 5;
-
-    private class EventHandler implements ActionListener {
-	public EventHandler() {
-	    // Do nothing
-	}
-
-	// Handle menus
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final Application app = LaserTank.getApplication();
-		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_PLAY))) {
-		    // Play the current arena
-		    final boolean proceed = app.getGameManager().newGame();
-		    if (proceed) {
-			app.exitCurrentMode();
-			app.getGameManager().playArena();
-		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_EDIT))) {
-		    // Edit the current arena
-		    app.exitCurrentMode();
-		    app.getEditor().editArena();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS))) {
-		    // Toggle accelerators
-		    app.getMenuManager().toggleAccelerators();
-		}
-		app.getMenuManager().updateMenuItemState();
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-    }
-
-    @Override
-    public void attachAccelerators(final Accelerators accel) {
-	this.playPlay.setAccelerator(accel.playPlayArenaAccel);
-	this.playEdit.setAccelerator(accel.playEditArenaAccel);
-    }
-
-    @Override
-    public JMenu createCommandsMenu() {
-	final EventHandler mhandler = new EventHandler();
-	final JMenu playMenu = new JMenu(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_PLAY));
-	this.playPlay = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_PLAY));
-	this.playEdit = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_EDIT));
-	this.playToggleAccelerators = new JCheckBoxMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS));
-	this.playPlay.addActionListener(mhandler);
-	this.playEdit.addActionListener(mhandler);
-	this.playToggleAccelerators.addActionListener(mhandler);
-	playMenu.add(this.playPlay);
-	playMenu.add(this.playEdit);
-	playMenu.add(this.playToggleAccelerators);
-	return playMenu;
-    }
-
-    @Override
-    public void disableDirtyCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableLoadedCommands() {
-	this.playPlay.setEnabled(false);
-	this.playEdit.setEnabled(false);
-    }
-
-    @Override
-    public void disableModeCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableDirtyCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableLoadedCommands() {
-	final Application app = LaserTank.getApplication();
-	if (app.getArenaManager().getArena().doesPlayerExist(0)) {
-	    this.playPlay.setEnabled(true);
-	} else {
-	    this.playPlay.setEnabled(false);
-	}
-	this.playEdit.setEnabled(true);
-    }
-
-    @Override
-    public void enableModeCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void setInitialState() {
-	this.playPlay.setEnabled(false);
-	this.playEdit.setEnabled(false);
-	this.playToggleAccelerators.setEnabled(true);
-    }
+    private static final int STATUS_GUI = 0;
+    private static final int STATUS_GAME = 1;
+    private static final int STATUS_EDITOR = 2;
+    private static final int STATUS_NULL = 3;
 
     public static String getLogoVersionString() {
 	if (Application.isBetaModeEnabled()) {
@@ -185,16 +76,19 @@ public final class Application implements MenuSection {
     private GUIManager guiMgr;
     private int mode, formerMode;
     private final ArenaObjectList objects;
-    private JMenuItem playPlay, playEdit;
-    private JCheckBoxMenuItem playToggleAccelerators;
+    private NativeIntegration ni;
 
     // Constructors
-    public Application() {
+    public Application(final NativeIntegration newNI) {
+	this.ni = newNI;
 	this.masterFrame = new JFrame();
 	this.masterFrame.setResizable(false);
 	this.objects = new ArenaObjectList();
 	this.mode = Application.STATUS_NULL;
 	this.formerMode = Application.STATUS_NULL;
+    }
+
+    void init() {
 	// Create Managers
 	this.menuMgr = new MenuManager();
 	this.about = new AboutDialog(Application.getVersionString());
@@ -211,11 +105,12 @@ public final class Application implements MenuSection {
 	// Rebuild menus
 	this.menuMgr.unregisterAllModeManagers();
 	this.menuMgr.registerModeManager(this.guiMgr);
-	this.menuMgr.registerModeManager(this);
+	this.menuMgr.registerModeManager(new PlayManager());
 	this.menuMgr.registerModeManager(this.gameMgr);
 	this.menuMgr.registerModeManager(this.editor);
 	this.menuMgr.registerModeManager(this.about);
 	this.menuMgr.populateMenuBar();
+	this.ni.setDefaultMenuBar(this.menuMgr.getMenuBar(), this.masterFrame);
 	// Fire hooks
 	this.getHelpManager().activeLanguageChanged();
 	this.getGameManager().activeLanguageChanged();
@@ -271,22 +166,27 @@ public final class Application implements MenuSection {
 	return this.menuMgr;
     }
 
-    public int getMode() {
-	return this.mode;
+    public boolean isInGameMode() {
+	return this.mode == Application.STATUS_GAME;
+    }
+
+    public boolean isInEditorMode() {
+	return this.mode == Application.STATUS_EDITOR;
+    }
+
+    public boolean isInGUIMode() {
+	return this.mode == Application.STATUS_GUI;
     }
 
     public ArenaObjectList getObjects() {
 	return this.objects;
     }
 
-    public JFrame getMasterFrame() {
-	return this.masterFrame;
-    }
-
     public void setInEditor(final Container masterContent) {
 	this.formerMode = this.mode;
 	this.mode = Application.STATUS_EDITOR;
 	this.tearDownFormerMode();
+	this.editor.setUp();
 	this.menuMgr.modeChanged(this.editor);
 	this.masterFrame.setContentPane(masterContent);
     }
@@ -295,6 +195,7 @@ public final class Application implements MenuSection {
 	this.formerMode = this.mode;
 	this.mode = Application.STATUS_GAME;
 	this.tearDownFormerMode();
+	this.gameMgr.setUp();
 	this.menuMgr.modeChanged(this.gameMgr);
 	this.masterFrame.setContentPane(masterContent);
     }
@@ -303,23 +204,55 @@ public final class Application implements MenuSection {
 	this.formerMode = this.mode;
 	this.mode = Application.STATUS_GUI;
 	this.tearDownFormerMode();
+	this.guiMgr.setUp();
 	this.menuMgr.modeChanged(this.guiMgr);
 	this.masterFrame.setContentPane(masterContent);
+	if (!this.masterFrame.isVisible()) {
+	    this.masterFrame.setVisible(true);
+	    this.masterFrame.pack();
+	}
     }
 
-    public void setInHelp() {
-	this.formerMode = this.mode;
-	this.mode = Application.STATUS_HELP;
-	this.tearDownFormerMode();
-	this.menuMgr.modeChanged(null);
+    public Container getMasterContent() {
+	return this.masterFrame.getContentPane();
     }
 
-    public void setInPrefs(final Container masterContent) {
-	this.formerMode = this.mode;
-	this.mode = Application.STATUS_PREFS;
-	this.tearDownFormerMode();
-	this.menuMgr.modeChanged(null);
-	this.masterFrame.setContentPane(masterContent);
+    public void setTitle(final String title) {
+	this.masterFrame.setTitle(title);
+    }
+
+    public void updateDirtyWindow(final boolean appDirty) {
+	this.masterFrame.getRootPane().putClientProperty(
+		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_WINDOW_MODIFIED),
+		Boolean.valueOf(appDirty));
+    }
+
+    public void pack() {
+	this.masterFrame.pack();
+    }
+
+    public void addWindowListener(final WindowListener l) {
+	this.masterFrame.addWindowListener(l);
+    }
+
+    public void addWindowFocusListener(final WindowFocusListener l) {
+	this.masterFrame.addWindowFocusListener(l);
+    }
+
+    public void addKeyListener(final KeyListener l) {
+	this.masterFrame.addKeyListener(l);
+    }
+
+    public void removeWindowListener(final WindowListener l) {
+	this.masterFrame.removeWindowListener(l);
+    }
+
+    public void removeWindowFocusListener(final WindowFocusListener l) {
+	this.masterFrame.removeWindowFocusListener(l);
+    }
+
+    public void removeKeyListener(final KeyListener l) {
+	this.masterFrame.removeKeyListener(l);
     }
 
     public void showMessage(final String msg) {
@@ -329,7 +262,7 @@ public final class Application implements MenuSection {
 	    CommonDialogs.showDialog(msg);
 	}
     }
-    
+
     private void tearDownFormerMode() {
 	if (this.formerMode == Application.STATUS_GUI) {
 	    this.getGUIManager().tearDown();
@@ -355,15 +288,5 @@ public final class Application implements MenuSection {
 	loadFrame.setVisible(true);
 	this.arenaMgr.getArena().generateLevelInfoList();
 	loadFrame.setVisible(false);
-    }
-
-    @Override
-    public void setUp(boolean force) {
-	// Do nothing
-    }
-
-    @Override
-    public void tearDown() {
-	// Do nothing
     }
 }

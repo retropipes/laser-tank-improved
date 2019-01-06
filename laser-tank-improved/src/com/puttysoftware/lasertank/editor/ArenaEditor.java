@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -163,7 +162,7 @@ public class ArenaEditor implements MenuSection {
 
 	@Override
 	public void windowGainedFocus(final WindowEvent e) {
-	    ArenaEditor.this.attachMenus();
+	    LaserTank.getApplication().getMenuManager().updateMenuItemState();
 	}
 
 	@Override
@@ -187,18 +186,18 @@ public class ArenaEditor implements MenuSection {
 		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_UNDO))) {
 		    // Undo most recent action
-		    if (app.getMode() == Application.STATUS_EDITOR) {
+		    if (app.isInEditorMode()) {
 			editor.undo();
-		    } else if (app.getMode() == Application.STATUS_GAME) {
+		    } else if (app.isInGameMode()) {
 			app.getGameManager().abortAndWaitForMLOLoop();
 			app.getGameManager().undoLastMove();
 		    }
 		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 			StringConstants.MENU_STRING_ITEM_REDO))) {
 		    // Redo most recent undone action
-		    if (app.getMode() == Application.STATUS_EDITOR) {
+		    if (app.isInEditorMode()) {
 			editor.redo();
-		    } else if (app.getMode() == Application.STATUS_GAME) {
+		    } else if (app.isInGameMode()) {
 			app.getGameManager().abortAndWaitForMLOLoop();
 			app.getGameManager().redoLastMove();
 		    }
@@ -431,13 +430,13 @@ public class ArenaEditor implements MenuSection {
     private EditorLocationManager elMgr;
     private boolean arenaChanged;
     private final int activePlayer;
-    private final FocusHandler fHandler = new FocusHandler();
     private JMenu editorTimeTravelSubMenu;
     JCheckBoxMenuItem editorEraDistantPast, editorEraPast, editorEraPresent, editorEraFuture, editorEraDistantFuture;
     private JMenuItem editorUndo, editorRedo, editorCutLevel, editorCopyLevel, editorPasteLevel,
 	    editorInsertLevelFromClipboard, editorClearHistory, editorGoToLevel, editorUpOneFloor, editorDownOneFloor,
 	    editorUpOneLevel, editorDownOneLevel, editorAddLevel, editorRemoveLevel, editorLevelPreferences,
 	    editorSetStartPoint, editorFillLevel, editorResizeLevel, editorChangeLayer, editorGlobalMoveShoot;
+    private final FocusHandler fHandler = new FocusHandler();
 
     public ArenaEditor() {
 	this.savedArenaObject = new Ground();
@@ -506,12 +505,6 @@ public class ArenaEditor implements MenuSection {
 	this.editorDownOneLevel.setAccelerator(accel.editorDownOneLevelAccel);
     }
 
-    public void attachMenus() {
-	final Application app = LaserTank.getApplication();
-	app.getMasterFrame().setJMenuBar(app.getMenuManager().getMenuBar());
-	app.getMenuManager().updateMenuItemState();
-    }
-
     public void changeLayer() {
 	final String[] list = ArenaConstants.getLayerList();
 	final String choice = CommonDialogs.showInputDialog(
@@ -552,7 +545,7 @@ public class ArenaEditor implements MenuSection {
 
     private void checkMenus() {
 	final Application app = LaserTank.getApplication();
-	if (app.getMode() == Application.STATUS_EDITOR) {
+	if (app.isInEditorMode()) {
 	    final AbstractArena m = app.getArenaManager().getArena();
 	    if (m.getLevels() == AbstractArena.getMinLevels()) {
 		this.disableRemoveLevel();
@@ -861,9 +854,7 @@ public class ArenaEditor implements MenuSection {
     public void editArena() {
 	final Application app = LaserTank.getApplication();
 	if (app.getArenaManager().getLoaded()) {
-	    this.setUp(true);
 	    app.setInEditor(this.borderPane);
-	    app.getMenuManager().updateMenuItemState();
 	    // Reset game state
 	    app.getGameManager().resetGameState();
 	    // Create the managers
@@ -872,6 +863,7 @@ public class ArenaEditor implements MenuSection {
 		this.elMgr.setLimitsFromArena(app.getArenaManager().getArena());
 		this.arenaChanged = false;
 	    }
+	    this.setUpGUI();
 	    this.updatePicker();
 	    this.clearHistory();
 	    this.redrawEditor();
@@ -1259,16 +1251,15 @@ public class ArenaEditor implements MenuSection {
 	} else if (w == ArenaConstants.LAYER_UPPER_OBJECTS) {
 	    this.redrawEditorGroundObjects();
 	}
-	app.getMasterFrame()
-		.setTitle(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-			StringConstants.EDITOR_STRING_EDITOR_TITLE_1)
-			+ (z + 1)
-			+ StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-				StringConstants.EDITOR_STRING_EDITOR_TITLE_2)
-			+ (u + 1) + StringConstants.COMMON_STRING_SPACE_DASH_SPACE
-			+ StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, e));
+	app.pack();
+	app.setTitle(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringConstants.EDITOR_STRING_EDITOR_TITLE_1)
+		+ (z + 1)
+		+ StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+			StringConstants.EDITOR_STRING_EDITOR_TITLE_2)
+		+ (u + 1) + StringConstants.COMMON_STRING_SPACE_DASH_SPACE
+		+ StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, e));
 	this.outputPane.repaint();
-	app.getMasterFrame().pack();
     }
 
     private void redrawEditorBottomGround() {
@@ -1409,7 +1400,7 @@ public class ArenaEditor implements MenuSection {
 	    this.borderPane.add(this.messageLabel, BorderLayout.NORTH);
 	    this.borderPane.add(this.picker.getPicker(), BorderLayout.EAST);
 	    this.borderPane.add(this.switcherPane, BorderLayout.SOUTH);
-	    app.getMasterFrame().pack();
+	    app.pack();
 	}
     }
 
@@ -1534,73 +1525,56 @@ public class ArenaEditor implements MenuSection {
 	this.messageLabel.setText(msg);
     }
 
-    @Override
-    public void setUp(final boolean force) {
-	final Application app = LaserTank.getApplication();
-	final JFrame masterFrame = app.getMasterFrame();
-	if (force || this.borderPane == null) {
-	    this.messageLabel = new JLabel(StringConstants.COMMON_STRING_SPACE);
-	    masterFrame.setTitle(
-		    StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE, StringConstants.EDITOR_STRING_EDITOR));
-	    this.outputPane = new EditorDraw();
-	    this.secondaryPane = new Container();
-	    this.borderPane = new Container();
-	    this.borderPane.setLayout(new BorderLayout());
-	    this.messageLabel.setLabelFor(this.outputPane);
-	    this.outerOutputPane = RCLGenerator.generateRowColumnLabels();
-	    this.outerOutputPane.add(this.outputPane, BorderLayout.CENTER);
-	    this.outputPane.setLayout(new GridLayout(1, 1));
-	    this.secondaryPane.setLayout(new GridLayout(EditorViewingWindowManager.getViewingWindowSizeX(),
-		    EditorViewingWindowManager.getViewingWindowSizeY()));
-	    this.horzScroll = new JScrollBar(Adjustable.HORIZONTAL,
-		    EditorViewingWindowManager.getMinimumViewingWindowLocationY(),
-		    EditorViewingWindowManager.getViewingWindowSizeY(),
-		    EditorViewingWindowManager.getMinimumViewingWindowLocationY(),
-		    EditorViewingWindowManager.getViewingWindowSizeY());
-	    this.vertScroll = new JScrollBar(Adjustable.VERTICAL,
-		    EditorViewingWindowManager.getMinimumViewingWindowLocationX(),
-		    EditorViewingWindowManager.getViewingWindowSizeX(),
-		    EditorViewingWindowManager.getMinimumViewingWindowLocationX(),
-		    EditorViewingWindowManager.getViewingWindowSizeX());
-	    this.outputPane.add(this.secondaryPane);
-	    this.secondaryPane.addMouseListener(this.mhandler);
-	    this.secondaryPane.addMouseMotionListener(this.mhandler);
-	    this.switcherPane = new Container();
-	    final SwitcherHandler switcherHandler = new SwitcherHandler();
-	    final ButtonGroup switcherGroup = new ButtonGroup();
-	    this.lowerGround = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-		    StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER));
-	    this.upperGround = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-		    StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER));
-	    this.lowerObjects = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-		    StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER));
-	    this.upperObjects = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-		    StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER));
-	    this.lowerGround.setSelected(true);
-	    this.lowerGround.addActionListener(switcherHandler);
-	    this.upperGround.addActionListener(switcherHandler);
-	    this.lowerObjects.addActionListener(switcherHandler);
-	    this.upperObjects.addActionListener(switcherHandler);
-	    switcherGroup.add(this.lowerGround);
-	    switcherGroup.add(this.upperGround);
-	    switcherGroup.add(this.lowerObjects);
-	    switcherGroup.add(this.upperObjects);
-	    this.switcherPane.setLayout(new FlowLayout());
-	    this.switcherPane.add(this.lowerGround);
-	    this.switcherPane.add(this.upperGround);
-	    this.switcherPane.add(this.lowerObjects);
-	    this.switcherPane.add(this.upperObjects);
-	}
-	masterFrame.addWindowListener(this.mhandler);
-	masterFrame.addWindowFocusListener(this.fHandler);
-    }
-
-    @Override
-    public void tearDown() {
-	final Application app = LaserTank.getApplication();
-	final JFrame masterFrame = app.getMasterFrame();
-	masterFrame.removeWindowListener(this.mhandler);
-	masterFrame.removeWindowFocusListener(this.fHandler);
+    private void setUpGUI() {
+	this.messageLabel = new JLabel(StringConstants.COMMON_STRING_SPACE);
+	this.outputPane = new EditorDraw();
+	this.secondaryPane = new Container();
+	this.borderPane = new Container();
+	this.borderPane.setLayout(new BorderLayout());
+	this.messageLabel.setLabelFor(this.outputPane);
+	this.outerOutputPane = RCLGenerator.generateRowColumnLabels();
+	this.outerOutputPane.add(this.outputPane, BorderLayout.CENTER);
+	this.outputPane.setLayout(new GridLayout(1, 1));
+	this.secondaryPane.setLayout(new GridLayout(EditorViewingWindowManager.getViewingWindowSizeX(),
+		EditorViewingWindowManager.getViewingWindowSizeY()));
+	this.horzScroll = new JScrollBar(Adjustable.HORIZONTAL,
+		EditorViewingWindowManager.getMinimumViewingWindowLocationY(),
+		EditorViewingWindowManager.getViewingWindowSizeY(),
+		EditorViewingWindowManager.getMinimumViewingWindowLocationY(),
+		EditorViewingWindowManager.getViewingWindowSizeY());
+	this.vertScroll = new JScrollBar(Adjustable.VERTICAL,
+		EditorViewingWindowManager.getMinimumViewingWindowLocationX(),
+		EditorViewingWindowManager.getViewingWindowSizeX(),
+		EditorViewingWindowManager.getMinimumViewingWindowLocationX(),
+		EditorViewingWindowManager.getViewingWindowSizeX());
+	this.outputPane.add(this.secondaryPane);
+	this.secondaryPane.addMouseListener(this.mhandler);
+	this.secondaryPane.addMouseMotionListener(this.mhandler);
+	this.switcherPane = new Container();
+	final SwitcherHandler switcherHandler = new SwitcherHandler();
+	final ButtonGroup switcherGroup = new ButtonGroup();
+	this.lowerGround = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER));
+	this.upperGround = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER));
+	this.lowerObjects = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER));
+	this.upperObjects = new JToggleButton(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER));
+	this.lowerGround.setSelected(true);
+	this.lowerGround.addActionListener(switcherHandler);
+	this.upperGround.addActionListener(switcherHandler);
+	this.lowerObjects.addActionListener(switcherHandler);
+	this.upperObjects.addActionListener(switcherHandler);
+	switcherGroup.add(this.lowerGround);
+	switcherGroup.add(this.upperGround);
+	switcherGroup.add(this.lowerObjects);
+	switcherGroup.add(this.upperObjects);
+	this.switcherPane.setLayout(new FlowLayout());
+	this.switcherPane.add(this.lowerGround);
+	this.switcherPane.add(this.upperGround);
+	this.switcherPane.add(this.lowerObjects);
+	this.switcherPane.add(this.upperObjects);
     }
 
     public void undo() {
@@ -1631,7 +1605,7 @@ public class ArenaEditor implements MenuSection {
 	// Level Change
 	LaserTank.getApplication().getArenaManager().getArena().switchLevel(w);
 	this.fixLimits();
-	this.setUp(true);
+	this.setUpGUI();
 	this.checkMenus();
 	this.redrawEditor();
     }
@@ -1643,7 +1617,7 @@ public class ArenaEditor implements MenuSection {
 	    // Level Change
 	    LaserTank.getApplication().getArenaManager().getArena().switchLevelOffset(w);
 	    this.fixLimits();
-	    this.setUp(true);
+	    this.setUpGUI();
 	}
 	this.checkMenus();
 	this.redrawEditor();
@@ -1682,5 +1656,21 @@ public class ArenaEditor implements MenuSection {
     private void updateUndoHistory(final AbstractArenaObject obj, final int x, final int y, final int z, final int w,
 	    final int u) {
 	this.engine.updateUndoHistory(obj, x, y, z, w, u);
+    }
+
+    @Override
+    public void setUp() {
+	final Application app = LaserTank.getApplication();
+	app.setTitle(
+		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE, StringConstants.EDITOR_STRING_EDITOR));
+	app.addWindowListener(this.mhandler);
+	app.addWindowFocusListener(this.fHandler);
+    }
+
+    @Override
+    public void tearDown() {
+	final Application app = LaserTank.getApplication();
+	app.removeWindowListener(this.mhandler);
+	app.removeWindowFocusListener(this.fHandler);
     }
 }

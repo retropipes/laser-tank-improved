@@ -19,8 +19,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
-import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
@@ -89,6 +89,7 @@ class PreferencesGUIManager {
 
     private static final int GRID_LENGTH = 12;
     // Fields
+    private JFrame prefFrame;
     private JCheckBox sounds;
     private JCheckBox music;
     private JCheckBox checkUpdatesStartup;
@@ -98,28 +99,35 @@ class PreferencesGUIManager {
     private JComboBox<String> languageList;
     private JComboBox<String> editorLayoutList;
     private JCheckBox editorShowAllObjects;
-    private final EventHandler handler;
-    private final Container mainPrefPane;
 
     // Constructors
     PreferencesGUIManager() {
-	this.handler = new EventHandler();
-	this.mainPrefPane = new Container();
 	this.setUpGUI();
 	this.setDefaultPrefs();
     }
 
     // Methods
     void activeLanguageChanged() {
+	// Dispose of old GUI
+	if (this.prefFrame != null) {
+	    this.prefFrame.dispose();
+	}
 	this.setUpGUI();
 	PreferencesManager.writePrefs();
 	this.loadPrefs();
     }
 
+    public JFrame getPrefFrame() {
+	if (this.prefFrame != null && this.prefFrame.isVisible()) {
+	    return this.prefFrame;
+	} else {
+	    return null;
+	}
+    }
+
     void hidePrefs() {
+	this.prefFrame.setVisible(false);
 	PreferencesManager.writePrefs();
-	JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
-	masterFrame.removeWindowListener(this.handler);
     }
 
     private void loadPrefs() {
@@ -153,15 +161,16 @@ class PreferencesGUIManager {
     }
 
     private void setUpGUI() {
-	JFrame masterFrame = LaserTank.getApplication().getMasterFrame();
-	masterFrame.setTitle(
+	final EventHandler handler = new EventHandler();
+	this.prefFrame = new JFrame(
 		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_TITLE));
+	final Container mainPrefPane = new Container();
 	final Container buttonPane = new Container();
 	final Container settingsPane = new Container();
 	final JButton prefsOK = new JButton(
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
-	masterFrame.getRootPane().setDefaultButton(prefsOK);
+	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
 	final JButton prefsCancel = new JButton(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
@@ -188,8 +197,11 @@ class PreferencesGUIManager {
 	this.editorLayoutList = new JComboBox<>(EditorLayoutConstants.getEditorLayoutList());
 	this.editorShowAllObjects = new JCheckBox(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
 		StringConstants.PREFS_STRING_SHOW_ALL_OBJECTS), true);
-	masterFrame.addWindowListener(this.handler);
-	this.mainPrefPane.setLayout(new BorderLayout());
+	this.prefFrame.setContentPane(mainPrefPane);
+	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	this.prefFrame.addWindowListener(handler);
+	mainPrefPane.setLayout(new BorderLayout());
+	this.prefFrame.setResizable(false);
 	settingsPane.setLayout(new GridLayout(PreferencesGUIManager.GRID_LENGTH, 1));
 	settingsPane.add(this.sounds);
 	settingsPane.add(this.music);
@@ -209,15 +221,14 @@ class PreferencesGUIManager {
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(prefsOK);
 	buttonPane.add(prefsCancel);
-	this.mainPrefPane.add(settingsPane, BorderLayout.CENTER);
-	this.mainPrefPane.add(buttonPane, BorderLayout.SOUTH);
-	prefsOK.addActionListener(this.handler);
-	prefsCancel.addActionListener(this.handler);
-	masterFrame.pack();
+	mainPrefPane.add(settingsPane, BorderLayout.CENTER);
+	mainPrefPane.add(buttonPane, BorderLayout.SOUTH);
+	prefsOK.addActionListener(handler);
+	prefsCancel.addActionListener(handler);
+	this.prefFrame.pack();
     }
 
     public void showPrefs() {
-	final Application app = LaserTank.getApplication();
-	app.setInPrefs(this.mainPrefPane);
+	this.prefFrame.setVisible(true);
     }
 }

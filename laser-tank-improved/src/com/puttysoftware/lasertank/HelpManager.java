@@ -74,7 +74,6 @@ class HelpManager {
     // Methods
     void showHelp() {
 	this.initHelp();
-	LaserTank.getApplication().setInHelp();
 	this.helpFrame.setVisible(true);
     }
 }

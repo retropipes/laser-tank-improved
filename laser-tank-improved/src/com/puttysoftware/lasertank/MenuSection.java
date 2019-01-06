@@ -21,7 +21,7 @@ public interface MenuSection {
 
     void setInitialState();
     
-    void setUp(boolean force);
+    void setUp();
     
     void tearDown();
 }

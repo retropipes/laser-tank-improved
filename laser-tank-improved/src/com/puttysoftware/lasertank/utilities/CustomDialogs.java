@@ -7,15 +7,12 @@ package com.puttysoftware.lasertank.utilities;
 
 import javax.swing.JOptionPane;
 
-import com.puttysoftware.lasertank.Application;
-import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class CustomDialogs {
     public static int showDeadDialog() {
-	final Application app = LaserTank.getApplication();
-	return JOptionPane.showOptionDialog(app.getMasterFrame(),
+	return JOptionPane.showOptionDialog(null,
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_DEAD_MESSAGE),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_DEAD_TITLE),
