@@ -1083,6 +1083,8 @@ public class GameManager implements MenuSection {
 	this.gameEraPresent.addActionListener(mhandler);
 	this.gameEraFuture.addActionListener(mhandler);
 	this.gameEraDistantFuture.addActionListener(mhandler);
+	this.gameTimeTravelSubMenu = new JMenu(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		StringConstants.MENU_STRING_SUB_TIME_TRAVEL));
 	this.gameTimeTravelSubMenu.add(this.gameEraDistantPast);
 	this.gameTimeTravelSubMenu.add(this.gameEraPast);
 	this.gameTimeTravelSubMenu.add(this.gameEraPresent);

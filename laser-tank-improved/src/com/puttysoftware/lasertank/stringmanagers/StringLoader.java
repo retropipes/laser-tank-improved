@@ -50,7 +50,7 @@ public class StringLoader {
 		line = rsr.readString();
 		if (line != null) {
 		    // Parse line
-		    final String[] splitLine = line.split(" = ");
+		    final String[] splitLine = line.split("=");
 		    if (StringLoader.LANGUAGE_STRING_CACHE.size() <= fileID
 			    || StringLoader.LANGUAGE_STRING_CACHE.get(fileID) == null) {
 			// Entry for string file doesn't exist, so create it

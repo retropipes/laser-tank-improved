@@ -29,7 +29,7 @@ public class StringConstants {
     private static final String MESSAGE_STRINGS_FILE_NAME = "messages";
     private static final String EDITOR_STRINGS_FILE_NAME = "editor";
     private static final String GAME_STRINGS_FILE_NAME = "game";
-    private static final String ERA_STRINGS_FILE_NAME = "eras";
+    private static final String ERA_STRINGS_FILE_NAME = "time";
     static final String[] STRINGS_FILES = new String[] { StringConstants.DIFFICULTY_STRINGS_FILE_NAME,
 	    StringConstants.ERROR_STRINGS_FILE_NAME, StringConstants.PREFS_STRINGS_FILE_NAME,
 	    StringConstants.GENERIC_STRINGS_FILE_NAME, StringConstants.OBJECT_STRINGS_FILE_NAME,
