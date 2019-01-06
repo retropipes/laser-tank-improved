@@ -8,15 +8,18 @@ import javax.swing.JRootPane;
 
 public abstract class ScreenView {
     // Fields
-    protected final JFrame theFrame;
+    protected JFrame theFrame;
 
     // Constructors
     protected ScreenView() {
 	super();
-	this.theFrame = new JFrame();
     }
 
     // Methods
+    final void setMasterFrame(final JFrame frame) {
+	this.theFrame = frame;
+    }
+
     final void showScreen() {
 	this.theFrame.setVisible(true);
     }
