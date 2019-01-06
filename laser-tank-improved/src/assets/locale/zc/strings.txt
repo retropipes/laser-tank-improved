@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-復 原
-#Save Position
-儲 存 位 置
-#Restore Position
-回 復 位 置
-#New
-新遊戲
-#<< Level
-<前一關
-#Level >>
-下一關>
-#Hint
-提 示
-#Restart
-重新玩
-#Load Level
-到 任 一 關
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 找不到關卡檔案\n請選擇另外一個

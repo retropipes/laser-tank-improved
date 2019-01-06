@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-Geri Al
-#Save Position
-Pozisyonu Kaydet
-#Restore Position
-Pozisyonu Geri Al
-#New
-Yeni
-#<< Level
-<< Bölüm
-#Level >>
-Bölüm >>
-#Hint
-Ýpucu
-#Restart
-Tekrar
-#Load Level
-Bölüm Yükle
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 Bölüm dosyasý bulunamadý\nLütfen yeni bir tane seçin

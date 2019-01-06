@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-Ångra
-#Save Position
-Position i minne
-#Restore Position
-Återställ position
-#New
-Nytt
-#<< Level
-<< Föreg.
-#Level >>
-Nästa >>
-#Hint
-Ledtråd
-#Restart
-Börja om
-#Load Level
-Ladda bana
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 Kompilationen hittas ej\nVälj en annan

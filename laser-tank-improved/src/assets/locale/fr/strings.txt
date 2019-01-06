@@ -20,17 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-Annuler
-Sauver la position
-Restaurer la position
-Nouveau
-Précédent
-Suivant
-Indice
-Début
-Charger un tableau
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 La banque de tableau est introuvable\nS.V.P. Choisissez en une autre

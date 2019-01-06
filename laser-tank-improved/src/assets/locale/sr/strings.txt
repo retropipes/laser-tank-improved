@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-Nazad
-#Save Position
-Saèuvaj poziciju
-#Restore Position
-Vrati poziciju
-#New
-Nova
-#<< Level
-<< Nivo
-#Level >>
-Nivo >>
-#Hint
-Savjet
-#Restart
-Ispoèetka
-#Load Level
-Izaberi nivo
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 Datoteka sa nivoima nije pronaðena\nMolimo izaberite novu

@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-Undo
-#Save Position
-Positie Opslaan
-#Restore Position
-Herstel Positie
-#New
-Nieuw
-#<< Level
-<< Spel
-#Level >>
-Spel >>
-#Hint
-Hint
-#Restart
-Herstart
-#Load Level
-Open het Spel
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 The Level file can not be found\nPlease select a new one

@@ -20,26 +20,6 @@
 #                                                       #
 #########################################################
 
-##### MAIN BUTONS  ( 9 lines) #########
-#Undo
-Undo
-#Save Position
-Save Position
-#Restore Position
-Restore Position
-#New
-New
-#<< Level
-<< Level
-#Level >>
-Level >>
-#Hint
-Hint
-#Restart
-Restart
-#Load Level
-Load Level
-
 ##### MESSAGES  ( 44 lines ) ###########
 #The Level file can not be found\nPlease select a new one
 The Level file can not be found\nPlease select a new one
