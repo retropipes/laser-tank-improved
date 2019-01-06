@@ -42,7 +42,7 @@ public class LaserTank {
 		StringConstants.ERROR_STRING_ERROR_MESSAGE);
     }
 
-    public static void mainDISABLED(final String[] args) {
+    public static void main(final String[] args) {
 	try {
 	    // Integrate with host platform
 	    // NativeIntegration.hookLAF(LaserTank.PROGRAM_NAME);
