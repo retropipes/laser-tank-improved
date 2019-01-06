@@ -509,7 +509,7 @@ public class ArenaEditor implements MenuSection {
 
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	app.getMenuManager().updateMenuItemState();
     }
 
@@ -1615,7 +1615,7 @@ public class ArenaEditor implements MenuSection {
 
     public void showOutput() {
 	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	app.getMenuManager().updateMenuItemState();
 	this.outputFrame.setVisible(true);
 	this.outputFrame.pack();

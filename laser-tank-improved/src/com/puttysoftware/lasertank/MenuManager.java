@@ -8,19 +8,17 @@ package com.puttysoftware.lasertank;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 
+import com.puttysoftware.gameshell.MenuManagerShell;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 
-public class MenuManager {
+public class MenuManager extends MenuManagerShell {
     // Fields
-    private final JMenuBar mainMenuBar;
     private final ArrayList<MenuSection> modeMgrs;
     private Accelerators accel;
 
     // Constructors
     public MenuManager() {
-	this.mainMenuBar = new JMenuBar();
 	this.modeMgrs = new ArrayList<>();
 	if (PreferencesManager.useClassicAccelerators()) {
 	    this.accel = new ClassicAccelerators();
@@ -29,6 +27,7 @@ public class MenuManager {
 	}
     }
 
+    @Override
     public void updateMenuItemState() {
 	final Application app = LaserTank.getApplication();
 	if (app.getArenaManager().getLoaded()) {
@@ -52,16 +51,13 @@ public class MenuManager {
     }
 
     // Methods
-    public JMenuBar getMainMenuBar() {
-	return this.mainMenuBar;
-    }
-
+    @Override
     public void populateMenuBar() {
 	for (final MenuSection mgr : this.modeMgrs) {
 	    final JMenu menu = mgr.createCommandsMenu();
 	    mgr.attachAccelerators(this.accel);
 	    mgr.setInitialState();
-	    this.mainMenuBar.add(menu);
+	    this.getMenuBar().add(menu);
 	}
     }
 
@@ -104,7 +100,7 @@ public class MenuManager {
 	final JMenu menu = mgr.createCommandsMenu();
 	mgr.attachAccelerators(this.accel);
 	mgr.setInitialState();
-	this.mainMenuBar.add(menu);
+	this.getMenuBar().add(menu);
     }
 
     public void toggleAccelerators() {
@@ -119,6 +115,6 @@ public class MenuManager {
 
     public void unregisterAllModeManagers() {
 	this.modeMgrs.clear();
-	this.mainMenuBar.removeAll();
+	this.getMenuBar().removeAll();
     }
 }

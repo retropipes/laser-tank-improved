@@ -175,7 +175,7 @@ public abstract class GenericEditor {
 
     public final void showOutput() {
 	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	this.outputFrame.setVisible(true);
 	this.outputFrame.pack();
     }

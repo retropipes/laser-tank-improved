@@ -239,7 +239,7 @@ public class GUIManager implements MenuSection, QuitHandler {
 
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
-	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.guiFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	app.getMenuManager().updateMenuItemState();
     }
 
@@ -413,7 +413,7 @@ public class GUIManager implements MenuSection, QuitHandler {
     public void showGUI() {
 	final Application app = LaserTank.getApplication();
 	app.setInGUI();
-	this.guiFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.guiFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	this.guiFrame.setVisible(true);
 	this.guiFrame.pack();
 	app.getMenuManager().updateMenuItemState();

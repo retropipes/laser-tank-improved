@@ -947,7 +947,7 @@ public class GameManager implements MenuSection {
 
     public void attachMenus() {
 	final Application app = LaserTank.getApplication();
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
 	app.getMenuManager().updateMenuItemState();
     }
 
@@ -2195,7 +2195,7 @@ public class GameManager implements MenuSection {
 	app.getMenuManager().updateMenuItemState();
 	GameManager.checkMenus();
 	this.outputFrame.setVisible(true);
-	this.outputFrame.setJMenuBar(app.getMenuManager().getMainMenuBar());
+	this.outputFrame.setJMenuBar(app.getMenuManager().getMenuBar());
     }
 
     public void showScoreTable() {
