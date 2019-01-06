@@ -1,6 +1,6 @@
-0=Load Playback File
-1=Playback File Loaded Successfully!
-2=Loading the playback file failed, probably due to illegal characters in the file name.
+0=Load Replay File
+1=Replay File Loaded Successfully!
+2=Loading the replay file failed, probably due to illegal characters in the file name.
 3=Enter a cheat code:
 4=Enable or Disable Cheat?
 5=enable
@@ -18,7 +18,7 @@
 17=You're out of missiles!
 18=You're out of stunners!
 19=You're out of blue lasers!
-20=Can't go outside the arena
+20=Can't go outside the level
 21=Which Other Ammo to Use?
 22=Change Other Ammo
 23=Other Ammo Changed to

@@ -4,13 +4,13 @@
 3=Click to set start point
 4=Start point set.
 5=Aim within the arena
-6=Arena created
-7=Arena creation failed
+6=Level created
+7=Level creation failed
 8=Are you sure you want to overwrite the active level with default data? This action CANNOT be undone and will clear the undo/redo history!
 9=Editor
 10=Level filled.
 11=Level Added
-12=Level Adding Failed
+12=Level adding failed
 13=Which Level to Remove?
 14=Remove Level
 15=Resize Level

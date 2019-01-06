@@ -3,12 +3,12 @@
 2=Tank location NOT found!
 3=Couldn't create temporary folder!
 4=The code entered is not a valid cheat code!
-5=Playback File Loading Failed!
+5=Replay File Loading Failed!
 6=No Previous Level!
 7=No Solution File Exists!
 8=Graphics File Loading Failed!
 9=Printing Failed!
-10=Unknown arena format version!
+10=Unknown level format version!
 11=Unknown object encountered.
 12=Failed to load image:
 13=, because:
