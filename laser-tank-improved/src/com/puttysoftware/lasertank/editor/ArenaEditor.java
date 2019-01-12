@@ -21,20 +21,15 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JToggleButton;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.images.BufferedImageIcon;
-import com.puttysoftware.lasertank.Accelerators;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.MenuSection;
 import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
@@ -54,7 +49,7 @@ import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 import com.puttysoftware.lasertank.utilities.RCLGenerator;
 import com.puttysoftware.pickers.PicturePicker;
 
-public class ArenaEditor implements MenuSection {
+public class ArenaEditor {
     private class EventHandler implements MouseListener, MouseMotionListener, WindowListener {
 	// handle scroll bars
 	public EventHandler() {
@@ -171,178 +166,6 @@ public class ArenaEditor implements MenuSection {
 	}
     }
 
-    private class MenuHandler implements ActionListener {
-	public MenuHandler() {
-	    // Do nothing
-	}
-
-	// Handle menus
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final Application app = LaserTank.getApplication();
-		final String cmd = e.getActionCommand();
-		final ArenaEditor editor = ArenaEditor.this;
-		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_UNDO))) {
-		    // Undo most recent action
-		    if (app.isInEditorMode()) {
-			editor.undo();
-		    } else if (app.isInGameMode()) {
-			app.getGameManager().abortAndWaitForMLOLoop();
-			app.getGameManager().undoLastMove();
-		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_REDO))) {
-		    // Redo most recent undone action
-		    if (app.isInEditorMode()) {
-			editor.redo();
-		    } else if (app.isInGameMode()) {
-			app.getGameManager().abortAndWaitForMLOLoop();
-			app.getGameManager().redoLastMove();
-		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CUT_LEVEL))) {
-		    // Cut Level
-		    final int level = editor.getLocationManager().getEditorLocationU();
-		    app.getArenaManager().getArena().cutLevel();
-		    editor.fixLimits();
-		    editor.updateEditorLevelAbsolute(level);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_COPY_LEVEL))) {
-		    // Copy Level
-		    app.getArenaManager().getArena().copyLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_PASTE_LEVEL))) {
-		    // Paste Level
-		    app.getArenaManager().getArena().pasteLevel();
-		    editor.fixLimits();
-		    editor.redrawEditor();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_INSERT_LEVEL_FROM_CLIPBOARD))) {
-		    // Insert Level From Clipboard
-		    app.getArenaManager().getArena().insertLevelFromClipboard();
-		    editor.fixLimits();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CLEAR_HISTORY))) {
-		    // Clear undo/redo history, confirm first
-		    final int res = CommonDialogs.showConfirmDialog(
-			    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-				    StringConstants.MENU_STRING_CONFIRM_CLEAR_HISTORY),
-			    StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
-				    StringConstants.EDITOR_STRING_EDITOR));
-		    if (res == JOptionPane.YES_OPTION) {
-			editor.clearHistory();
-		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_GO_TO_LEVEL))) {
-		    // Go To Level
-		    editor.goToLevelHandler();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_UP_ONE_FLOOR))) {
-		    // Go up one floor
-		    editor.updateEditorPosition(1, 0);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_DOWN_ONE_FLOOR))) {
-		    // Go down one floor
-		    editor.updateEditorPosition(-1, 0);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_UP_ONE_LEVEL))) {
-		    // Go up one level
-		    editor.updateEditorPosition(0, 1);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_DOWN_ONE_LEVEL))) {
-		    // Go down one level
-		    editor.updateEditorPosition(0, -1);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_ADD_A_LEVEL))) {
-		    // Add a level
-		    editor.addLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_REMOVE_A_LEVEL))) {
-		    // Remove a level
-		    editor.removeLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_FILL_CURRENT_LEVEL))) {
-		    // Fill level
-		    editor.fillLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_RESIZE_CURRENT_LEVEL))) {
-		    // Resize level
-		    editor.resizeLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_LEVEL_PREFERENCES))) {
-		    // Set Level Preferences
-		    editor.setLevelPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_SET_START_POINT))) {
-		    // Set Start Point
-		    editor.editPlayerLocation();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CHANGE_LAYER))) {
-		    // Change Layer
-		    editor.changeLayer();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT))) {
-		    // Enable Global Move-Shoot
-		    editor.enableGlobalMoveShoot();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_DISABLE_GLOBAL_MOVE_SHOOT))) {
-		    // Disable Global Move-Shoot
-		    editor.disableGlobalMoveShoot();
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_PAST))) {
-		    // Time Travel: Distant Past
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_PAST);
-		    editor.editorEraDistantPast.setSelected(true);
-		    editor.editorEraPast.setSelected(false);
-		    editor.editorEraPresent.setSelected(false);
-		    editor.editorEraFuture.setSelected(false);
-		    editor.editorEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PAST))) {
-		    // Time Travel: Past
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PAST);
-		    editor.editorEraDistantPast.setSelected(false);
-		    editor.editorEraPast.setSelected(true);
-		    editor.editorEraPresent.setSelected(false);
-		    editor.editorEraFuture.setSelected(false);
-		    editor.editorEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PRESENT))) {
-		    // Time Travel: Present
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PRESENT);
-		    editor.editorEraDistantPast.setSelected(false);
-		    editor.editorEraPast.setSelected(false);
-		    editor.editorEraPresent.setSelected(true);
-		    editor.editorEraFuture.setSelected(false);
-		    editor.editorEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_FUTURE))) {
-		    // Time Travel: Future
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_FUTURE);
-		    editor.editorEraDistantPast.setSelected(false);
-		    editor.editorEraPast.setSelected(false);
-		    editor.editorEraPresent.setSelected(false);
-		    editor.editorEraFuture.setSelected(true);
-		    editor.editorEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE))) {
-		    // Time Travel: Distant Future
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_FUTURE);
-		    editor.editorEraDistantPast.setSelected(false);
-		    editor.editorEraPast.setSelected(false);
-		    editor.editorEraPresent.setSelected(false);
-		    editor.editorEraFuture.setSelected(false);
-		    editor.editorEraDistantFuture.setSelected(true);
-		}
-		app.getMenuManager().updateMenuItemState();
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
-	}
-    }
-
     private class StartEventHandler implements MouseListener {
 	// handle scroll bars
 	public StartEventHandler() {
@@ -430,12 +253,6 @@ public class ArenaEditor implements MenuSection {
     private EditorLocationManager elMgr;
     private boolean arenaChanged;
     private final int activePlayer;
-    private JMenu editorTimeTravelSubMenu;
-    JCheckBoxMenuItem editorEraDistantPast, editorEraPast, editorEraPresent, editorEraFuture, editorEraDistantFuture;
-    private JMenuItem editorUndo, editorRedo, editorCutLevel, editorCopyLevel, editorPasteLevel,
-	    editorInsertLevelFromClipboard, editorClearHistory, editorGoToLevel, editorUpOneFloor, editorDownOneFloor,
-	    editorUpOneLevel, editorDownOneLevel, editorAddLevel, editorRemoveLevel, editorLevelPreferences,
-	    editorSetStartPoint, editorFillLevel, editorResizeLevel, editorChangeLayer, editorGlobalMoveShoot;
     private final FocusHandler fHandler = new FocusHandler();
 
     public ArenaEditor() {
@@ -482,27 +299,13 @@ public class ArenaEditor implements MenuSection {
 	    // Save the entire level
 	    app.getArenaManager().getArena().save();
 	    app.getArenaManager().getArena().switchLevel(saveLevel);
-	    this.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	}
 	return success;
     }
 
     public void arenaChanged() {
 	this.arenaChanged = true;
-    }
-
-    @Override
-    public void attachAccelerators(final Accelerators accel) {
-	this.editorUndo.setAccelerator(accel.editorUndoAccel);
-	this.editorRedo.setAccelerator(accel.editorRedoAccel);
-	this.editorCutLevel.setAccelerator(accel.editorCutLevelAccel);
-	this.editorCopyLevel.setAccelerator(accel.editorCopyLevelAccel);
-	this.editorPasteLevel.setAccelerator(accel.editorPasteLevelAccel);
-	this.editorInsertLevelFromClipboard.setAccelerator(accel.editorInsertLevelFromClipboardAccel);
-	this.editorClearHistory.setAccelerator(accel.editorClearHistoryAccel);
-	this.editorGoToLevel.setAccelerator(accel.editorGoToLocationAccel);
-	this.editorUpOneLevel.setAccelerator(accel.editorUpOneLevelAccel);
-	this.editorDownOneLevel.setAccelerator(accel.editorDownOneLevelAccel);
     }
 
     public void changeLayer() {
@@ -543,88 +346,10 @@ public class ArenaEditor implements MenuSection {
 	this.redrawEditor();
     }
 
-    private void checkMenus() {
-	final Application app = LaserTank.getApplication();
-	if (app.isInEditorMode()) {
-	    final AbstractArena m = app.getArenaManager().getArena();
-	    if (m.getLevels() == AbstractArena.getMinLevels()) {
-		this.disableRemoveLevel();
-	    } else {
-		this.enableRemoveLevel();
-	    }
-	    if (m.getLevels() == AbstractArena.getMaxLevels()) {
-		this.disableAddLevel();
-	    } else {
-		this.enableAddLevel();
-	    }
-	    try {
-		if (this.elMgr.getEditorLocationZ() == this.elMgr.getMinEditorLocationZ()) {
-		    this.disableDownOneFloor();
-		} else {
-		    this.enableDownOneFloor();
-		}
-		if (this.elMgr.getEditorLocationZ() == this.elMgr.getMaxEditorLocationZ()) {
-		    this.disableUpOneFloor();
-		} else {
-		    this.enableUpOneFloor();
-		}
-	    } catch (final NullPointerException npe) {
-		this.disableDownOneFloor();
-		this.disableUpOneFloor();
-	    }
-	    try {
-		if (this.elMgr.getEditorLocationU() == this.elMgr.getMinEditorLocationU()) {
-		    this.disableDownOneLevel();
-		} else {
-		    this.enableDownOneLevel();
-		}
-		if (this.elMgr.getEditorLocationU() == this.elMgr.getMaxEditorLocationU()) {
-		    this.disableUpOneLevel();
-		} else {
-		    this.enableUpOneLevel();
-		}
-	    } catch (final NullPointerException npe) {
-		this.disableDownOneLevel();
-		this.disableUpOneLevel();
-	    }
-	    if (this.elMgr != null) {
-		this.enableSetStartPoint();
-	    } else {
-		this.disableSetStartPoint();
-	    }
-	    if (!this.engine.tryUndo()) {
-		this.disableUndo();
-	    } else {
-		this.enableUndo();
-	    }
-	    if (!this.engine.tryRedo()) {
-		this.disableRedo();
-	    } else {
-		this.enableRedo();
-	    }
-	    if (this.engine.tryBoth()) {
-		this.disableClearHistory();
-	    } else {
-		this.enableClearHistory();
-	    }
-	}
-	if (app.getArenaManager().getArena().isPasteBlocked()) {
-	    this.disablePasteLevel();
-	    this.disableInsertLevelFromClipboard();
-	} else {
-	    this.enablePasteLevel();
-	    this.enableInsertLevelFromClipboard();
-	}
-	if (app.getArenaManager().getArena().isCutBlocked()) {
-	    this.disableCutLevel();
-	} else {
-	    this.enableCutLevel();
-	}
-    }
-
     public void clearHistory() {
+	Application app = LaserTank.getApplication();
 	this.engine = new EditorUndoRedoEngine();
-	this.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     private boolean confirmNonUndoable() {
@@ -639,216 +364,8 @@ public class ArenaEditor implements MenuSection {
 	return false;
     }
 
-    @Override
-    public JMenu createCommandsMenu() {
-	final MenuHandler menuHandler = new MenuHandler();
-	final JMenu editorMenu = new JMenu(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_EDITOR));
-	this.editorUndo = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_UNDO));
-	this.editorRedo = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_REDO));
-	this.editorCutLevel = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_CUT_LEVEL));
-	this.editorCopyLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_COPY_LEVEL));
-	this.editorPasteLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_PASTE_LEVEL));
-	this.editorInsertLevelFromClipboard = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_INSERT_LEVEL_FROM_CLIPBOARD));
-	this.editorClearHistory = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_CLEAR_HISTORY));
-	this.editorGoToLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_GO_TO_LEVEL));
-	this.editorUpOneFloor = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_UP_ONE_FLOOR));
-	this.editorDownOneFloor = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_DOWN_ONE_FLOOR));
-	this.editorUpOneLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_UP_ONE_LEVEL));
-	this.editorDownOneLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_DOWN_ONE_LEVEL));
-	this.editorAddLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_ADD_A_LEVEL));
-	this.editorRemoveLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_REMOVE_A_LEVEL));
-	this.editorFillLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_FILL_CURRENT_LEVEL));
-	this.editorResizeLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_RESIZE_CURRENT_LEVEL));
-	this.editorLevelPreferences = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_LEVEL_PREFERENCES));
-	this.editorSetStartPoint = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_SET_START_POINT));
-	this.editorChangeLayer = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_CHANGE_LAYER));
-	this.editorGlobalMoveShoot = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
-	this.editorTimeTravelSubMenu = new JMenu(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_SUB_TIME_TRAVEL));
-	this.editorEraDistantPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_PAST), false);
-	this.editorEraPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PAST), false);
-	this.editorEraPresent = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PRESENT), true);
-	this.editorEraFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_FUTURE), false);
-	this.editorEraDistantFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE), false);
-	this.editorUndo.addActionListener(menuHandler);
-	this.editorRedo.addActionListener(menuHandler);
-	this.editorCutLevel.addActionListener(menuHandler);
-	this.editorCopyLevel.addActionListener(menuHandler);
-	this.editorPasteLevel.addActionListener(menuHandler);
-	this.editorInsertLevelFromClipboard.addActionListener(menuHandler);
-	this.editorClearHistory.addActionListener(menuHandler);
-	this.editorGoToLevel.addActionListener(menuHandler);
-	this.editorUpOneFloor.addActionListener(menuHandler);
-	this.editorDownOneFloor.addActionListener(menuHandler);
-	this.editorUpOneLevel.addActionListener(menuHandler);
-	this.editorDownOneLevel.addActionListener(menuHandler);
-	this.editorAddLevel.addActionListener(menuHandler);
-	this.editorRemoveLevel.addActionListener(menuHandler);
-	this.editorFillLevel.addActionListener(menuHandler);
-	this.editorResizeLevel.addActionListener(menuHandler);
-	this.editorLevelPreferences.addActionListener(menuHandler);
-	this.editorSetStartPoint.addActionListener(menuHandler);
-	this.editorChangeLayer.addActionListener(menuHandler);
-	this.editorGlobalMoveShoot.addActionListener(menuHandler);
-	this.editorEraDistantPast.addActionListener(menuHandler);
-	this.editorEraPast.addActionListener(menuHandler);
-	this.editorEraPresent.addActionListener(menuHandler);
-	this.editorEraFuture.addActionListener(menuHandler);
-	this.editorEraDistantFuture.addActionListener(menuHandler);
-	this.editorTimeTravelSubMenu.add(this.editorEraDistantPast);
-	this.editorTimeTravelSubMenu.add(this.editorEraPast);
-	this.editorTimeTravelSubMenu.add(this.editorEraPresent);
-	this.editorTimeTravelSubMenu.add(this.editorEraFuture);
-	this.editorTimeTravelSubMenu.add(this.editorEraDistantFuture);
-	editorMenu.add(this.editorUndo);
-	editorMenu.add(this.editorRedo);
-	editorMenu.add(this.editorCutLevel);
-	editorMenu.add(this.editorCopyLevel);
-	editorMenu.add(this.editorPasteLevel);
-	editorMenu.add(this.editorInsertLevelFromClipboard);
-	editorMenu.add(this.editorClearHistory);
-	editorMenu.add(this.editorGoToLevel);
-	editorMenu.add(this.editorUpOneFloor);
-	editorMenu.add(this.editorDownOneFloor);
-	editorMenu.add(this.editorUpOneLevel);
-	editorMenu.add(this.editorDownOneLevel);
-	editorMenu.add(this.editorAddLevel);
-	editorMenu.add(this.editorRemoveLevel);
-	editorMenu.add(this.editorFillLevel);
-	editorMenu.add(this.editorResizeLevel);
-	editorMenu.add(this.editorLevelPreferences);
-	editorMenu.add(this.editorSetStartPoint);
-	editorMenu.add(this.editorChangeLayer);
-	editorMenu.add(this.editorGlobalMoveShoot);
-	editorMenu.add(this.editorTimeTravelSubMenu);
-	return editorMenu;
-    }
-
-    private void disableAddLevel() {
-	this.editorAddLevel.setEnabled(false);
-    }
-
-    private void disableClearHistory() {
-	this.editorClearHistory.setEnabled(false);
-    }
-
-    private void disableCutLevel() {
-	this.editorCutLevel.setEnabled(false);
-    }
-
-    @Override
-    public void disableDirtyCommands() {
-	// Do nothing
-    }
-
-    private void disableDownOneFloor() {
-	this.editorDownOneFloor.setEnabled(false);
-    }
-
-    private void disableDownOneLevel() {
-	this.editorDownOneLevel.setEnabled(false);
-    }
-
-    void disableGlobalMoveShoot() {
-	LaserTank.getApplication().getArenaManager().getArena().setMoveShootAllowedGlobally(false);
-	this.editorGlobalMoveShoot.setText(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
-    }
-
-    private void disableInsertLevelFromClipboard() {
-	this.editorInsertLevelFromClipboard.setEnabled(false);
-    }
-
-    @Override
-    public void disableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableModeCommands() {
-	this.editorUndo.setEnabled(false);
-	this.editorRedo.setEnabled(false);
-	this.editorCutLevel.setEnabled(false);
-	this.editorCopyLevel.setEnabled(false);
-	this.editorPasteLevel.setEnabled(false);
-	this.editorInsertLevelFromClipboard.setEnabled(false);
-	this.editorClearHistory.setEnabled(false);
-	this.editorGoToLevel.setEnabled(false);
-	this.editorUpOneFloor.setEnabled(false);
-	this.editorDownOneFloor.setEnabled(false);
-	this.editorUpOneLevel.setEnabled(false);
-	this.editorDownOneLevel.setEnabled(false);
-	this.editorAddLevel.setEnabled(false);
-	this.editorRemoveLevel.setEnabled(false);
-	this.editorFillLevel.setEnabled(false);
-	this.editorResizeLevel.setEnabled(false);
-	this.editorLevelPreferences.setEnabled(false);
-	this.editorSetStartPoint.setEnabled(false);
-	this.editorChangeLayer.setEnabled(false);
-	this.editorGlobalMoveShoot.setEnabled(false);
-	this.editorEraDistantPast.setEnabled(false);
-	this.editorEraPast.setEnabled(false);
-	this.editorEraPresent.setEnabled(false);
-	this.editorEraFuture.setEnabled(false);
-	this.editorEraDistantFuture.setEnabled(false);
-    }
-
     void disableOutput() {
 	this.borderPane.setEnabled(false);
-    }
-
-    private void disablePasteLevel() {
-	this.editorPasteLevel.setEnabled(false);
-    }
-
-    public void disableRedo() {
-	this.editorRedo.setEnabled(false);
-    }
-
-    private void disableRemoveLevel() {
-	this.editorRemoveLevel.setEnabled(false);
-    }
-
-    private void disableSetStartPoint() {
-	this.editorSetStartPoint.setEnabled(false);
-    }
-
-    public void disableUndo() {
-	this.editorUndo.setEnabled(false);
-    }
-
-    private void disableUpOneFloor() {
-	this.editorUpOneFloor.setEnabled(false);
-    }
-
-    private void disableUpOneLevel() {
-	this.editorUpOneLevel.setEnabled(false);
     }
 
     public void editArena() {
@@ -869,7 +386,7 @@ public class ArenaEditor implements MenuSection {
 	    this.redrawEditor();
 	    this.updatePickerLayout();
 	    this.resetBorderPane();
-	    this.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	} else {
 	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
 		    StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
@@ -926,7 +443,7 @@ public class ArenaEditor implements MenuSection {
 	    app.getArenaManager().getArena().setCell(instance, gridX, gridY, this.elMgr.getEditorLocationZ(),
 		    this.elMgr.getEditorLocationW());
 	    app.getArenaManager().setDirty(true);
-	    this.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	    this.redrawEditor();
 	} catch (final ArrayIndexOutOfBoundsException aioob) {
 	    app.getArenaManager().getArena().setCell(this.savedArenaObject, gridX, gridY,
@@ -958,7 +475,7 @@ public class ArenaEditor implements MenuSection {
 			    this.elMgr.getEditorLocationW(), this.elMgr.getEditorLocationU());
 		    app.getArenaManager().getArena().setCell(mo2, gridX, gridY, this.elMgr.getEditorLocationZ(),
 			    this.elMgr.getEditorLocationW());
-		    this.checkMenus();
+		    app.getMenuManager().updateMenuItemState();
 		    app.getArenaManager().setDirty(true);
 		}
 	    } else {
@@ -978,99 +495,10 @@ public class ArenaEditor implements MenuSection {
 		StringConstants.EDITOR_STRING_SET_START_POINT));
     }
 
-    private void enableAddLevel() {
-	this.editorAddLevel.setEnabled(true);
-    }
-
-    private void enableClearHistory() {
-	this.editorClearHistory.setEnabled(true);
-    }
-
-    private void enableCutLevel() {
-	this.editorCutLevel.setEnabled(true);
-    }
-
-    @Override
-    public void enableDirtyCommands() {
-	// Do nothing
-    }
-
-    private void enableDownOneFloor() {
-	this.editorDownOneFloor.setEnabled(true);
-    }
-
-    private void enableDownOneLevel() {
-	this.editorDownOneLevel.setEnabled(true);
-    }
-
-    void enableGlobalMoveShoot() {
-	LaserTank.getApplication().getArenaManager().getArena().setMoveShootAllowedGlobally(true);
-	this.editorGlobalMoveShoot.setText(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_DISABLE_GLOBAL_MOVE_SHOOT));
-    }
-
-    private void enableInsertLevelFromClipboard() {
-	this.editorInsertLevelFromClipboard.setEnabled(true);
-    }
-
-    @Override
-    public void enableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableModeCommands() {
-	this.editorUndo.setEnabled(false);
-	this.editorRedo.setEnabled(false);
-	this.editorCutLevel.setEnabled(true);
-	this.editorCopyLevel.setEnabled(true);
-	this.editorPasteLevel.setEnabled(true);
-	this.editorInsertLevelFromClipboard.setEnabled(true);
-	this.editorGoToLevel.setEnabled(true);
-	this.editorFillLevel.setEnabled(true);
-	this.editorResizeLevel.setEnabled(true);
-	this.editorLevelPreferences.setEnabled(true);
-	this.editorSetStartPoint.setEnabled(true);
-	this.editorChangeLayer.setEnabled(true);
-	this.editorGlobalMoveShoot.setEnabled(true);
-	this.editorEraDistantPast.setEnabled(true);
-	this.editorEraPast.setEnabled(true);
-	this.editorEraPresent.setEnabled(true);
-	this.editorEraFuture.setEnabled(true);
-	this.editorEraDistantFuture.setEnabled(true);
-    }
-
     void enableOutput() {
+	Application app = LaserTank.getApplication();
 	this.borderPane.setEnabled(true);
-	this.checkMenus();
-    }
-
-    private void enablePasteLevel() {
-	this.editorPasteLevel.setEnabled(true);
-    }
-
-    public void enableRedo() {
-	this.editorRedo.setEnabled(true);
-    }
-
-    private void enableRemoveLevel() {
-	this.editorRemoveLevel.setEnabled(true);
-    }
-
-    private void enableSetStartPoint() {
-	this.editorSetStartPoint.setEnabled(true);
-    }
-
-    public void enableUndo() {
-	this.editorUndo.setEnabled(true);
-    }
-
-    private void enableUpOneFloor() {
-	this.editorUpOneFloor.setEnabled(true);
-    }
-
-    private void enableUpOneLevel() {
-	this.editorUpOneLevel.setEnabled(true);
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void exitEditor() {
@@ -1228,7 +656,7 @@ public class ArenaEditor implements MenuSection {
 	    final AbstractArenaObject oldObj = app.getArenaManager().getArena().getCell(x, y, z, w);
 	    app.getArenaManager().getArena().setCell(obj, x, y, z, w);
 	    this.updateUndoHistory(oldObj, x, y, z, w, u);
-	    this.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	    this.redrawEditor();
 	} else {
 	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
@@ -1378,7 +806,7 @@ public class ArenaEditor implements MenuSection {
 			    // Deleted current level - go to level 1
 			    this.updateEditorLevelAbsolute(0);
 			}
-			this.checkMenus();
+			app.getMenuManager().updateMenuItemState();
 			app.getArenaManager().setDirty(true);
 		    }
 		    break;
@@ -1432,7 +860,7 @@ public class ArenaEditor implements MenuSection {
 		this.fixLimits();
 		// Save the entire level
 		app.getArenaManager().getArena().save();
-		this.checkMenus();
+		app.getMenuManager().updateMenuItemState();
 		// Redraw
 		this.redrawEditor();
 	    } catch (final NumberFormatException nf) {
@@ -1444,11 +872,6 @@ public class ArenaEditor implements MenuSection {
 	    success = false;
 	}
 	return success;
-    }
-
-    @Override
-    public void setInitialState() {
-	this.disableModeCommands();
     }
 
     public void setLevelPrefs() {
@@ -1577,6 +1000,18 @@ public class ArenaEditor implements MenuSection {
 	this.switcherPane.add(this.upperObjects);
     }
 
+    public boolean tryUndo() {
+	return this.engine.tryUndo();
+    }
+    
+    public boolean tryRedo() {
+	return this.engine.tryRedo();
+    }
+    
+    public boolean tryBoth() {
+	return this.engine.tryBoth();
+    }
+    
     public void undo() {
 	final Application app = LaserTank.getApplication();
 	this.engine.undo();
@@ -1592,7 +1027,7 @@ public class ArenaEditor implements MenuSection {
 	    final AbstractArenaObject oldObj = app.getArenaManager().getArena().getCell(x, y, z, w);
 	    app.getArenaManager().getArena().setCell(obj, x, y, z, w);
 	    this.updateRedoHistory(oldObj, x, y, z, w, u);
-	    this.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	    this.redrawEditor();
 	} else {
 	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
@@ -1601,25 +1036,27 @@ public class ArenaEditor implements MenuSection {
     }
 
     public void updateEditorLevelAbsolute(final int w) {
+	Application app = LaserTank.getApplication();
 	this.elMgr.setEditorLocationU(w);
 	// Level Change
-	LaserTank.getApplication().getArenaManager().getArena().switchLevel(w);
+	app.getArenaManager().getArena().switchLevel(w);
 	this.fixLimits();
 	this.setUpGUI();
-	this.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.redrawEditor();
     }
 
     public void updateEditorPosition(final int z, final int w) {
+	Application app = LaserTank.getApplication();
 	this.elMgr.offsetEditorLocationU(w);
 	this.elMgr.offsetEditorLocationZ(z);
 	if (w != 0) {
 	    // Level Change
-	    LaserTank.getApplication().getArenaManager().getArena().switchLevelOffset(w);
+	    app.getArenaManager().getArena().switchLevelOffset(w);
 	    this.fixLimits();
 	    this.setUpGUI();
 	}
-	this.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.redrawEditor();
     }
 
@@ -1658,7 +1095,6 @@ public class ArenaEditor implements MenuSection {
 	this.engine.updateUndoHistory(obj, x, y, z, w, u);
     }
 
-    @Override
     public void setUp() {
 	final Application app = LaserTank.getApplication();
 	app.setTitle(
@@ -1667,7 +1103,6 @@ public class ArenaEditor implements MenuSection {
 	app.addWindowFocusListener(this.fHandler);
     }
 
-    @Override
     public void tearDown() {
 	final Application app = LaserTank.getApplication();
 	app.removeWindowListener(this.mhandler);

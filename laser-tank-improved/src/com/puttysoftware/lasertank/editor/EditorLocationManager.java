@@ -65,23 +65,23 @@ public final class EditorLocationManager {
 	return this.locY;
     }
 
-    int getEditorLocationZ() {
+    public int getEditorLocationZ() {
 	return this.locZ;
     }
 
-    int getMaxEditorLocationU() {
+    public int getMaxEditorLocationU() {
 	return this.maxU;
     }
 
-    int getMaxEditorLocationZ() {
+    public int getMaxEditorLocationZ() {
 	return this.maxZ;
     }
 
-    int getMinEditorLocationU() {
+    public int getMinEditorLocationU() {
 	return this.minU;
     }
 
-    int getMinEditorLocationZ() {
+    public int getMinEditorLocationZ() {
 	return this.minZ;
     }
 

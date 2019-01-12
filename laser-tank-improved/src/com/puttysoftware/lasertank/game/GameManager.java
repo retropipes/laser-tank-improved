@@ -22,23 +22,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.XMLFileReader;
 import com.puttysoftware.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.Accelerators;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.MenuSection;
+import com.puttysoftware.lasertank.MenuManager;
 import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.arena.HistoryStatus;
@@ -49,8 +45,6 @@ import com.puttysoftware.lasertank.arena.objects.AntiTankDisguise;
 import com.puttysoftware.lasertank.arena.objects.Empty;
 import com.puttysoftware.lasertank.arena.objects.PowerfulTank;
 import com.puttysoftware.lasertank.arena.objects.Tank;
-import com.puttysoftware.lasertank.editor.ArenaEditor;
-import com.puttysoftware.lasertank.game.lpb.LPBManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
@@ -73,7 +67,7 @@ import com.puttysoftware.lasertank.utilities.RangeTypeConstants;
 import com.puttysoftware.lasertank.utilities.TankInventory;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
-public class GameManager implements MenuSection {
+public class GameManager {
     private class DifficultyEventHandler implements ActionListener, WindowListener {
 	public DifficultyEventHandler() {
 	    // Do nothing
@@ -602,134 +596,12 @@ public class GameManager implements MenuSection {
 
 	@Override
 	public void windowGainedFocus(final WindowEvent e) {
-	    GameManager.checkMenus();
+	    LaserTank.getApplication().getMenuManager().updateMenuItemState();
 	}
 
 	@Override
 	public void windowLostFocus(final WindowEvent e) {
 	    // Do nothing
-	}
-    }
-
-    private class MenuHandler implements ActionListener {
-	public MenuHandler() {
-	    // Do nothing
-	}
-
-	// Handle menus
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-	    try {
-		final Application app = LaserTank.getApplication();
-		final String cmd = e.getActionCommand();
-		final GameManager game = GameManager.this;
-		if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_RESET_CURRENT_LEVEL))) {
-		    final int result = CommonDialogs.showConfirmDialog(
-			    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-				    StringConstants.MENU_STRING_CONFIRM_RESET_CURRENT_LEVEL),
-			    StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-				    StringConstants.NOTL_STRING_PROGRAM_NAME));
-		    if (result == JOptionPane.YES_OPTION) {
-			game.abortAndWaitForMLOLoop();
-			game.resetCurrentLevel();
-		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_SHOW_SCORE_TABLE))) {
-		    game.showScoreTable();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_REPLAY_SOLUTION))) {
-		    game.abortAndWaitForMLOLoop();
-		    game.replaySolution();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_RECORD_SOLUTION))) {
-		    game.toggleRecording();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_LOAD_PLAYBACK_FILE))) {
-		    game.abortAndWaitForMLOLoop();
-		    LPBManager.loadLPB();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_PREVIOUS_LEVEL))) {
-		    game.abortAndWaitForMLOLoop();
-		    game.previousLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_SKIP_LEVEL))) {
-		    game.abortAndWaitForMLOLoop();
-		    game.solvedLevel(false);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_LOAD_LEVEL))) {
-		    game.abortAndWaitForMLOLoop();
-		    game.loadLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_SHOW_HINT))) {
-		    CommonDialogs.showDialog(app.getArenaManager().getArena().getHint().trim());
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CHEATS))) {
-		    game.enterCheatCode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_AMMO))) {
-		    game.changeOtherAmmoMode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_TOOL))) {
-		    game.changeOtherToolMode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_RANGE))) {
-		    game.changeOtherRangeMode();
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_PAST))) {
-		    // Time Travel: Distant Past
-		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_PAST);
-		    game.gameEraDistantPast.setSelected(true);
-		    game.gameEraPast.setSelected(false);
-		    game.gameEraPresent.setSelected(false);
-		    game.gameEraFuture.setSelected(false);
-		    game.gameEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PAST))) {
-		    // Time Travel: Past
-		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PAST);
-		    game.gameEraDistantPast.setSelected(false);
-		    game.gameEraPast.setSelected(true);
-		    game.gameEraPresent.setSelected(false);
-		    game.gameEraFuture.setSelected(false);
-		    game.gameEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PRESENT))) {
-		    // Time Travel: Present
-		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PRESENT);
-		    game.gameEraDistantPast.setSelected(false);
-		    game.gameEraPast.setSelected(false);
-		    game.gameEraPresent.setSelected(true);
-		    game.gameEraFuture.setSelected(false);
-		    game.gameEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_FUTURE))) {
-		    // Time Travel: Future
-		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_FUTURE);
-		    game.gameEraDistantPast.setSelected(false);
-		    game.gameEraPast.setSelected(false);
-		    game.gameEraPresent.setSelected(false);
-		    game.gameEraFuture.setSelected(true);
-		    game.gameEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE))) {
-		    // Time Travel: Distant Future
-		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
-		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_FUTURE);
-		    game.gameEraDistantPast.setSelected(false);
-		    game.gameEraPast.setSelected(false);
-		    game.gameEraPresent.setSelected(false);
-		    game.gameEraFuture.setSelected(false);
-		    game.gameEraDistantFuture.setSelected(true);
-		}
-		app.getMenuManager().updateMenuItemState();
-	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
-	    }
 	}
     }
 
@@ -771,23 +643,6 @@ public class GameManager implements MenuSection {
 	return MLOTask.checkSolid(locX + dirX, locY + dirY);
     }
 
-    private static void checkMenus() {
-	final Application app = LaserTank.getApplication();
-	app.getMenuManager().updateMenuItemState();
-	final ArenaEditor edit = LaserTank.getApplication().getEditor();
-	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
-	if (a.tryUndo()) {
-	    edit.enableUndo();
-	} else {
-	    edit.disableUndo();
-	}
-	if (a.tryRedo()) {
-	    edit.enableRedo();
-	} else {
-	    edit.disableRedo();
-	}
-    }
-
     private static int[] getEnabledDifficulties() {
 	final ArrayList<Integer> temp = new ArrayList<>();
 	if (PreferencesManager.isKidsDifficultyEnabled()) {
@@ -819,7 +674,7 @@ public class GameManager implements MenuSection {
 	final Application app = LaserTank.getApplication();
 	final AbstractArena a = app.getArenaManager().getArena();
 	a.updateRedoHistory(new HistoryStatus(las, mis, stu, boo, mag, blu, dis, bom, hbm, ibm));
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     static void updateUndo(final boolean las, final boolean mis, final boolean stu, final boolean boo,
@@ -828,7 +683,7 @@ public class GameManager implements MenuSection {
 	final Application app = LaserTank.getApplication();
 	final AbstractArena a = app.getArenaManager().getArena();
 	a.updateUndoHistory(new HistoryStatus(las, mis, stu, boo, mag, blu, dis, bom, hbm, ibm));
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     // Fields
@@ -867,12 +722,6 @@ public class GameManager implements MenuSection {
     int otherAmmoMode;
     int otherToolMode;
     int otherRangeMode;
-    private JMenu gameTimeTravelSubMenu;
-    JCheckBoxMenuItem gameEraDistantPast, gameEraPast, gameEraPresent, gameEraFuture, gameEraDistantFuture;
-    private JMenuItem gameReset, gameShowTable, gameReplaySolution, gameLoadLPB, gamePreviousLevel, gameSkipLevel,
-	    gameLoadLevel, gameShowHint, gameCheats, gameChangeOtherAmmoMode, gameChangeOtherToolMode,
-	    gameChangeOtherRangeMode;
-    private JCheckBoxMenuItem gameRecordSolution;
     private final EventHandler handler = new EventHandler();
     private final FocusHandler fHandler = new FocusHandler();
 
@@ -940,12 +789,6 @@ public class GameManager implements MenuSection {
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_BOMBS),
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_HEAT_BOMBS),
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_ICE_BOMBS) };
-    }
-
-    @Override
-    public void attachAccelerators(final Accelerators accel) {
-	this.gameReset.setAccelerator(accel.gameResetAccel);
-	this.gameShowTable.setAccelerator(accel.gameShowTableAccel);
     }
 
     void cancelButtonClicked() {
@@ -1021,129 +864,10 @@ public class GameManager implements MenuSection {
 	this.lpbLoaded = true;
     }
 
-    @Override
-    public JMenu createCommandsMenu() {
-	final MenuHandler mhandler = new MenuHandler();
-	final JMenu gameMenu = new JMenu(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_MENU_GAME));
-	this.gameReset = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_RESET_CURRENT_LEVEL));
-	this.gameShowTable = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_SHOW_SCORE_TABLE));
-	this.gameReplaySolution = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_REPLAY_SOLUTION));
-	this.gameRecordSolution = new JCheckBoxMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_RECORD_SOLUTION));
-	this.gameLoadLPB = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_LOAD_PLAYBACK_FILE));
-	this.gamePreviousLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_PREVIOUS_LEVEL));
-	this.gameSkipLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_SKIP_LEVEL));
-	this.gameLoadLevel = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_LOAD_LEVEL));
-	this.gameShowHint = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_SHOW_HINT));
-	this.gameCheats = new JMenuItem(
-		StringLoader.loadString(StringConstants.MENU_STRINGS_FILE, StringConstants.MENU_STRING_ITEM_CHEATS));
-	this.gameChangeOtherAmmoMode = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_AMMO));
-	this.gameChangeOtherToolMode = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_TOOL));
-	this.gameChangeOtherRangeMode = new JMenuItem(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_RANGE));
-	this.gameEraDistantPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_PAST), false);
-	this.gameEraPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PAST), false);
-	this.gameEraPresent = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PRESENT), true);
-	this.gameEraFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_FUTURE), false);
-	this.gameEraDistantFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE), false);
-	this.gameReset.addActionListener(mhandler);
-	this.gameShowTable.addActionListener(mhandler);
-	this.gameReplaySolution.addActionListener(mhandler);
-	this.gameRecordSolution.addActionListener(mhandler);
-	this.gameLoadLPB.addActionListener(mhandler);
-	this.gamePreviousLevel.addActionListener(mhandler);
-	this.gameSkipLevel.addActionListener(mhandler);
-	this.gameLoadLevel.addActionListener(mhandler);
-	this.gameShowHint.addActionListener(mhandler);
-	this.gameCheats.addActionListener(mhandler);
-	this.gameChangeOtherAmmoMode.addActionListener(mhandler);
-	this.gameChangeOtherToolMode.addActionListener(mhandler);
-	this.gameChangeOtherRangeMode.addActionListener(mhandler);
-	this.gameEraDistantPast.addActionListener(mhandler);
-	this.gameEraPast.addActionListener(mhandler);
-	this.gameEraPresent.addActionListener(mhandler);
-	this.gameEraFuture.addActionListener(mhandler);
-	this.gameEraDistantFuture.addActionListener(mhandler);
-	this.gameTimeTravelSubMenu = new JMenu(StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
-		StringConstants.MENU_STRING_SUB_TIME_TRAVEL));
-	this.gameTimeTravelSubMenu.add(this.gameEraDistantPast);
-	this.gameTimeTravelSubMenu.add(this.gameEraPast);
-	this.gameTimeTravelSubMenu.add(this.gameEraPresent);
-	this.gameTimeTravelSubMenu.add(this.gameEraFuture);
-	this.gameTimeTravelSubMenu.add(this.gameEraDistantFuture);
-	gameMenu.add(this.gameReset);
-	gameMenu.add(this.gameShowTable);
-	gameMenu.add(this.gameReplaySolution);
-	gameMenu.add(this.gameRecordSolution);
-	gameMenu.add(this.gameLoadLPB);
-	gameMenu.add(this.gamePreviousLevel);
-	gameMenu.add(this.gameSkipLevel);
-	gameMenu.add(this.gameLoadLevel);
-	gameMenu.add(this.gameShowHint);
-	gameMenu.add(this.gameCheats);
-	gameMenu.add(this.gameChangeOtherAmmoMode);
-	gameMenu.add(this.gameChangeOtherToolMode);
-	gameMenu.add(this.gameChangeOtherRangeMode);
-	gameMenu.add(this.gameTimeTravelSubMenu);
-	return gameMenu;
-    }
-
     public void decay() {
 	if (this.tank != null) {
 	    this.tank.setSavedObject(new Empty());
 	}
-    }
-
-    @Override
-    public void disableDirtyCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void disableModeCommands() {
-	this.gameReset.setEnabled(false);
-	this.gameShowTable.setEnabled(false);
-	this.gameReplaySolution.setEnabled(false);
-	this.gameRecordSolution.setEnabled(false);
-	this.gameLoadLPB.setEnabled(false);
-	this.gamePreviousLevel.setEnabled(false);
-	this.gameSkipLevel.setEnabled(false);
-	this.gameLoadLevel.setEnabled(false);
-	this.gameShowHint.setEnabled(false);
-	this.gameCheats.setEnabled(false);
-	this.gameChangeOtherAmmoMode.setEnabled(false);
-	this.gameChangeOtherToolMode.setEnabled(false);
-	this.gameChangeOtherRangeMode.setEnabled(false);
-	this.gameEraDistantPast.setEnabled(false);
-	this.gameEraPast.setEnabled(false);
-	this.gameEraPresent.setEnabled(false);
-	this.gameEraFuture.setEnabled(false);
-	this.gameEraDistantFuture.setEnabled(false);
-    }
-
-    private void disableRecording() {
-	this.gameRecordSolution.setSelected(false);
     }
 
     void doDelayedDecay() {
@@ -1155,38 +879,6 @@ public class GameManager implements MenuSection {
 	o.setSavedObject(this.delayedDecayObject);
 	this.remoteDecay = false;
 	this.delayedDecayActive = false;
-    }
-
-    @Override
-    public void enableDirtyCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableLoadedCommands() {
-	// Do nothing
-    }
-
-    @Override
-    public void enableModeCommands() {
-	this.gameReset.setEnabled(true);
-	this.gameShowTable.setEnabled(true);
-	this.gameReplaySolution.setEnabled(true);
-	this.gameRecordSolution.setEnabled(true);
-	this.gameLoadLPB.setEnabled(true);
-	this.gamePreviousLevel.setEnabled(true);
-	this.gameSkipLevel.setEnabled(true);
-	this.gameLoadLevel.setEnabled(true);
-	this.gameShowHint.setEnabled(true);
-	this.gameCheats.setEnabled(true);
-	this.gameChangeOtherAmmoMode.setEnabled(true);
-	this.gameChangeOtherToolMode.setEnabled(true);
-	this.gameChangeOtherRangeMode.setEnabled(true);
-	this.gameEraDistantPast.setEnabled(true);
-	this.gameEraPast.setEnabled(true);
-	this.gameEraPresent.setEnabled(true);
-	this.gameEraFuture.setEnabled(true);
-	this.gameEraDistantFuture.setEnabled(true);
     }
 
     public void enterCheatCode() {
@@ -1422,8 +1114,9 @@ public class GameManager implements MenuSection {
     }
 
     void laserDone() {
+	final Application app = LaserTank.getApplication();
 	this.laserActive = false;
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void loadGameHookG1(final XMLFileReader arenaFile) throws IOException {
@@ -1503,7 +1196,7 @@ public class GameManager implements MenuSection {
 	    app.getArenaManager().getArena().setDirtyFlags(this.plMgr.getPlayerLocationZ());
 	    m.resetHistoryEngine();
 	    this.gre = new GameReplayEngine();
-	    GameManager.checkMenus();
+	    app.getMenuManager().updateMenuItemState();
 	    this.processLevelExists();
 	}
     }
@@ -1531,8 +1224,9 @@ public class GameManager implements MenuSection {
     }
 
     void moveLoopDone() {
+	final Application app = LaserTank.getApplication();
 	this.moving = false;
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public boolean newGame() {
@@ -1604,7 +1298,7 @@ public class GameManager implements MenuSection {
 		this.borderPane.add(this.outerOutputPane, BorderLayout.CENTER);
 		this.borderPane.add(this.scorePane, BorderLayout.NORTH);
 		this.borderPane.add(this.infoPane, BorderLayout.SOUTH);
-		GameManager.checkMenus();
+		app.getMenuManager().updateMenuItemState();
 		app.getArenaManager().getArena().setDirtyFlags(this.plMgr.getPlayerLocationZ());
 		this.redrawArena();
 		this.updateScoreText();
@@ -1631,7 +1325,7 @@ public class GameManager implements MenuSection {
 	final AbstractArena m = app.getArenaManager().getArena();
 	m.resetHistoryEngine();
 	this.gre = new GameReplayEngine();
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.suspendAnimator();
 	m.restore();
 	if (m.doesLevelExistOffset(-1)) {
@@ -1771,7 +1465,8 @@ public class GameManager implements MenuSection {
     }
 
     public void redoLastMove() {
-	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
+	final Application app = LaserTank.getApplication();
+	final AbstractArena a = app.getArenaManager().getArena();
 	if (a.tryRedo()) {
 	    this.moving = false;
 	    this.laserActive = false;
@@ -1828,7 +1523,7 @@ public class GameManager implements MenuSection {
 	    this.updateTank();
 	    GameManager.updateUndo(laser, missile, stunner, boost, magnet, blue, disrupt, bomb, heatBomb, iceBomb);
 	}
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.updateScoreText();
 	a.setDirtyFlags(this.plMgr.getPlayerLocationZ());
 	this.redrawArena();
@@ -1904,11 +1599,12 @@ public class GameManager implements MenuSection {
     }
 
     public void replaySolution() {
+	MenuManager menu = LaserTank.getApplication().getMenuManager();
 	if (this.lpbLoaded) {
 	    this.replaying = true;
 	    // Turn recording off
 	    this.recording = false;
-	    this.disableRecording();
+	    menu.disableRecording();
 	    try {
 		this.resetCurrentLevel(false);
 	    } catch (final InvalidArenaException iae) {
@@ -1934,7 +1630,7 @@ public class GameManager implements MenuSection {
 		this.replaying = true;
 		// Turn recording off
 		this.recording = false;
-		this.disableRecording();
+		menu.disableRecording();
 		try {
 		    this.resetCurrentLevel(false);
 		} catch (final InvalidArenaException iae) {
@@ -2000,7 +1696,7 @@ public class GameManager implements MenuSection {
 	    this.decay();
 	    this.redrawArena();
 	}
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
     }
 
     public void resetPlayerLocation() throws InvalidArenaException {
@@ -2044,11 +1740,6 @@ public class GameManager implements MenuSection {
 	final AbstractCharacter saveTank = this.tank;
 	this.tank = new AntiTankDisguise(saveTank.getDirection(), saveTank.getNumber());
 	this.resetTank();
-    }
-
-    @Override
-    public void setInitialState() {
-	this.disableModeCommands();
     }
 
     public void setLaserType(final int type) {
@@ -2188,7 +1879,7 @@ public class GameManager implements MenuSection {
 	}
 	m.resetHistoryEngine();
 	this.gre = new GameReplayEngine();
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.suspendAnimator();
 	m.restore();
 	if (m.doesLevelExistOffset(1)) {
@@ -2280,7 +1971,7 @@ public class GameManager implements MenuSection {
 	    this.updateTank();
 	    GameManager.updateRedo(laser, missile, stunner, boost, magnet, blue, disrupt, bomb, heatBomb, iceBomb);
 	}
-	GameManager.checkMenus();
+	app.getMenuManager().updateMenuItemState();
 	this.updateScoreText();
 	a.setDirtyFlags(this.plMgr.getPlayerLocationZ());
 	this.redrawArena();
@@ -2711,7 +2402,6 @@ public class GameManager implements MenuSection {
 	}
     }
 
-    @Override
     public void setUp() {
 	Application app = LaserTank.getApplication();
 	app.setTitle(
@@ -2721,7 +2411,6 @@ public class GameManager implements MenuSection {
 	app.addWindowFocusListener(this.fHandler);
     }
 
-    @Override
     public void tearDown() {
 	Application app = LaserTank.getApplication();
 	app.removeKeyListener(this.handler);

@@ -103,12 +103,6 @@ public final class Application {
     // Methods
     public void activeLanguageChanged() {
 	// Rebuild menus
-	this.menuMgr.unregisterAllModeManagers();
-	this.menuMgr.registerModeManager(this.guiMgr);
-	this.menuMgr.registerModeManager(new PlayManager());
-	this.menuMgr.registerModeManager(this.gameMgr);
-	this.menuMgr.registerModeManager(this.editor);
-	this.menuMgr.registerModeManager(this.about);
 	this.menuMgr.populateMenuBar();
 	this.ni.setDefaultMenuBar(this.menuMgr.getMenuBar(), this.masterFrame);
 	// Fire hooks
@@ -187,7 +181,7 @@ public final class Application {
 	this.mode = Application.STATUS_EDITOR;
 	this.tearDownFormerMode();
 	this.editor.setUp();
-	this.menuMgr.modeChanged(this.editor);
+	this.menuMgr.activateEditorCommands();
 	this.masterFrame.setContentPane(masterContent);
     }
 
@@ -196,7 +190,7 @@ public final class Application {
 	this.mode = Application.STATUS_GAME;
 	this.tearDownFormerMode();
 	this.gameMgr.setUp();
-	this.menuMgr.modeChanged(this.gameMgr);
+	this.menuMgr.activateGameCommands();
 	this.masterFrame.setContentPane(masterContent);
     }
 
@@ -205,7 +199,7 @@ public final class Application {
 	this.mode = Application.STATUS_GUI;
 	this.tearDownFormerMode();
 	this.guiMgr.setUp();
-	this.menuMgr.modeChanged(this.guiMgr);
+	this.menuMgr.activateGUICommands();
 	this.masterFrame.setContentPane(masterContent);
 	if (!this.masterFrame.isVisible()) {
 	    this.masterFrame.setVisible(true);
