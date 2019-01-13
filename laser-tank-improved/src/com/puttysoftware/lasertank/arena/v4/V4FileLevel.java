@@ -33,6 +33,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ColorConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 class V4FileLevel {
     // Fields
@@ -268,7 +269,7 @@ class V4FileLevel {
 	    t.fillVirtual();
 	    return t;
 	} catch (final IOException ioe) {
-	    return null;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

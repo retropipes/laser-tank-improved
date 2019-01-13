@@ -8,6 +8,8 @@ package com.puttysoftware.lasertank.game.lpb;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
+
 class LPBFileLoader {
     // Fields
     private static byte[] lname;
@@ -55,7 +57,7 @@ class LPBFileLoader {
 	    }
 	    return true;
 	} catch (final IOException ioe) {
-	    return false;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

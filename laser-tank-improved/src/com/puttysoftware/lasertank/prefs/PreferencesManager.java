@@ -18,6 +18,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.EditorLayoutConstants;
 import com.puttysoftware.lasertank.utilities.Extension;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class PreferencesManager {
     // Fields
@@ -350,8 +351,8 @@ public class PreferencesManager {
 	try (BufferedOutputStream buf = new BufferedOutputStream(
 		new FileOutputStream(PreferencesManager.getPrefsFile()))) {
 	    PreferencesManager.storeMgr.saveStore(buf);
-	} catch (final IOException io) {
-	    // Ignore
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

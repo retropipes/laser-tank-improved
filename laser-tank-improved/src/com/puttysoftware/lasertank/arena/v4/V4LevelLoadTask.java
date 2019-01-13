@@ -72,7 +72,7 @@ public class V4LevelLoadTask extends Thread {
 		    StringConstants.DIALOG_STRING_ARENA_LOADING_FAILED));
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final IOException ie) {
-	    CommonDialogs.showDialog(ie.getMessage());
+	    LaserTank.logNonFatalError(ie);
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final Exception ex) {
 	    LaserTank.logError(ex);

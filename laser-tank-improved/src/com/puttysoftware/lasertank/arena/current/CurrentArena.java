@@ -31,6 +31,7 @@ import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.Extension;
 import com.puttysoftware.lasertank.utilities.FormatConstants;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class CurrentArena extends AbstractArena {
     private static String convertDifficultyNumberToName(final int number) {
@@ -94,8 +95,8 @@ public class CurrentArena extends AbstractArena {
 		    // Save old level
 		    this.writeArenaLevel(writer);
 		    writer.close();
-		} catch (final IOException io) {
-		    // Ignore
+		} catch (final IOException ioe) {
+		    throw new InvalidArenaException(ioe);
 		}
 	    }
 	    // Add all eras for the new level
@@ -551,7 +552,7 @@ public class CurrentArena extends AbstractArena {
 		m.readArenaMetafileG3(metaReader, version);
 	    }
 	} catch (final IOException ioe) {
-	    throw ioe;
+	    throw new InvalidArenaException(ioe);
 	}
 	if (!FormatConstants.isLevelListStored(version)) {
 	    // Create data reader
@@ -559,7 +560,7 @@ public class CurrentArena extends AbstractArena {
 		// Read data
 		m.readArenaLevel(dataReader, version);
 	    } catch (final IOException ioe) {
-		throw ioe;
+		throw new InvalidArenaException(ioe);
 	    }
 	    // Update level info
 	    m.generateLevelInfoList();
@@ -569,7 +570,7 @@ public class CurrentArena extends AbstractArena {
 		// Read data
 		m.readArenaLevel(dataReader, version);
 	    } catch (final IOException ioe) {
-		throw ioe;
+		throw new InvalidArenaException(ioe);
 	    }
 	}
 	return m;
@@ -646,8 +647,8 @@ public class CurrentArena extends AbstractArena {
 			final File targetLocation = this.getLevelFile(x, e);
 			try {
 			    FileUtilities.moveFile(sourceLocation, targetLocation);
-			} catch (final IOException io) {
-			    // Ignore
+			} catch (final IOException ioe) {
+			    throw new InvalidArenaException(ioe);
 			}
 		    }
 		}
@@ -788,8 +789,8 @@ public class CurrentArena extends AbstractArena {
 		    // Save old level
 		    this.writeArenaLevel(writer);
 		    writer.close();
-		} catch (final IOException io) {
-		    // Ignore
+		} catch (final IOException ioe) {
+		    throw new InvalidArenaException(ioe);
 		}
 	    }
 	    this.activeLevel = level;
@@ -798,8 +799,8 @@ public class CurrentArena extends AbstractArena {
 		// Load new level
 		this.readArenaLevel(reader);
 		reader.close();
-	    } catch (final IOException io) {
-		// Ignore
+	    } catch (final IOException ioe) {
+		throw new InvalidArenaException(ioe);
 	    }
 	}
     }
@@ -857,14 +858,14 @@ public class CurrentArena extends AbstractArena {
 	    // Write metafile
 	    this.writeArenaMetafile(metaWriter);
 	} catch (final IOException ioe) {
-	    throw ioe;
+	    throw new InvalidArenaException(ioe);
 	}
 	// Create data writer
 	try (XMLFileWriter dataWriter = this.getLevelWriter()) {
 	    // Write data
 	    this.writeArenaLevel(dataWriter);
 	} catch (final IOException ioe) {
-	    throw ioe;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

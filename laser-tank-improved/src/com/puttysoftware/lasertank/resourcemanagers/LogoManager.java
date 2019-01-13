@@ -17,9 +17,9 @@ import javax.imageio.ImageIO;
 
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.Application;
-import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class LogoManager {
     private static final String DEFAULT_LOAD_PATH = "/assets/locale/";
@@ -88,9 +88,8 @@ public class LogoManager {
 		}
 	    }
 	    return new BufferedImageIcon(image);
-	} catch (final IOException ie) {
-	    LaserTank.logError(ie);
-	    return null;
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

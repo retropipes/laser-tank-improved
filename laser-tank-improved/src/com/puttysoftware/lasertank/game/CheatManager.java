@@ -15,6 +15,7 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.ResourceStreamReader;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 final class CheatManager {
     // Fields
@@ -81,10 +82,8 @@ final class CheatManager {
 	    }
 	    rsr.close();
 	    is.close();
-	} catch (final IOException e) {
-	    // Ignore
-	} catch (final NullPointerException e) {
-	    // Ignore
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

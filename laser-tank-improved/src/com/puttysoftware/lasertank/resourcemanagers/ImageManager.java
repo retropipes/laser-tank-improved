@@ -22,6 +22,7 @@ import com.puttysoftware.lasertank.arena.objects.Tunnel;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ColorConstants;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class ImageManager {
@@ -158,12 +159,8 @@ public class ImageManager {
 		g2.drawString(customText, ImageManager.DRAW_HORZ, ImageManager.DRAW_VERT);
 	    }
 	    return new BufferedImageIcon(image);
-	} catch (final IOException ie) {
-	    return null;
-	} catch (final NullPointerException np) {
-	    return null;
-	} catch (final IllegalArgumentException ia) {
-	    return null;
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

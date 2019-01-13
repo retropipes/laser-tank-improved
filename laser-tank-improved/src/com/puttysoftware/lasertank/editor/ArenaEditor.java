@@ -600,7 +600,7 @@ public class ArenaEditor {
 	    try {
 		a = ArenaManager.createArena();
 	    } catch (final IOException ioe) {
-		success = false;
+		throw new InvalidArenaException(ioe);
 	    }
 	    if (success) {
 		app.getArenaManager().setArena(a);

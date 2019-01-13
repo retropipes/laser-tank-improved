@@ -18,6 +18,7 @@ import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 class LPBLoadTask extends Thread {
     // Fields
@@ -52,8 +53,8 @@ class LPBLoadTask extends Thread {
 	} catch (final FileNotFoundException fnfe) {
 	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
 		    StringConstants.GAME_STRING_PLAYBACK_LOAD_FAILED));
-	} catch (final IOException ie) {
-	    CommonDialogs.showDialog(ie.getMessage());
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
 	} catch (final Exception ex) {
 	    LaserTank.logError(ex);
 	} finally {

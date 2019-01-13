@@ -8,6 +8,7 @@ import java.io.IOException;
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class ProtectionWrapper {
     // Constants
@@ -37,7 +38,7 @@ public class ProtectionWrapper {
 		out.write(buf, 0, len);
 	    }
 	} catch (final IOException ioe) {
-	    throw ioe;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 
@@ -56,7 +57,7 @@ public class ProtectionWrapper {
 		out.write(buf, 0, len);
 	    }
 	} catch (final IOException ioe) {
-	    throw ioe;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 

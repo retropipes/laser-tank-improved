@@ -17,4 +17,12 @@ public class InvalidArenaException extends RuntimeException {
     public InvalidArenaException(final String msg) {
 	super(msg);
     }
+
+    public InvalidArenaException(final Throwable cause) {
+	super(cause);
+    }
+
+    public InvalidArenaException(final String msg, final Throwable cause) {
+	super(msg, cause);
+    }
 }

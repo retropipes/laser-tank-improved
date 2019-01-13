@@ -1460,7 +1460,7 @@ public class GameManager {
 	    }
 	    return true;
 	} catch (final IOException ioe) {
-	    return false;
+	    throw new InvalidArenaException(ioe);
 	}
     }
 
@@ -2398,7 +2398,7 @@ public class GameManager {
 		this.gre.writeReplay(file);
 	    }
 	} catch (final IOException ioe) {
-	    // Ignore
+	    throw new InvalidArenaException(ioe);
 	}
     }
 
