@@ -5,7 +5,6 @@
  */
 package com.puttysoftware.lasertank.resourcemanagers;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -17,17 +16,12 @@ import javax.imageio.ImageIO;
 
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
-import com.puttysoftware.lasertank.arena.abstractobjects.AbstractTunnel;
-import com.puttysoftware.lasertank.arena.objects.Tunnel;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
-import com.puttysoftware.lasertank.utilities.ColorConstants;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
-import com.puttysoftware.lasertank.utilities.TypeConstants;
 
 public class ImageManager {
     public static final int MAX_WINDOW_SIZE = 700;
-    private static final Color TRANSPARENT = new Color(200, 100, 100);
     private static Class<?> LOAD_CLASS = ImageManager.class;
     private static Font DRAW_FONT = null;
     private static final String DRAW_FONT_FALLBACK = "Times-BOLD-14";
@@ -69,64 +63,12 @@ public class ImageManager {
     }
 
     public static BufferedImageIcon getImage(final AbstractArenaObject obj, final boolean useText) {
-	if (obj instanceof AbstractTunnel) {
-	    return ImageManager.getTransformedTunnel(obj.getColor(), useText);
-	} else {
-	    return ImageCache.getCachedImage(obj, useText);
-	}
-    }
-
-    private static BufferedImageIcon getTransformedTunnel(final int cc, final boolean useText) {
-	try {
-	    final BufferedImageIcon icon = ImageCache.getCachedImage(new Tunnel(), useText);
-	    Color color;
-	    if (cc == ColorConstants.COLOR_BLUE) {
-		color = Color.blue;
-	    } else if (cc == ColorConstants.COLOR_CYAN) {
-		color = Color.cyan;
-	    } else if (cc == ColorConstants.COLOR_GREEN) {
-		color = Color.green;
-	    } else if (cc == ColorConstants.COLOR_MAGENTA) {
-		color = Color.magenta;
-	    } else if (cc == ColorConstants.COLOR_RED) {
-		color = Color.red;
-	    } else if (cc == ColorConstants.COLOR_WHITE) {
-		color = Color.white;
-	    } else if (cc == ColorConstants.COLOR_YELLOW) {
-		color = Color.yellow;
-	    } else {
-		color = Color.gray;
-	    }
-	    if (icon != null) {
-		final BufferedImageIcon result = new BufferedImageIcon(icon);
-		for (int x = 0; x < ImageManager.getGraphicSize(); x++) {
-		    for (int y = 0; y < ImageManager.getGraphicSize(); y++) {
-			final int pixel = icon.getRGB(x, y);
-			final Color c = new Color(pixel);
-			if (c.equals(ImageManager.TRANSPARENT)) {
-			    result.setRGB(x, y, color.getRGB());
-			}
-		    }
-		}
-		return result;
-	    } else {
-		return null;
-	    }
-	} catch (final NullPointerException np) {
-	    return null;
-	} catch (final IllegalArgumentException ia) {
-	    return null;
-	}
+	return ImageCache.getCachedImage(obj, useText);
     }
 
     static BufferedImageIcon getUncachedImage(final AbstractArenaObject obj, final boolean useText) {
 	try {
-	    String name;
-	    if (obj.isOfType(TypeConstants.TYPE_TUNNEL)) {
-		name = obj.getBaseImageName();
-	    } else {
-		name = obj.getImageName();
-	    }
+	    String name = obj.getImageName();
 	    final String normalName = ImageManager.normalizeName(name);
 	    final URL url = ImageManager.LOAD_CLASS.getResource(
 		    StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OBJECTS_PATH)

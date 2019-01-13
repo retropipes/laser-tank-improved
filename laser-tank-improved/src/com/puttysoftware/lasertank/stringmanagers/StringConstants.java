@@ -17,8 +17,9 @@ public class StringConstants {
     static final int LANGUAGE_STRINGS_FILE = 0;
     public static final int NOTL_STRINGS_FILE = -1;
     public static final int IMAGE_STRINGS_FILE = -2;
-    public static final int COLOR_STRINGS_FILE = -3;
-    public static final int STRINGS_FILE = -4;
+    public static final int FRAME_STRINGS_FILE = -3;
+    public static final int DIRECTION_STRINGS_FILE = -4;
+    public static final int INDEX_STRINGS_FILE = -5;
     private static final String DIFFICULTY_STRINGS_FILE_NAME = "difficulty";
     private static final String ERROR_STRINGS_FILE_NAME = "errors";
     private static final String PREFS_STRINGS_FILE_NAME = "prefs";
@@ -39,11 +40,13 @@ public class StringConstants {
     private static final String LANGUAGE_STRINGS_FILE_NAME = "languages";
     private static final String NOTL_STRINGS_FILE_NAME = "notranslate";
     private static final String IMAGE_STRINGS_FILE_NAME = "images";
-    private static final String COLOR_STRINGS_FILE_NAME = "colors";
-    private static final String STRINGS_FILE_NAME = "directions";
+    private static final String FRAME_STRINGS_FILE_NAME = "frame_suffix";
+    private static final String DIRECTION_STRINGS_FILE_NAME = "direction_suffix";
+    private static final String INDEX_STRINGS_FILE_NAME = "index_suffix";
     static final String[] LANGUAGE_STRINGS_FILES = new String[] { StringConstants.LANGUAGE_STRINGS_FILE_NAME,
 	    StringConstants.NOTL_STRINGS_FILE_NAME, StringConstants.IMAGE_STRINGS_FILE_NAME,
-	    StringConstants.COLOR_STRINGS_FILE_NAME, StringConstants.STRINGS_FILE_NAME };
+	    StringConstants.FRAME_STRINGS_FILE_NAME, StringConstants.DIRECTION_STRINGS_FILE_NAME,
+	    StringConstants.INDEX_STRINGS_FILE_NAME };
     static final String LOCALIZED_LANGUAGE_FILE_NAME = "localizedlanguages.txt";
     // No Translate String Constants
     public static final int NOTL_STRING_OS_NAME = 0;

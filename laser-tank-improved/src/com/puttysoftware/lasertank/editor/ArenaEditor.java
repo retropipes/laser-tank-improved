@@ -64,8 +64,6 @@ public class ArenaEditor {
 		final int y = e.getY();
 		if (e.isAltDown() || e.isAltGraphDown() || e.isControlDown()) {
 		    me.editObjectProperties(x, y);
-		} else if (e.isShiftDown()) {
-		    me.probeObjectProperties(x, y);
 		} else {
 		    me.editObject(x, y);
 		}
@@ -622,23 +620,6 @@ public class ArenaEditor {
 		    StringConstants.EDITOR_STRING_ARENA_CREATION_FAILED));
 	}
 	return success;
-    }
-
-    void probeObjectProperties(final int x, final int y) {
-	final Application app = LaserTank.getApplication();
-	final int xOffset = this.vertScroll.getValue() - this.vertScroll.getMinimum();
-	final int yOffset = this.horzScroll.getValue() - this.horzScroll.getMinimum();
-	final int gridX = x / ImageManager.getGraphicSize() + EditorViewingWindowManager.getViewingWindowLocationX()
-		- xOffset + yOffset;
-	final int gridY = y / ImageManager.getGraphicSize() + EditorViewingWindowManager.getViewingWindowLocationY()
-		+ xOffset - yOffset;
-	final AbstractArenaObject mo = app.getArenaManager().getArena().getCell(gridX, gridY,
-		this.elMgr.getEditorLocationZ(), this.elMgr.getEditorLocationW());
-	this.elMgr.setEditorLocationX(gridX);
-	this.elMgr.setEditorLocationY(gridY);
-	final String gameName = mo.getIdentityName();
-	final String desc = mo.getDescription();
-	CommonDialogs.showTitledDialog(desc, gameName);
     }
 
     public void redo() {

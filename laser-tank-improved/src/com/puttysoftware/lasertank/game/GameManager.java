@@ -472,33 +472,27 @@ public class GameManager {
 	public void mouseClicked(final MouseEvent e) {
 	    try {
 		final GameManager gm = GameManager.this;
-		if (e.isShiftDown()) {
-		    final int x = e.getX();
-		    final int y = e.getY();
-		    gm.identifyObject(x, y);
-		} else {
-		    if (e.getButton() == MouseEvent.BUTTON1) {
-			// Move
-			final Direction dir = this.mapMouseToDirection(e);
-			final Direction tankDir = gm.tank.getDirection();
-			if (tankDir != dir) {
-			    this.handleTurns(dir);
-			} else {
-			    final int x = e.getX();
-			    final int y = e.getY();
-			    final int px = gm.getPlayerManager().getPlayerLocationX();
-			    final int py = gm.getPlayerManager().getPlayerLocationY();
-			    final int destX = (int) Math.signum(x / ImageManager.getGraphicSize() - px);
-			    final int destY = (int) Math.signum(y / ImageManager.getGraphicSize() - py);
-			    gm.updatePositionRelative(destX, destY);
-			}
-		    } else if (e.getButton() == MouseEvent.BUTTON2 || e.getButton() == MouseEvent.BUTTON3) {
-			// Fire Laser
-			gm.setLaserType(LaserTypeConstants.LASER_TYPE_GREEN);
+		if (e.getButton() == MouseEvent.BUTTON1) {
+		    // Move
+		    final Direction dir = this.mapMouseToDirection(e);
+		    final Direction tankDir = gm.tank.getDirection();
+		    if (tankDir != dir) {
+			this.handleTurns(dir);
+		    } else {
+			final int x = e.getX();
+			final int y = e.getY();
 			final int px = gm.getPlayerManager().getPlayerLocationX();
 			final int py = gm.getPlayerManager().getPlayerLocationY();
-			gm.fireLaser(px, py, gm.tank);
+			final int destX = (int) Math.signum(x / ImageManager.getGraphicSize() - px);
+			final int destY = (int) Math.signum(y / ImageManager.getGraphicSize() - py);
+			gm.updatePositionRelative(destX, destY);
 		    }
+		} else if (e.getButton() == MouseEvent.BUTTON2 || e.getButton() == MouseEvent.BUTTON3) {
+		    // Fire Laser
+		    gm.setLaserType(LaserTypeConstants.LASER_TYPE_GREEN);
+		    final int px = gm.getPlayerManager().getPlayerLocationX();
+		    final int py = gm.getPlayerManager().getPlayerLocationY();
+		    gm.fireLaser(px, py, gm.tank);
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -1083,19 +1077,6 @@ public class GameManager {
 	if (this.mlot != null && this.mlot.isAlive()) {
 	    this.mlot.haltMovingObjects();
 	}
-    }
-
-    void identifyObject(final int x, final int y) {
-	final Application app = LaserTank.getApplication();
-	final AbstractArena m = app.getArenaManager().getArena();
-	final int destX = x / ImageManager.getGraphicSize();
-	final int destY = y / ImageManager.getGraphicSize();
-	final int destZ = this.plMgr.getPlayerLocationZ();
-	final AbstractArenaObject target = m.getCell(destX, destY, destZ, ArenaConstants.LAYER_LOWER_OBJECTS);
-	target.determineCurrentAppearance(destX, destY, destZ);
-	final String gameName = target.getIdentityName();
-	final String desc = target.getDescription();
-	CommonDialogs.showTitledDialog(desc, gameName);
     }
 
     boolean isAutoMoveScheduled() {

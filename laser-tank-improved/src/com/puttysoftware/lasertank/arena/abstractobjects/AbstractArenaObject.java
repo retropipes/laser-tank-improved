@@ -19,10 +19,9 @@ import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
-import com.puttysoftware.lasertank.utilities.ColorConstants;
-import com.puttysoftware.lasertank.utilities.ColorResolver;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.DirectionResolver;
+import com.puttysoftware.lasertank.utilities.FrameResolver;
 import com.puttysoftware.lasertank.utilities.LaserTypeConstants;
 import com.puttysoftware.lasertank.utilities.MaterialConstants;
 import com.puttysoftware.lasertank.utilities.RangeTypeConstants;
@@ -224,9 +223,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	if (this.hasDirection()) {
 	    this.toggleDirection();
 	    return this;
-	} else if (this.hasColor()) {
-	    this.toggleColor();
-	    return this;
 	} else {
 	    return null;
 	}
@@ -301,14 +297,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return this.color;
     }
 
-    private final String getColorPrefix() {
-	if (this.hasColor()) {
-	    return ColorResolver.resolveColorConstantToImageName(this.color) + StringConstants.COMMON_STRING_SPACE;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
-	}
-    }
-
     public int getCustomFormat() {
 	return 0;
     }
@@ -333,8 +321,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 
     private final String getDirectionSuffix() {
 	if (this.hasDirection()) {
-	    return StringConstants.COMMON_STRING_SPACE
-		    + DirectionResolver.resolveDirectionConstantToImageName(this.direction);
+	    return DirectionResolver.resolveDirectionConstantToImageSuffix(this.direction);
 	} else {
 	    return StringConstants.COMMON_STRING_EMPTY;
 	}
@@ -346,7 +333,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 
     private final String getFrameSuffix() {
 	if (this.isAnimated()) {
-	    return StringConstants.COMMON_STRING_SPACE + this.frameNumber;
+	    return FrameResolver.resolveFrameNumberToImageSuffix(this.frameNumber);
 	} else {
 	    return StringConstants.COMMON_STRING_EMPTY;
 	}
@@ -356,24 +343,11 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return this.getBaseImageName();
     }
 
-    public final String getIdentityName() {
-	return this.getLocalColorPrefix()
-		+ StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
-    }
-
     public final String getImageName() {
-	return this.getColorPrefix() + this.getBaseImageName() + this.getDirectionSuffix() + this.getFrameSuffix();
+	return this.getBaseImageName() + this.getDirectionSuffix() + this.getFrameSuffix();
     }
 
     abstract public int getLayer();
-
-    private final String getLocalColorPrefix() {
-	if (this.hasColor()) {
-	    return ColorResolver.resolveColorConstantToName(this.color) + StringConstants.COMMON_STRING_SPACE;
-	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
-	}
-    }
 
     public final int getMaterial() {
 	return this.material;
@@ -398,10 +372,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
     }
 
     abstract public int getStringBaseID();
-
-    private final boolean hasColor() {
-	return this.color >= 0;
-    }
 
     private final boolean hasDirection() {
 	return this.direction != Direction.INVALID && this.direction != Direction.NONE;
@@ -881,15 +851,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
      */
     public void timerExpiredAction(final int dirX, final int dirY) {
 	// Do nothing
-    }
-
-    private final void toggleColor() {
-	if (this.hasColor()) {
-	    this.color++;
-	    if (this.color >= ColorConstants.COLOR_COUNT) {
-		this.color = ColorConstants.COLOR_GRAY;
-	    }
-	}
     }
 
     public final void toggleDirection() {

@@ -6,8 +6,8 @@
 package com.puttysoftware.lasertank.utilities;
 
 public enum Direction {
-    INVALID(-2), NONE(-1), NORTHWEST(0), NORTH(1), NORTHEAST(2), EAST(3), SOUTHEAST(4), SOUTH(5), SOUTHWEST(6), WEST(7),
-    HORIZONTAL(8), VERTICAL(9);
+    INVALID(-1), NONE(0), NORTHWEST(1), NORTH(2), NORTHEAST(3), EAST(4), SOUTHEAST(5), SOUTH(6), SOUTHWEST(7), WEST(8),
+    HORIZONTAL(9), VERTICAL(10);
     int internalValue;
 
     Direction(final int v) {
