@@ -445,107 +445,111 @@ public class MenuManager {
 
     // Methods
     public final void updateMenuItemState() {
-	final Application app = LaserTank.getApplication();
-	final ArenaEditor editor = app.getEditor();
-	final EditorLocationManager elMgr = editor.getLocationManager();
-	if (app.getArenaManager().getLoaded()) {
-	    this.enableLoadedCommands();
-	} else {
-	    this.disableLoadedCommands();
-	}
-	if (app.getArenaManager().getDirty()) {
-	    this.enableDirtyCommands();
-	} else {
-	    this.disableDirtyCommands();
-	}
-	if (app.isInEditorMode()) {
-	    final AbstractArena m = app.getArenaManager().getArena();
-	    if (m.getLevels() == AbstractArena.getMinLevels()) {
-		this.disableRemoveLevel();
+	try {
+	    final Application app = LaserTank.getApplication();
+	    final ArenaEditor editor = app.getEditor();
+	    final EditorLocationManager elMgr = editor.getLocationManager();
+	    if (app.getArenaManager().getLoaded()) {
+		this.enableLoadedCommands();
 	    } else {
-		this.enableRemoveLevel();
+		this.disableLoadedCommands();
 	    }
-	    if (m.getLevels() == AbstractArena.getMaxLevels()) {
-		this.disableAddLevel();
+	    if (app.getArenaManager().getDirty()) {
+		this.enableDirtyCommands();
 	    } else {
-		this.enableAddLevel();
+		this.disableDirtyCommands();
 	    }
-	    try {
-		if (elMgr.getEditorLocationZ() == elMgr.getMinEditorLocationZ()) {
+	    if (app.isInEditorMode()) {
+		final AbstractArena m = app.getArenaManager().getArena();
+		if (m.getLevels() == AbstractArena.getMinLevels()) {
+		    this.disableRemoveLevel();
+		} else {
+		    this.enableRemoveLevel();
+		}
+		if (m.getLevels() == AbstractArena.getMaxLevels()) {
+		    this.disableAddLevel();
+		} else {
+		    this.enableAddLevel();
+		}
+		try {
+		    if (elMgr.getEditorLocationZ() == elMgr.getMinEditorLocationZ()) {
+			this.disableDownOneFloor();
+		    } else {
+			this.enableDownOneFloor();
+		    }
+		    if (elMgr.getEditorLocationZ() == elMgr.getMaxEditorLocationZ()) {
+			this.disableUpOneFloor();
+		    } else {
+			this.enableUpOneFloor();
+		    }
+		} catch (final NullPointerException npe) {
 		    this.disableDownOneFloor();
-		} else {
-		    this.enableDownOneFloor();
-		}
-		if (elMgr.getEditorLocationZ() == elMgr.getMaxEditorLocationZ()) {
 		    this.disableUpOneFloor();
-		} else {
-		    this.enableUpOneFloor();
 		}
-	    } catch (final NullPointerException npe) {
-		this.disableDownOneFloor();
-		this.disableUpOneFloor();
-	    }
-	    try {
-		if (elMgr.getEditorLocationU() == elMgr.getMinEditorLocationU()) {
+		try {
+		    if (elMgr.getEditorLocationU() == elMgr.getMinEditorLocationU()) {
+			this.disableDownOneLevel();
+		    } else {
+			this.enableDownOneLevel();
+		    }
+		    if (elMgr.getEditorLocationU() == elMgr.getMaxEditorLocationU()) {
+			this.disableUpOneLevel();
+		    } else {
+			this.enableUpOneLevel();
+		    }
+		} catch (final NullPointerException npe) {
 		    this.disableDownOneLevel();
-		} else {
-		    this.enableDownOneLevel();
-		}
-		if (elMgr.getEditorLocationU() == elMgr.getMaxEditorLocationU()) {
 		    this.disableUpOneLevel();
-		} else {
-		    this.enableUpOneLevel();
 		}
-	    } catch (final NullPointerException npe) {
-		this.disableDownOneLevel();
-		this.disableUpOneLevel();
+		if (elMgr != null) {
+		    this.enableSetStartPoint();
+		} else {
+		    this.disableSetStartPoint();
+		}
+		if (!editor.tryUndo()) {
+		    this.disableUndo();
+		} else {
+		    this.enableUndo();
+		}
+		if (!editor.tryRedo()) {
+		    this.disableRedo();
+		} else {
+		    this.enableRedo();
+		}
+		if (editor.tryBoth()) {
+		    this.disableClearHistory();
+		} else {
+		    this.enableClearHistory();
+		}
 	    }
-	    if (elMgr != null) {
-		this.enableSetStartPoint();
+	    if (app.isInGameMode()) {
+		final AbstractArena a = app.getArenaManager().getArena();
+		if (a.tryUndo()) {
+		    this.enableUndo();
+		} else {
+		    this.disableUndo();
+		}
+		if (a.tryRedo()) {
+		    this.enableRedo();
+		} else {
+		    this.disableRedo();
+		}
+	    }
+	    AbstractArena a = app.getArenaManager().getArena();
+	    if (a != null && a.isPasteBlocked()) {
+		this.disablePasteLevel();
+		this.disableInsertLevelFromClipboard();
 	    } else {
-		this.disableSetStartPoint();
+		this.enablePasteLevel();
+		this.enableInsertLevelFromClipboard();
 	    }
-	    if (!editor.tryUndo()) {
-		this.disableUndo();
+	    if (a != null && a.isCutBlocked()) {
+		this.disableCutLevel();
 	    } else {
-		this.enableUndo();
+		this.enableCutLevel();
 	    }
-	    if (!editor.tryRedo()) {
-		this.disableRedo();
-	    } else {
-		this.enableRedo();
-	    }
-	    if (editor.tryBoth()) {
-		this.disableClearHistory();
-	    } else {
-		this.enableClearHistory();
-	    }
-	}
-	if (app.isInGameMode()) {
-	    final AbstractArena a = app.getArenaManager().getArena();
-	    if (a.tryUndo()) {
-		this.enableUndo();
-	    } else {
-		this.disableUndo();
-	    }
-	    if (a.tryRedo()) {
-		this.enableRedo();
-	    } else {
-		this.disableRedo();
-	    }
-	}
-	AbstractArena a = app.getArenaManager().getArena();
-	if (a != null && a.isPasteBlocked()) {
-	    this.disablePasteLevel();
-	    this.disableInsertLevelFromClipboard();
-	} else {
-	    this.enablePasteLevel();
-	    this.enableInsertLevelFromClipboard();
-	}
-	if (a != null && a.isCutBlocked()) {
-	    this.disableCutLevel();
-	} else {
-	    this.enableCutLevel();
+	} catch (final Exception ex) {
+	    LaserTank.getErrorLogger().logError(ex);
 	}
     }
 
