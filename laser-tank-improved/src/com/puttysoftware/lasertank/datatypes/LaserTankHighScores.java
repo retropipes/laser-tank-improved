@@ -11,24 +11,24 @@ import java.util.ArrayList;
 import com.puttysoftware.fileio.GameIOUtilities;
 import com.puttysoftware.scoring.ScoreTable;
 
-public class HighScores {
+public class LaserTankHighScores {
     // Constants
     private static final int NAME_LEN = 6;
 
-    public static HighScores loadFromFile(final File file) throws IOException {
+    public static LaserTankHighScores loadFromFile(final File file) throws IOException {
 	try (FileInputStream fs = new FileInputStream(file)) {
-	    return HighScores.loadFromStream(fs);
+	    return LaserTankHighScores.loadFromStream(fs);
 	}
     }
 
-    public static HighScores loadFromResource(final String resource) throws IOException {
-	try (InputStream fs = HighScores.class.getResourceAsStream(resource)) {
-	    return HighScores.loadFromStream(fs);
+    public static LaserTankHighScores loadFromResource(final String resource) throws IOException {
+	try (InputStream fs = LaserTankHighScores.class.getResourceAsStream(resource)) {
+	    return LaserTankHighScores.loadFromStream(fs);
 	}
     }
 
     // Internal stuff
-    private static HighScores loadFromStream(final InputStream fs) throws IOException {
+    private static LaserTankHighScores loadFromStream(final InputStream fs) throws IOException {
 	// Create temporary storage
 	final ArrayList<String> nameTemp = new ArrayList<>();
 	final ArrayList<Integer> moveTemp = new ArrayList<>();
@@ -38,9 +38,9 @@ public class HighScores {
 	while (success) {
 	    try {
 		// Load name
-		final byte[] nameData = new byte[HighScores.NAME_LEN];
+		final byte[] nameData = new byte[LaserTankHighScores.NAME_LEN];
 		bytesRead = fs.read(nameData);
-		if (bytesRead < HighScores.NAME_LEN) {
+		if (bytesRead < LaserTankHighScores.NAME_LEN) {
 		    success = false;
 		    break;
 		}
@@ -83,14 +83,14 @@ public class HighScores {
 	    table.setEntryScore(x, 1, shotLoadTemp[x]);
 	}
 	// Return final result
-	return new HighScores(table);
+	return new LaserTankHighScores(table);
     }
 
     // Fields
     private final ScoreTable scoreData;
 
     // Constructor - used only internally
-    private HighScores(final ScoreTable data) {
+    private LaserTankHighScores(final ScoreTable data) {
 	this.scoreData = data;
     }
 
