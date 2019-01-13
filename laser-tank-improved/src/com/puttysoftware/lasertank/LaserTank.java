@@ -8,6 +8,8 @@ package com.puttysoftware.lasertank;
 import java.awt.desktop.PreferencesEvent;
 import java.awt.desktop.PreferencesHandler;
 
+import javax.swing.SwingUtilities;
+
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.errors.ErrorLogger;
 import com.puttysoftware.integration.NativeIntegration;
@@ -42,6 +44,10 @@ public class LaserTank {
     public static void logNonFatalError(final Throwable t) {
 	LaserTank.errorLogger.logNonFatalError(t);
 	CommonDialogs.showTitledDialog(LaserTank.NONFATAL_MESSAGE, LaserTank.NONFATAL_TITLE);
+    }
+
+    public static void logNonFatalErrorDirectly(final Throwable t) {
+	LaserTank.errorLogger.logNonFatalError(t);
     }
 
     private static void initStrings() {
@@ -84,6 +90,10 @@ public class LaserTank {
 	    ni.setAboutHandler(LaserTank.application.getAboutDialog());
 	    ni.setPreferencesHandler(new PreferencesInvoker());
 	    ni.setQuitHandler(LaserTank.application.getGUIManager());
+	    // Handle Event Thread errors
+	    EventThreadUEH etueh = new EventThreadUEH();
+	    EventThreadUEHInstaller etuehi = new EventThreadUEHInstaller(etueh);
+	    SwingUtilities.invokeAndWait(etuehi);
 	    // Display GUI
 	    LaserTank.application.bootGUI();
 	} catch (final Throwable t) {
