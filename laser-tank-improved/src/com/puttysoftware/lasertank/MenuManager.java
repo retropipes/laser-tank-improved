@@ -407,7 +407,7 @@ public class MenuManager {
 		}
 		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
     }
@@ -549,7 +549,7 @@ public class MenuManager {
 		this.enableCutLevel();
 	    }
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	}
     }
 

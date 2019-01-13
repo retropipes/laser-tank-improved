@@ -21,6 +21,8 @@ public class LaserTank {
     private static String PROGRAM_NAME = "LaserTank";
     private static String ERROR_MESSAGE = null;
     private static String ERROR_TITLE = null;
+    private static String NONFATAL_MESSAGE = null;
+    private static String NONFATAL_TITLE = null;
     private static ErrorLogger errorLogger;
 
     // Methods
@@ -28,13 +30,18 @@ public class LaserTank {
 	return LaserTank.application;
     }
 
-    public static ErrorLogger getErrorLogger() {
+    public static void logError(final Throwable t) {
 	CommonDialogs.showErrorDialog(LaserTank.ERROR_MESSAGE, LaserTank.ERROR_TITLE);
-	return LaserTank.errorLogger;
+	LaserTank.errorLogger.logError(t);
     }
 
-    public static ErrorLogger getErrorLoggerDirectly() {
-	return LaserTank.errorLogger;
+    public static void logErrorDirectly(final Throwable t) {
+	LaserTank.errorLogger.logError(t);
+    }
+
+    public static void logNonFatalError(final Throwable t) {
+	LaserTank.errorLogger.logNonFatalError(t);
+	CommonDialogs.showTitledDialog(LaserTank.NONFATAL_MESSAGE, LaserTank.NONFATAL_TITLE);
     }
 
     private static void initStrings() {
@@ -43,6 +50,10 @@ public class LaserTank {
 		StringConstants.ERROR_STRING_ERROR_TITLE);
 	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
 		StringConstants.ERROR_STRING_ERROR_MESSAGE);
+	LaserTank.NONFATAL_TITLE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		StringConstants.ERROR_STRING_NONFATAL_TITLE);
+	LaserTank.NONFATAL_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		StringConstants.ERROR_STRING_NONFATAL_MESSAGE);
     }
 
     public static void main(final String[] args) {
@@ -59,7 +70,7 @@ public class LaserTank {
 		// Something has gone horribly wrong
 		CommonDialogs.showErrorDialog("Something has gone horribly wrong trying to load the string data!",
 			"FATAL ERROR");
-		LaserTank.getErrorLoggerDirectly().logError(re);
+		LaserTank.logErrorDirectly(re);
 	    }
 	    // Create and initialize application
 	    LaserTank.application = new Application(ni);
@@ -76,7 +87,7 @@ public class LaserTank {
 	    // Display GUI
 	    LaserTank.application.getGUIManager().showGUI();
 	} catch (final Throwable t) {
-	    LaserTank.getErrorLogger().logError(t);
+	    LaserTank.logError(t);
 	}
     }
 

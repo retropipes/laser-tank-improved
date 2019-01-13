@@ -55,7 +55,7 @@ class LPBLoadTask extends Thread {
 	} catch (final IOException ie) {
 	    CommonDialogs.showDialog(ie.getMessage());
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	} finally {
 	    this.loadFrame.setVisible(false);
 	}

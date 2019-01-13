@@ -1,5 +1,5 @@
 0=LaserTank Error
-1=Perhaps a bug is to blame for this error message. Include the debug log with your bug report. Email bug reports to: products@puttysoftware.com Subject: LaserTank Bug Report
+1=Perhaps a bug is to blame for this error message. Include the log with your bug report at https://github.com/PuttySoftware/laser-tank-improved/issues/new.
 2=Tank location NOT found!
 3=Couldn't create temporary folder!
 4=The code entered is not a valid cheat code!
@@ -10,7 +10,7 @@
 9=Printing Failed!
 10=Unknown level format version!
 11=Unknown object encountered.
-12=Failed to load image:
-13=, because:
-14=Incorrect Protection Key!
-15=Protection
+12=Incorrect Protection Key!
+13=Protection
+14=LaserTank Warning
+15=Whoops! Something went wrong with that last action. The details have been logged.

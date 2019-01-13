@@ -39,7 +39,7 @@ public class AboutDialog implements AboutHandler {
 		    ad.hideAboutDialog();
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
     }

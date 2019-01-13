@@ -140,10 +140,10 @@ public class LoadTask extends Thread {
 		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
 			StringConstants.DIALOG_STRING_ARENA_LOADING_FAILED));
 	    }
-	    LaserTank.getErrorLoggerDirectly().logNonFatalError(ie);
+	    LaserTank.logNonFatalError(ie);
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	} finally {
 	    this.loadFrame.setVisible(false);
 	}

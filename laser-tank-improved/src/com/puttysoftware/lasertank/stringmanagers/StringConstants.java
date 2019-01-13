@@ -226,6 +226,8 @@ public class StringConstants {
     public static final int ERROR_STRING_UNKNOWN_OBJECT = 11;
     public static final int ERROR_STRING_BAD_PROTECTION_KEY = 12;
     public static final int ERROR_STRING_PROTECTION = 13;
+    public static final int ERROR_STRING_NONFATAL_TITLE = 14;
+    public static final int ERROR_STRING_NONFATAL_MESSAGE = 15;
     // Prefs String Constants
     public static final int PREFS_STRING_TITLE = 0;
     public static final int PREFS_STRING_ENABLE_SOUNDS = 1;

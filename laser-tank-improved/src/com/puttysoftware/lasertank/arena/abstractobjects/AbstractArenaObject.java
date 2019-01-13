@@ -172,22 +172,22 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	    copy.material = this.material;
 	    return copy;
 	} catch (final InstantiationException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	} catch (final IllegalAccessException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	} catch (final IllegalArgumentException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	} catch (final InvocationTargetException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	} catch (final NoSuchMethodException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	} catch (final SecurityException e) {
-	    LaserTank.getErrorLogger().logError(e);
+	    LaserTank.logError(e);
 	    return null;
 	}
     }

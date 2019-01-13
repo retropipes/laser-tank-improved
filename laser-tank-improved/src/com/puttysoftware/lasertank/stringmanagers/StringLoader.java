@@ -68,7 +68,7 @@ public class StringLoader {
 	} catch (final IOException ioe) {
 	    CommonDialogs.showErrorDialog("Something has gone horribly wrong trying to load the language string data!",
 		    "FATAL ERROR");
-	    LaserTank.getErrorLoggerDirectly().logError(ioe);
+	    LaserTank.logErrorDirectly(ioe);
 	}
     }
 
@@ -99,7 +99,7 @@ public class StringLoader {
 	} catch (final IOException ioe) {
 	    CommonDialogs.showErrorDialog("Something has gone horribly wrong trying to load the string data!",
 		    "FATAL ERROR");
-	    LaserTank.getErrorLoggerDirectly().logError(ioe);
+	    LaserTank.logErrorDirectly(ioe);
 	}
     }
 
@@ -142,7 +142,7 @@ public class StringLoader {
 	    } catch (final IOException ioe) {
 		CommonDialogs.showErrorDialog("Something has gone horribly wrong trying to load the language data!",
 			"FATAL ERROR");
-		LaserTank.getErrorLoggerDirectly().logError(ioe);
+		LaserTank.logErrorDirectly(ioe);
 	    }
 	}
 	return StringLoader.LOCALIZED_LANGUAGES.toArray(new String[StringLoader.LOCALIZED_LANGUAGES.size()]);

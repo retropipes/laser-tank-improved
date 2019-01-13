@@ -330,17 +330,17 @@ public class ArenaObjectList {
 		    return o;
 		}
 	    } catch (final InstantiationException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalAccessException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalArgumentException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final InvocationTargetException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final NoSuchMethodException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final SecurityException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    }
 	}
 	return null;
@@ -367,17 +367,17 @@ public class ArenaObjectList {
 		    return o;
 		}
 	    } catch (final InstantiationException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalAccessException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalArgumentException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final InvocationTargetException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final NoSuchMethodException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final SecurityException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    }
 	}
 	return null;
@@ -404,17 +404,17 @@ public class ArenaObjectList {
 		    return o;
 		}
 	    } catch (final InstantiationException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalAccessException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalArgumentException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final InvocationTargetException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final NoSuchMethodException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final SecurityException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    }
 	}
 	return null;
@@ -441,17 +441,17 @@ public class ArenaObjectList {
 		    return o;
 		}
 	    } catch (final InstantiationException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalAccessException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalArgumentException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final InvocationTargetException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final NoSuchMethodException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final SecurityException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    }
 	}
 	return null;
@@ -478,17 +478,17 @@ public class ArenaObjectList {
 		    return o;
 		}
 	    } catch (final InstantiationException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalAccessException ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    } catch (final IllegalArgumentException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final InvocationTargetException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final NoSuchMethodException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    } catch (final SecurityException e) {
-		LaserTank.getErrorLogger().logError(e);
+		LaserTank.logError(e);
 	    }
 	}
 	return null;

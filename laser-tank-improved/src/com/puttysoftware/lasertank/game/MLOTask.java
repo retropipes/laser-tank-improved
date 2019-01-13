@@ -639,7 +639,7 @@ final class MLOTask extends Thread {
 	} catch (final AlreadyDeadException ade) {
 	    // Ignore
 	} catch (final Throwable t) {
-	    LaserTank.getErrorLogger().logError(t);
+	    LaserTank.logError(t);
 	}
     }
 }

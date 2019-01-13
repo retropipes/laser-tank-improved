@@ -54,7 +54,7 @@ class AnimationTask extends Thread {
 		}
 	    }
 	} catch (final Throwable t) {
-	    LaserTank.getErrorLogger().logError(t);
+	    LaserTank.logError(t);
 	}
     }
 

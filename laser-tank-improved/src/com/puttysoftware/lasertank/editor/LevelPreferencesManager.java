@@ -50,7 +50,7 @@ class LevelPreferencesManager {
 		    lpm.hidePrefs();
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 

@@ -91,7 +91,7 @@ public class SaveTask extends Thread {
 	} catch (final ProtectionCancelException pce) {
 	    success = false;
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	}
 	if (this.isSavedGame) {
 	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE,

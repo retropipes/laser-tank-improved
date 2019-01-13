@@ -134,7 +134,7 @@ public class GameManager {
 		final int py = gm.getPlayerManager().getPlayerLocationY();
 		GameManager.this.fireLaser(px, py, gm.tank);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -150,7 +150,7 @@ public class GameManager {
 			    StringConstants.GAME_STRING_OUT_OF_BOMBS));
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -182,7 +182,7 @@ public class GameManager {
 			    StringConstants.GAME_STRING_OUT_OF_BOOSTS));
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -194,7 +194,7 @@ public class GameManager {
 		final int py = gm.getPlayerManager().getPlayerLocationY();
 		GameManager.this.fireLaser(px, py, gm.tank);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -210,7 +210,7 @@ public class GameManager {
 			    StringConstants.GAME_STRING_OUT_OF_HEAT_BOMBS));
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -226,7 +226,7 @@ public class GameManager {
 			    StringConstants.GAME_STRING_OUT_OF_ICE_BOMBS));
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -282,7 +282,7 @@ public class GameManager {
 		final int py = gm.getPlayerManager().getPlayerLocationY();
 		GameManager.this.fireLaser(px, py, gm.tank);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -314,7 +314,7 @@ public class GameManager {
 			    StringConstants.GAME_STRING_OUT_OF_MAGNETS));
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -326,7 +326,7 @@ public class GameManager {
 		final int py = gm.getPlayerManager().getPlayerLocationY();
 		GameManager.this.fireLaser(px, py, gm.tank);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -351,7 +351,7 @@ public class GameManager {
 		    break;
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -363,7 +363,7 @@ public class GameManager {
 		final int py = gm.getPlayerManager().getPlayerLocationY();
 		GameManager.this.fireLaser(px, py, gm.tank);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -409,7 +409,7 @@ public class GameManager {
 		    gm.redrawArena();
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -500,7 +500,7 @@ public class GameManager {
 		    }
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -564,7 +564,7 @@ public class GameManager {
 		    app.getGUIManager().showGUI();
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -2160,7 +2160,7 @@ public class GameManager {
 		    GameManager.this.updatePushedPosition(x, y, x + pushX, y + pushY, o);
 		    GameManager.this.waitForMLOLoop();
 		} catch (final Throwable t) {
-		    LaserTank.getErrorLogger().logError(t);
+		    LaserTank.logError(t);
 		}
 	    }
 	}.start();

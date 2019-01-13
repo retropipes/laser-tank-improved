@@ -705,7 +705,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	    copy.savedState = (LowLevelArenaDataStore) this.savedState.clone();
 	    return copy;
 	} catch (final CloneNotSupportedException cnse) {
-	    LaserTank.getErrorLogger().logError(cnse);
+	    LaserTank.logError(cnse);
 	    return null;
 	}
     }
@@ -1710,7 +1710,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	try {
 	    this.iue.updateRedoHistory((LowLevelArenaDataStore) this.data.clone(), whatWas);
 	} catch (final CloneNotSupportedException cnse) {
-	    LaserTank.getErrorLogger().logError(cnse);
+	    LaserTank.logError(cnse);
 	}
     }
 
@@ -1719,7 +1719,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	try {
 	    this.iue.updateUndoHistory((LowLevelArenaDataStore) this.data.clone(), whatWas);
 	} catch (final CloneNotSupportedException cnse) {
-	    LaserTank.getErrorLogger().logError(cnse);
+	    LaserTank.logError(cnse);
 	}
     }
 

@@ -75,7 +75,7 @@ public class V4LevelLoadTask extends Thread {
 	    CommonDialogs.showDialog(ie.getMessage());
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	} finally {
 	    this.loadFrame.setVisible(false);
 	}

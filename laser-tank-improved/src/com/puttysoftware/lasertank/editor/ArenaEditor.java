@@ -70,7 +70,7 @@ public class ArenaEditor {
 		    me.editObject(x, y);
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -82,7 +82,7 @@ public class ArenaEditor {
 		final int y = e.getY();
 		me.editObject(x, y);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -179,7 +179,7 @@ public class ArenaEditor {
 		final int y = e.getY();
 		ArenaEditor.this.setPlayerLocation(x, y);
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
 
@@ -229,7 +229,7 @@ public class ArenaEditor {
 		    ae.changeLayerImpl(ArenaConstants.LAYER_UPPER_OBJECTS);
 		}
 	    } catch (final Exception ex) {
-		LaserTank.getErrorLogger().logError(ex);
+		LaserTank.logError(ex);
 	    }
 	}
     }
@@ -575,7 +575,7 @@ public class ArenaEditor {
 		this.exitEditor();
 	    }
 	} catch (final Exception ex) {
-	    LaserTank.getErrorLogger().logError(ex);
+	    LaserTank.logError(ex);
 	}
     }
 
@@ -1003,15 +1003,15 @@ public class ArenaEditor {
     public boolean tryUndo() {
 	return this.engine.tryUndo();
     }
-    
+
     public boolean tryRedo() {
 	return this.engine.tryRedo();
     }
-    
+
     public boolean tryBoth() {
 	return this.engine.tryBoth();
     }
-    
+
     public void undo() {
 	final Application app = LaserTank.getApplication();
 	this.engine.undo();

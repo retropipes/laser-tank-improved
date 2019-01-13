@@ -89,7 +89,7 @@ public class LogoManager {
 	    }
 	    return new BufferedImageIcon(image);
 	} catch (final IOException ie) {
-	    LaserTank.getErrorLogger().logError(ie);
+	    LaserTank.logError(ie);
 	    return null;
 	}
     }
