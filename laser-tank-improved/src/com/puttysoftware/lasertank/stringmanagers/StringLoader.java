@@ -26,7 +26,7 @@ public class StringLoader {
 	StringLoader.STRING_CACHE = null;
 	StringLoader.LOCALIZED_LANGUAGES = null;
 	StringLoader.LANGUAGE_ID = newLanguageID;
-	StringLoader.LANGUAGE_NAME = StringLoader.loadLanguageString(StringConstants.LANGUAGE_STRINGS_FILE,
+	StringLoader.LANGUAGE_NAME = StringLoader.loadLanguageString(StringConstants.STRINGS_FILE_LANGUAGE,
 		StringLoader.LANGUAGE_ID) + "/";
 	DifficultyConstants.reloadDifficultyNames();
 	ArenaConstants.activeLanguageChanged();
@@ -128,7 +128,7 @@ public class StringLoader {
 
     public static String loadString(final int fileID, final int strID) {
 	if (fileID < 0) {
-	    return StringLoader.loadLanguageString(-StringConstants.NOTL_STRINGS_FILE, strID);
+	    return StringLoader.loadLanguageString(-StringConstants.STRINGS_FILE_GLOBAL, strID);
 	} else {
 	    if (StringLoader.STRING_CACHE == null) {
 		// Create string cache
@@ -152,11 +152,11 @@ public class StringLoader {
     public static void setDefaultLanguage() {
 	StringLoader.LOCALIZED_LANGUAGES = null;
 	StringLoader.LANGUAGE_ID = 0;
-	StringLoader.LANGUAGE_NAME = StringLoader.loadLanguageString(StringConstants.LANGUAGE_STRINGS_FILE,
+	StringLoader.LANGUAGE_NAME = StringLoader.loadLanguageString(StringConstants.STRINGS_FILE_LANGUAGE,
 		StringLoader.LANGUAGE_ID) + "/";
 	// Initialize Image String Cache
 	StringLoader.STRING_CACHE = new ArrayList<>();
-	StringLoader.cacheStringFile(StringConstants.OBJECT_STRINGS_FILE);
-	StringLoader.cacheStringFile(StringConstants.GENERIC_STRINGS_FILE);
+	StringLoader.cacheStringFile(StringConstants.STRINGS_FILE_OBJECT);
+	StringLoader.cacheStringFile(StringConstants.STRINGS_FILE_GENERIC);
     }
 }

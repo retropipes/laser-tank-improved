@@ -28,20 +28,20 @@ public class ArenaConstants {
 
     public static void activeLanguageChanged() {
 	ArenaConstants.LAYER_LIST = new String[] {
-		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 			StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER),
-		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 			StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER),
-		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 			StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER),
-		StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 			StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER) };
 	ArenaConstants.ERA_LIST = new String[] {
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_PAST),
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PAST),
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_PRESENT),
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_FUTURE),
-		StringLoader.loadString(StringConstants.ERA_STRINGS_FILE, ArenaConstants.ERA_DISTANT_FUTURE) };
+		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE) };
     }
 
     public static String[] getEraList() {

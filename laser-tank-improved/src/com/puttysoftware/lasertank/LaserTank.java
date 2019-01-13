@@ -52,13 +52,13 @@ public class LaserTank {
 
     private static void initStrings() {
 	StringLoader.setDefaultLanguage();
-	LaserTank.ERROR_TITLE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	LaserTank.ERROR_TITLE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		StringConstants.ERROR_STRING_ERROR_TITLE);
-	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		StringConstants.ERROR_STRING_ERROR_MESSAGE);
-	LaserTank.NONFATAL_TITLE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	LaserTank.NONFATAL_TITLE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		StringConstants.ERROR_STRING_NONFATAL_TITLE);
-	LaserTank.NONFATAL_MESSAGE = StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	LaserTank.NONFATAL_MESSAGE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		StringConstants.ERROR_STRING_NONFATAL_MESSAGE);
     }
 

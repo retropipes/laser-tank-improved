@@ -29,10 +29,10 @@ class LPBLoadTask extends Thread {
     LPBLoadTask(final String file) {
 	JProgressBar loadBar;
 	this.filename = file;
-	this.setName(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 		StringConstants.NOTL_STRING_PLAYBACK_LOADER_NAME));
 	this.loadFrame = new JFrame(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOADING));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOADING));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	this.loadFrame.getContentPane().add(loadBar);
@@ -51,7 +51,7 @@ class LPBLoadTask extends Thread {
 	    LPBFile.loadLPB(arenaFile);
 	    arenaFile.close();
 	} catch (final FileNotFoundException fnfe) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
+	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
 		    StringConstants.GAME_STRING_PLAYBACK_LOAD_FAILED));
 	} catch (final IOException ioe) {
 	    throw new InvalidArenaException(ioe);

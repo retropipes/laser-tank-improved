@@ -10,7 +10,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class DirectionResolver {
     public static String resolveDirectionConstantToImageSuffix(final Direction dir) {
-	return StringLoader.loadString(StringConstants.DIRECTION_STRINGS_FILE, dir.getInternalValue());
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_DIRECTION, dir.getInternalValue());
     }
 
     public static Direction resolveRelativeDirection(final int dX, final int dY) {

@@ -25,7 +25,7 @@ class V4File {
 		a.setData(t, levelCount);
 		final int[] found = a.findPlayer(1);
 		if (found == null) {
-		    throw new InvalidArenaException(StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		    throw new InvalidArenaException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 			    StringConstants.ERROR_STRING_TANK_LOCATION));
 		} else {
 		    a.setStartColumn(0, found[0]);

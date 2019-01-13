@@ -37,7 +37,7 @@ public class PrefixHandler implements AbstractPrefixIO {
 	final byte formatVer = PrefixHandler.readFormatVersion(reader);
 	final boolean res = PrefixHandler.checkFormatVersion(formatVer);
 	if (!res) {
-	    throw new IOException(StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
 	}
 	return formatVer;

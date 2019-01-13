@@ -34,7 +34,7 @@ public class AboutDialog implements AboutHandler {
 	    try {
 		final AboutDialog ad = AboutDialog.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_OK_BUTTON))) {
 		    ad.hideAboutDialog();
 		}
@@ -61,15 +61,15 @@ public class AboutDialog implements AboutHandler {
 	JButton aboutOK;
 	EventHandler handler;
 	handler = new EventHandler();
-	this.aboutFrame = new JFrame(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	this.aboutFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_ABOUT) + StringConstants.COMMON_STRING_SPACE
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME));
 	aboutPane = new Container();
 	textPane = new Container();
 	buttonPane = new Container();
 	logoPane = new Container();
 	aboutOK = new JButton(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
 	aboutOK.setDefaultCapable(true);
 	this.aboutFrame.getRootPane().setDefaultButton(aboutOK);
 	this.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -77,20 +77,20 @@ public class AboutDialog implements AboutHandler {
 	logoPane.setLayout(new FlowLayout());
 	textPane.setLayout(new GridLayout(4, 1));
 	textPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME)
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME)
 			+ StringConstants.COMMON_STRING_SPACE + StringLoader
-				.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_VERSION)
+				.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_VERSION)
 			+ StringConstants.COMMON_STRING_SPACE + ver));
-	textPane.add(new JLabel(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	textPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_AUTHOR)
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_AUTHOR_NAME)));
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_AUTHOR_NAME)));
 	textPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_WEB_SITE)
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_WEB_SITE)
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_GAME_WEB_URL)));
-	textPane.add(new JLabel(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	textPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_BUG_REPORTS)
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_GAME_EMAIL)));
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_GAME_EMAIL)));
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(aboutOK);
 	aboutPane.add(logoPane, BorderLayout.WEST);

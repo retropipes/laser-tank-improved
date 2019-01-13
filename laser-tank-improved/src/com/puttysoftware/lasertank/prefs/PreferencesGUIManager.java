@@ -38,10 +38,10 @@ class PreferencesGUIManager {
 	    try {
 		final PreferencesGUIManager pm = PreferencesGUIManager.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_OK_BUTTON))) {
 		    pm.setPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
 		    pm.hidePrefs();
 		}
@@ -163,39 +163,39 @@ class PreferencesGUIManager {
     private void setUpGUI() {
 	final EventHandler handler = new EventHandler();
 	this.prefFrame = new JFrame(
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_TITLE));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_TITLE));
 	final Container mainPrefPane = new Container();
 	final Container buttonPane = new Container();
 	final Container settingsPane = new Container();
 	final JButton prefsOK = new JButton(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
 	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
-	final JButton prefsCancel = new JButton(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	final JButton prefsCancel = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
 	this.sounds = new JCheckBox(
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_ENABLE_SOUNDS),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ENABLE_SOUNDS),
 		true);
 	this.music = new JCheckBox(
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_ENABLE_MUSIC),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ENABLE_MUSIC),
 		true);
-	this.checkUpdatesStartup = new JCheckBox(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
+	this.checkUpdatesStartup = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
 		StringConstants.PREFS_STRING_STARTUP_UPDATES), true);
 	this.moveOneAtATime = new JCheckBox(
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_ONE_MOVE),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ONE_MOVE),
 		true);
-	this.enableAnimation = new JCheckBox(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
+	this.enableAnimation = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
 		StringConstants.PREFS_STRING_ENABLE_ANIMATION), true);
 	this.actionDelay = new JComboBox<>(new String[] {
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_1),
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_2),
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_3),
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_4),
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_5) });
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_1),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_2),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_3),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_4),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_5) });
 	this.languageList = new JComboBox<>(StringLoader.loadLocalizedLanguagesList());
 	this.editorLayoutList = new JComboBox<>(EditorLayoutConstants.getEditorLayoutList());
-	this.editorShowAllObjects = new JCheckBox(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
+	this.editorShowAllObjects = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
 		StringConstants.PREFS_STRING_SHOW_ALL_OBJECTS), true);
 	this.prefFrame.setContentPane(mainPrefPane);
 	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -209,12 +209,12 @@ class PreferencesGUIManager {
 	settingsPane.add(this.checkUpdatesStartup);
 	settingsPane.add(this.moveOneAtATime);
 	settingsPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE, StringConstants.PREFS_STRING_SPEED_LABEL)));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_LABEL)));
 	settingsPane.add(this.actionDelay);
-	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
+	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
 		StringConstants.PREFS_STRING_ACTIVE_LANGUAGE_LABEL)));
 	settingsPane.add(this.languageList);
-	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.PREFS_STRINGS_FILE,
+	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
 		StringConstants.PREFS_STRING_EDITOR_LAYOUT_LABEL)));
 	settingsPane.add(this.editorLayoutList);
 	settingsPane.add(this.editorShowAllObjects);

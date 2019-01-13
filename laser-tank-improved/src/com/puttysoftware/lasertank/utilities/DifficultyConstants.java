@@ -26,15 +26,15 @@ public final class DifficultyConstants {
 
     public static void reloadDifficultyNames() {
 	DifficultyConstants.DIFFICULTY_NAMES = new String[] {
-		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
 			StringConstants.DIFFICULTY_STRING_KIDS),
-		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
 			StringConstants.DIFFICULTY_STRING_EASY),
-		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
 			StringConstants.DIFFICULTY_STRING_MEDIUM),
-		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
 			StringConstants.DIFFICULTY_STRING_HARD),
-		StringLoader.loadString(StringConstants.DIFFICULTY_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
 			StringConstants.DIFFICULTY_STRING_DEADLY) };
     }
 

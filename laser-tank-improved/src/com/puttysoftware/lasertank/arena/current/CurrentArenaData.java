@@ -1360,7 +1360,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	    final CurrentArenaData tempData = CurrentArenaData.readDataG6(arena, reader, formatVersion);
 	    return tempData;
 	} else {
-	    throw new IOException(StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
 	}
     }
@@ -1380,7 +1380,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	} else if (FormatConstants.isFormatVersionValidGeneration6(formatVersion)) {
 	    this.readSavedStateG6(reader, formatVersion);
 	} else {
-	    throw new IOException(StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
 	}
     }

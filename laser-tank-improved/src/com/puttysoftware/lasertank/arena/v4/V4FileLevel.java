@@ -214,7 +214,7 @@ class V4FileLevel {
 		return null;
 	    }
 	    final String levelName = Charset
-		    .forName(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.name)).toString();
 	    a.setName(levelName);
@@ -224,7 +224,7 @@ class V4FileLevel {
 		return null;
 	    }
 	    final String levelHint = Charset
-		    .forName(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.hint)).toString();
 	    a.setHint(levelHint);
@@ -234,7 +234,7 @@ class V4FileLevel {
 		return null;
 	    }
 	    final String levelAuthor = Charset
-		    .forName(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.author)).toString();
 	    a.setAuthor(levelAuthor);

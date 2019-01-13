@@ -18,8 +18,8 @@ class ModernAccelerators extends Accelerators {
 	int modKey;
 	if (System
 		.getProperty(
-			StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
+		.equalsIgnoreCase(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_MAC_OS_X))) {
 	    modKey = InputEvent.META_DOWN_MASK;
 	} else {

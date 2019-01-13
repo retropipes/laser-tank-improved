@@ -67,8 +67,8 @@ public class LogoManager {
 	    if (drawing) {
 		if (LogoManager.LOGO_DRAW_FONT == null) {
 		    try (InputStream is = LogoManager.class.getResourceAsStream(StringLoader
-			    .loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_FONT_PATH)
-			    + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			    .loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_FONT_PATH)
+			    + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				    StringConstants.NOTL_STRING_FONT_FILENAME))) {
 			final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
 			LogoManager.LOGO_DRAW_FONT = baseFont.deriveFont((float) 24);

@@ -54,12 +54,12 @@ class HelpManager {
 	    final String[] objectNames = objectList.getAllDescriptions();
 	    final BufferedImageIcon[] objectAppearances = objectList.getAllEditorAppearances();
 	    this.hv = new GraphicalHelpViewer(objectAppearances, objectNames, new Color(223, 223, 223));
-	    final JButton export = new JButton(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	    final JButton export = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		    StringConstants.DIALOG_STRING_EXPORT_BUTTON));
 	    export.addActionListener(buttonHandler);
-	    this.helpFrame = new JFrame(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+	    this.helpFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 		    StringConstants.NOTL_STRING_PROGRAM_NAME) + StringConstants.COMMON_STRING_SPACE
-		    + StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_HELP));
+		    + StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_HELP));
 	    this.helpFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	    this.helpFrame.setLayout(new BorderLayout());
 	    this.helpFrame.add(this.hv.getHelp(), BorderLayout.CENTER);

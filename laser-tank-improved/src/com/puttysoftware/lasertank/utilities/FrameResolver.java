@@ -10,7 +10,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class FrameResolver {
     public static String resolveFrameNumberToImageSuffix(final int fn) {
-	return StringLoader.loadString(StringConstants.FRAME_STRINGS_FILE, fn);
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_FRAME, fn);
     }
 
     private FrameResolver() {

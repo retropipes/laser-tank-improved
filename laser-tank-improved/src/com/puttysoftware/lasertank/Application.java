@@ -55,7 +55,7 @@ public final class Application {
 	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
 		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
-		    + StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE, StringConstants.MESSAGE_STRING_BETA)
+		    + StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE, StringConstants.MESSAGE_STRING_BETA)
 		    + Application.VERSION_BETA;
 	} else {
 	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
@@ -243,7 +243,7 @@ public final class Application {
 
     public void updateDirtyWindow(final boolean appDirty) {
 	this.masterFrame.getRootPane().putClientProperty(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_WINDOW_MODIFIED),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_WINDOW_MODIFIED),
 		Boolean.valueOf(appDirty));
     }
 
@@ -296,7 +296,7 @@ public final class Application {
     public void updateLevelInfoList() {
 	JFrame loadFrame;
 	JProgressBar loadBar;
-	loadFrame = new JFrame(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	loadFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_UPDATING_LEVEL_INFO));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);

@@ -73,17 +73,17 @@ public class CurrentArena extends AbstractArena {
 	this.levelInfoList = new ArrayList<>();
 	final String randomID = IDGenerator.getRandomIDString(16);
 	this.basePath = System
-		.getProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		.getProperty(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_TEMP_DIR))
 		+ File.separator
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME)
-		+ File.separator + randomID + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME)
+		+ File.separator + randomID + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_FOLDER);
 	final File base = new File(this.basePath);
 	final boolean res = base.mkdirs();
 	if (!res) {
 	    throw new IOException(
-		    StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE, StringConstants.ERROR_STRING_TEMP_DIR));
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR, StringConstants.ERROR_STRING_TEMP_DIR));
 	}
     }
 
@@ -274,14 +274,14 @@ public class CurrentArena extends AbstractArena {
 
     private String generateCurrentLevelInfo() {
 	final StringBuilder sb = new StringBuilder();
-	sb.append(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	sb.append(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_ARENA_LEVEL));
 	sb.append(StringConstants.COMMON_STRING_SPACE);
 	sb.append(this.getActiveLevelNumber() + 1);
 	sb.append(StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE);
 	sb.append(this.getName().trim());
 	sb.append(StringConstants.COMMON_STRING_SPACE);
-	sb.append(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	sb.append(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_ARENA_LEVEL_BY));
 	sb.append(StringConstants.COMMON_STRING_SPACE);
 	sb.append(this.getAuthor().trim());
@@ -318,7 +318,7 @@ public class CurrentArena extends AbstractArena {
     @Override
     public String getArenaTempMusicFolder() {
 	return this.basePath + File.separator
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MUSIC_FOLDER)
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_MUSIC_FOLDER)
 		+ File.separator;
     }
 
@@ -360,9 +360,9 @@ public class CurrentArena extends AbstractArena {
     private File getLevelFile(final int level, final int era) {
 	return new File(this.basePath + File.separator
 		+ StringLoader
-			.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
+			.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
 		+ level
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
 		+ era + Extension.getArenaLevelExtensionWithPeriod());
     }
@@ -375,10 +375,10 @@ public class CurrentArena extends AbstractArena {
     private XMLFileReader getLevelReaderG5() throws IOException {
 	return new XMLFileReader(
 		this.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
 			+ this.activeLevel + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
     }
 
@@ -386,12 +386,12 @@ public class CurrentArena extends AbstractArena {
 	return new XMLFileReader(
 		this.basePath + File.separator
 			+ StringLoader.loadString(
-				StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
+				StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
 			+ this.activeLevel
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
 			+ this.activeEra + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
     }
 
@@ -404,12 +404,12 @@ public class CurrentArena extends AbstractArena {
 	return new XMLFileWriter(
 		this.basePath + File.separator
 			+ StringLoader.loadString(
-				StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
+				StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
 			+ this.activeLevel
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
 			+ this.activeEra + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
     }
 
@@ -536,10 +536,10 @@ public class CurrentArena extends AbstractArena {
 	// Create metafile reader
 	try (XMLFileReader metaReader = new XMLFileReader(
 		m.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_ARENA_FORMAT_METAFILE)
 			+ Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_ARENA))) {
 	    // Read metafile
 	    version = m.readArenaMetafileVersion(metaReader);
@@ -850,10 +850,10 @@ public class CurrentArena extends AbstractArena {
 	// Create metafile writer
 	try (XMLFileWriter metaWriter = new XMLFileWriter(
 		this.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				StringConstants.NOTL_STRING_ARENA_FORMAT_METAFILE)
 			+ Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_ARENA_FORMAT_ARENA))) {
 	    // Write metafile
 	    this.writeArenaMetafile(metaWriter);

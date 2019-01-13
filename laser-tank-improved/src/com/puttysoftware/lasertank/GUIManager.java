@@ -156,7 +156,7 @@ public class GUIManager implements QuitHandler {
     public void setUp() {
 	final Application app = LaserTank.getApplication();
 	app.setTitle(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME));
 	app.addWindowListener(this.cHandler);
 	app.addWindowFocusListener(this.fHandler);
     }

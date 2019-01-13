@@ -10,7 +10,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class IndexResolver {
     public static String resolveIndexNumberToImageSuffix(final int in) {
-	return StringLoader.loadString(StringConstants.INDEX_STRINGS_FILE, in);
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_INDEX, in);
     }
 
     private IndexResolver() {

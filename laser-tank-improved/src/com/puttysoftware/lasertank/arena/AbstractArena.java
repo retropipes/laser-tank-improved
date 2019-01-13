@@ -26,10 +26,10 @@ public abstract class AbstractArena {
     // Static methods
     public static String getArenaTempFolder() {
 	return System
-		.getProperty(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+		.getProperty(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 			StringConstants.NOTL_STRING_TEMP_DIR))
 		+ File.separator
-		+ StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_PROGRAM_NAME);
+		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME);
     }
 
     public static int getMaxFloors() {

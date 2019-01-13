@@ -66,9 +66,9 @@ public class ArenaManager {
 	if (!FilenameChecker
 		.isFilenameOK(ArenaManager.getNameWithoutExtension(ArenaManager.getFileNameOnly(filename)))) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD));
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOAD));
 	} else {
 	    // Run cleanup task
 	    CleanupTask.cleanUp();
@@ -80,10 +80,10 @@ public class ArenaManager {
 
     private static void saveFile(final String filename, final boolean isSavedGame, final boolean protect) {
 	if (isSavedGame) {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE,
+	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE,
 		    StringConstants.MESSAGE_STRING_SAVING_GAME));
 	} else {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.MESSAGE_STRINGS_FILE,
+	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE,
 		    StringConstants.MESSAGE_STRING_SAVING_ARENA));
 	}
 	final SaveTask xst = new SaveTask(filename, isSavedGame, protect);
@@ -94,13 +94,13 @@ public class ArenaManager {
 	String type, source;
 	final Application app = LaserTank.getApplication();
 	if (app.isInEditorMode()) {
-	    type = StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	    type = StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		    StringConstants.DIALOG_STRING_PROMPT_SAVE_ARENA);
-	    source = StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE, StringConstants.EDITOR_STRING_EDITOR);
+	    source = StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR);
 	} else if (app.isInGameMode()) {
-	    type = StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	    type = StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		    StringConstants.DIALOG_STRING_PROMPT_SAVE_GAME);
-	    source = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+	    source = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 		    StringConstants.NOTL_STRING_PROGRAM_NAME);
 	} else {
 	    // Not in the game or editor, so abort
@@ -187,7 +187,7 @@ public class ArenaManager {
 	boolean saved = true;
 	String filename, extension, file, dir;
 	final FileDialog fd = new FileDialog((JFrame) null,
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOAD),
 		FileDialog.LOAD);
 	fd.setDirectory(initialDirectory);
 	if (this.getDirty()) {
@@ -225,7 +225,7 @@ public class ArenaManager {
 		    final V4LevelLoadTask ollt = new V4LevelLoadTask(filename);
 		    ollt.start();
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			    StringConstants.DIALOG_STRING_NON_ARENA_FILE));
 		}
 	    } else {
@@ -296,12 +296,12 @@ public class ArenaManager {
     public boolean saveArenaAs(final boolean protect) {
 	final Application app = LaserTank.getApplication();
 	String filename = StringConstants.COMMON_STRING_EMPTY;
-	String fileOnly = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+	String fileOnly = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 		StringConstants.NOTL_STRING_DOUBLE_BACKSLASH);
 	String extension, file, dir;
 	final String lastSave = PreferencesManager.getLastDirSave();
 	final FileDialog fd = new FileDialog((JFrame) null,
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_SAVE),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_SAVE),
 		FileDialog.SAVE);
 	fd.setDirectory(lastSave);
 	while (!FilenameChecker.isFilenameOK(fileOnly)) {
@@ -314,9 +314,9 @@ public class ArenaManager {
 		fileOnly = filename.substring(dir.length() + 1);
 		if (!FilenameChecker.isFilenameOK(fileOnly)) {
 		    CommonDialogs.showErrorDialog(
-			    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 				    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
-			    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 				    StringConstants.DIALOG_STRING_SAVE));
 		} else {
 		    PreferencesManager.setLastDirSave(dir);

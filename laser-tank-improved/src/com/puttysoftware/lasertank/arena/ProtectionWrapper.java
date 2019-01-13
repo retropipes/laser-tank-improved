@@ -16,9 +16,9 @@ public class ProtectionWrapper {
 
     private static char[] getTransform() {
 	return CommonDialogs.showPasswordInputDialog(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_PROTECTION_PROMPT),
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_PROTECTION_TITLE),
 		15);
     }

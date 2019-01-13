@@ -10,23 +10,23 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class Extension {
     // Constants
-    private static final String PREFERENCES_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String PREFERENCES_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_PREFS);
-    private static final String OLD_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String OLD_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_OLD_LEVEL);
-    private static final String OLD_PLAYBACK_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String OLD_PLAYBACK_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_OLD_PLAYBACK);
-    private static final String ARENA_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String ARENA_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_ARENA);
-    private static final String PROTECTED_ARENA_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String PROTECTED_ARENA_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_PROTECTED_ARENA);
-    private static final String ARENA_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String ARENA_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_ARENA_DATA);
-    private static final String SAVED_GAME_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String SAVED_GAME_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_SAVED_GAME);
-    private static final String SCORES_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String SCORES_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_SCORES);
-    private static final String SOLUTION_EXTENSION = StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+    private static final String SOLUTION_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_SOLUTION);
 
     public static String getArenaExtension() {

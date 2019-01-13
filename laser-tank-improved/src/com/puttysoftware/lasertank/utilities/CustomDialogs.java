@@ -13,18 +13,18 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 public class CustomDialogs {
     public static int showDeadDialog() {
 	return JOptionPane.showOptionDialog(null,
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_DEAD_MESSAGE),
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_DEAD_TITLE),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_DEAD_TITLE),
 		JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		new String[] {
-			StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 				StringConstants.DIALOG_STRING_UNDO_BUTTON),
-			StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 				StringConstants.DIALOG_STRING_RESTART_BUTTON),
-			StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+			StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 				StringConstants.DIALOG_STRING_END_BUTTON) },
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_UNDO_BUTTON));
     }
 

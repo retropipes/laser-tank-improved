@@ -42,9 +42,9 @@ class LPBFile {
 	final boolean success = LPBFileLoader.loadLPB(file);
 	if (!success) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 			    StringConstants.ERROR_STRING_LPB_LOAD_FAILURE),
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
 			    StringConstants.GAME_STRING_LOAD_PLAYBACK));
 	} else {
 	    final GameManager gm = LaserTank.getApplication().getGameManager();
@@ -54,9 +54,9 @@ class LPBFile {
 		LPBFile.decodeData(data[x]);
 	    }
 	    CommonDialogs.showTitledDialog(
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
 			    StringConstants.GAME_STRING_PLAYBACK_LOADED),
-		    StringLoader.loadString(StringConstants.GAME_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
 			    StringConstants.GAME_STRING_LOAD_PLAYBACK));
 	}
     }

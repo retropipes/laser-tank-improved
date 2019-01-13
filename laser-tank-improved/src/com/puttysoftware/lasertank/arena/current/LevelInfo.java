@@ -51,9 +51,9 @@ public final class LevelInfo {
 	this.playerData.fill(-1);
 	this.horizontalWraparoundEnabled = false;
 	this.verticalWraparoundEnabled = false;
-	this.name = StringLoader.loadString(StringConstants.GENERIC_STRINGS_FILE,
+	this.name = StringLoader.loadString(StringConstants.STRINGS_FILE_GENERIC,
 		StringConstants.GENERIC_STRING_UN_NAMED_LEVEL);
-	this.author = StringLoader.loadString(StringConstants.GENERIC_STRINGS_FILE,
+	this.author = StringLoader.loadString(StringConstants.STRINGS_FILE_GENERIC,
 		StringConstants.GENERIC_STRING_UNKNOWN_AUTHOR);
 	this.hint = StringConstants.COMMON_STRING_EMPTY;
 	this.difficulty = 1;

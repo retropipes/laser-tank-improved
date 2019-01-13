@@ -36,7 +36,7 @@ public class BoardPrinter {
 	    final BufferedImage bi = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 	    c.paintComponents(bi.createGraphics());
 	    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    ImageIO.write(bi, StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+	    ImageIO.write(bi, StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 		    StringConstants.NOTL_STRING_IMAGE_FORMAT_PNG), baos);
 	    final byte[] data = baos.toByteArray();
 	    final ByteArrayInputStream bais = new ByteArrayInputStream(data);
@@ -53,21 +53,21 @@ public class BoardPrinter {
 	    }
 	} catch (final IOException ioe) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
 			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
 	} catch (final PrintException pe) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
 			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
 	} catch (final NullPointerException npe) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.ERROR_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
 			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.MENU_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
 			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
 	}
     }

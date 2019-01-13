@@ -71,15 +71,15 @@ public class ImageManager {
 	    String name = obj.getImageName();
 	    final String normalName = ImageManager.normalizeName(name);
 	    final URL url = ImageManager.LOAD_CLASS.getResource(
-		    StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OBJECTS_PATH)
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OBJECTS_PATH)
 			    + normalName + StringConstants.COMMON_STRING_NOTL_IMAGE_EXTENSION_PNG);
 	    final BufferedImage image = ImageIO.read(url);
 	    final String customText = obj.getCustomText();
 	    if (useText && customText != null) {
 		if (ImageManager.DRAW_FONT == null) {
 		    try (InputStream is = ImageManager.class.getResourceAsStream(StringLoader
-			    .loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_FONT_PATH)
-			    + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
+			    .loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_FONT_PATH)
+			    + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 				    StringConstants.NOTL_STRING_FONT_FILENAME))) {
 			final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
 			ImageManager.DRAW_FONT = baseFont.deriveFont(ImageManager.DRAW_SIZE);

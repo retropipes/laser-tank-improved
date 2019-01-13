@@ -282,11 +282,11 @@ public abstract class AbstractArenaObject extends CloneableObject {
     }
 
     public final String getBaseImageName() {
-	return StringLoader.loadString(StringConstants.IMAGE_STRINGS_FILE, this.getStringBaseID());
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_IMAGE, this.getStringBaseID());
     }
 
     public final String getBaseName() {
-	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 0);
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_OBJECT, this.getStringBaseID() * 3 + 0);
     }
 
     public int getBlockHeight() {
@@ -312,7 +312,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
     }
 
     public final String getDescription() {
-	return StringLoader.loadString(StringConstants.OBJECT_STRINGS_FILE, this.getStringBaseID() * 3 + 2);
+	return StringLoader.loadString(StringConstants.STRINGS_FILE_OBJECT, this.getStringBaseID() * 3 + 2);
     }
 
     public final Direction getDirection() {

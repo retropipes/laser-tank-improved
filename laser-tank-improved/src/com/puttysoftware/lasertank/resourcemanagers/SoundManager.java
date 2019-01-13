@@ -22,7 +22,7 @@ public class SoundManager {
 	    final String filename = SoundConstants.SOUND_NAMES[soundID];
 	    final URL url = SoundManager.LOAD_CLASS
 		    .getResource(SoundManager.LOAD_PATH + filename.toLowerCase() + StringLoader.loadString(
-			    StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_SOUND_EXTENSION));
+			    StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_SOUND_EXTENSION));
 	    return SoundFactory.loadResource(url);
 	} catch (final NullPointerException np) {
 	    return null;

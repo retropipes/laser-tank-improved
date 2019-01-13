@@ -52,9 +52,9 @@ public class LPBManager {
     public static void loadFile(final String filename) {
 	if (!FilenameChecker.isFilenameOK(LPBManager.getNameWithoutExtension(LPBManager.getFileNameOnly(filename)))) {
 	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
-		    StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_LOAD));
+		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOAD));
 	} else {
 	    final LPBLoadTask lpblt = new LPBLoadTask(filename);
 	    lpblt.start();
@@ -66,7 +66,7 @@ public class LPBManager {
 	String filename, extension, file, dir;
 	final String lastOpen = PreferencesManager.getLastDirOpen();
 	final FileDialog fd = new FileDialog((JFrame) null,
-		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_LOAD_PLAYBACK),
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_LOAD_PLAYBACK),
 		FileDialog.LOAD);
 	fd.setDirectory(lastOpen);
 	fd.setVisible(true);
@@ -78,7 +78,7 @@ public class LPBManager {
 	    if (extension.equals(Extension.getOldPlaybackExtension())) {
 		LPBManager.loadFile(filename);
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_NON_PLAYBACK_FILE));
 	    }
 	}

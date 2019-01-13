@@ -41,11 +41,11 @@ class LevelPreferencesManager {
 	    try {
 		final LevelPreferencesManager lpm = LevelPreferencesManager.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_OK_BUTTON))) {
 		    lpm.setPrefs();
 		    lpm.hidePrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
 		    lpm.hidePrefs();
 		}
@@ -155,29 +155,29 @@ class LevelPreferencesManager {
 	Container mainPrefPane, contentPane, buttonPane;
 	JButton prefsOK, prefsCancel;
 	final EventHandler handler = new EventHandler();
-	this.prefFrame = new JFrame(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	this.prefFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_LEVEL_PREFERENCES));
 	mainPrefPane = new Container();
 	contentPane = new Container();
 	buttonPane = new Container();
 	prefsOK = new JButton(
-		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_OK_BUTTON));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
 	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
-	prefsCancel = new JButton(StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE,
+	prefsCancel = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
 		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
-	this.horizontalWrap = new JCheckBox(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	this.horizontalWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_ENABLE_HORIZONTAL_WRAP_AROUND), false);
-	this.verticalWrap = new JCheckBox(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	this.verticalWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_ENABLE_VERTICAL_WRAP_AROUND), false);
-	this.thirdWrap = new JCheckBox(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	this.thirdWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_ENABLE_THIRD_DIMENSION_WRAP_AROUND), false);
 	this.name = new JTextField();
 	this.author = new JTextField();
 	this.hint = new JTextArea(8, 32);
 	this.difficulty = new JComboBox<>(DifficultyConstants.getDifficultyNames());
-	this.moveShoot = new JCheckBox(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	this.moveShoot = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_ENABLE_MOVE_SHOOT), true);
 	this.prefFrame.setContentPane(mainPrefPane);
 	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -188,16 +188,16 @@ class LevelPreferencesManager {
 	contentPane.add(this.horizontalWrap);
 	contentPane.add(this.verticalWrap);
 	contentPane.add(this.thirdWrap);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_LEVEL_NAME)));
 	contentPane.add(this.name);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_LEVEL_AUTHOR)));
 	contentPane.add(this.author);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_LEVEL_HINT)));
 	contentPane.add(this.hint);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.EDITOR_STRINGS_FILE,
+	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
 		StringConstants.EDITOR_STRING_LEVEL_DIFFICULTY)));
 	contentPane.add(this.difficulty);
 	contentPane.add(this.moveShoot);

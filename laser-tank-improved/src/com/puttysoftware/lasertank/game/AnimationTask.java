@@ -19,7 +19,7 @@ class AnimationTask extends Thread {
     // Constructors
     public AnimationTask() {
 	this.setName(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_ANIMATOR_NAME));
+		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ANIMATOR_NAME));
 	this.setPriority(Thread.MIN_PRIORITY);
     }
 

@@ -117,7 +117,7 @@ final class MLOTask extends Thread {
 
     // Constructors
     public MLOTask() {
-	this.setName(StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_MLOH_NAME));
+	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_MLOH_NAME));
 	this.setPriority(Thread.MIN_PRIORITY);
 	this.abort = false;
 	this.laserTrackers = new ArrayList<>();
