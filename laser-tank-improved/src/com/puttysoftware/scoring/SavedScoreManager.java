@@ -7,18 +7,14 @@ package com.puttysoftware.scoring;
 
 import java.io.IOException;
 
-import com.puttysoftware.fileio.XMLFileReader;
-import com.puttysoftware.fileio.XMLFileWriter;
-
 public class SavedScoreManager extends ScoreManager {
     // Fields
-    private final String scoresFilename;
-
+    // private final String scoresFilename;
     // Constructors
-    public SavedScoreManager(final int mv, final int length, final boolean sortOrder, final long startingScore,
-	    final String customTitle, final String[] customUnit, final String scoresFile) {
-	super(mv, length, sortOrder, startingScore, customTitle, customUnit);
-	this.scoresFilename = scoresFile;
+    public SavedScoreManager(final int length, final SortedScoreTable.SortOrder sortOrder, final String customTitle,
+	    final String scoresFile) {
+	super(length, sortOrder, customTitle);
+	// this.scoresFilename = scoresFile;
 	try {
 	    this.readScoresFile();
 	} catch (final IOException io) {
@@ -28,8 +24,8 @@ public class SavedScoreManager extends ScoreManager {
 
     // Methods
     @Override
-    public boolean addScore(final long newScore) {
-	final boolean success = super.addScore(newScore);
+    public boolean add(final long newMoves, final long newShots) {
+	final boolean success = super.add(newMoves, newShots);
 	try {
 	    this.writeScoresFile();
 	} catch (final IOException io) {
@@ -39,30 +35,8 @@ public class SavedScoreManager extends ScoreManager {
     }
 
     @Override
-    public boolean addScore(final long newScore, final String newName) {
-	final boolean success = super.addScore(newScore, newName);
-	try {
-	    this.writeScoresFile();
-	} catch (final IOException io) {
-	    // Do nothing
-	}
-	return success;
-    }
-
-    @Override
-    public boolean addScore(final long[] newScore) {
-	final boolean success = super.addScore(newScore);
-	try {
-	    this.writeScoresFile();
-	} catch (final IOException io) {
-	    // Do nothing
-	}
-	return success;
-    }
-
-    @Override
-    public boolean addScore(final long[] newScore, final String newName) {
-	final boolean success = super.addScore(newScore, newName);
+    public boolean add(final long newMoves, final long newShots, final String newName) {
+	final boolean success = super.add(newMoves, newShots, newName);
 	try {
 	    this.writeScoresFile();
 	} catch (final IOException io) {
@@ -72,20 +46,10 @@ public class SavedScoreManager extends ScoreManager {
     }
 
     private void readScoresFile() throws IOException {
-	try (XMLFileReader xdr = new XMLFileReader(this.scoresFilename, "scores")) {
-	    this.table = SortedScoreTable.readSortedScoreTable(xdr);
-	    xdr.close();
-	} catch (final IOException ioe) {
-	    throw ioe;
-	}
+	// TODO: Implement
     }
 
     private void writeScoresFile() throws IOException {
-	try (XMLFileWriter xdw = new XMLFileWriter(this.scoresFilename, "scores")) {
-	    this.table.writeSortedScoreTable(xdw);
-	    xdw.close();
-	} catch (final IOException ioe) {
-	    throw ioe;
-	}
+	// TODO: Implement
     }
 }

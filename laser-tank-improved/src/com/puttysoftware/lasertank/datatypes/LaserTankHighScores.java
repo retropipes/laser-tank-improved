@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import com.puttysoftware.fileio.GameIOUtilities;
+import com.puttysoftware.scoring.Score;
 import com.puttysoftware.scoring.ScoreTable;
 
 public class LaserTankHighScores {
@@ -75,12 +76,9 @@ public class LaserTankHighScores {
 	final int len = nameLoad.length;
 	final Integer[] moveLoadTemp = moveTemp.toArray(new Integer[moveTemp.size()]);
 	final Integer[] shotLoadTemp = shotTemp.toArray(new Integer[shotTemp.size()]);
-	final String[] units = new String[] { "moves", "shots" };
-	final ScoreTable table = new ScoreTable(2, len, units);
+	final ScoreTable table = new ScoreTable(len);
 	for (int x = 0; x < len; x++) {
-	    table.setEntryName(x, nameLoad[x]);
-	    table.setEntryScore(x, 0, moveLoadTemp[x]);
-	    table.setEntryScore(x, 1, shotLoadTemp[x]);
+	    table.add(new Score(moveLoadTemp[x], shotLoadTemp[x], nameLoad[x]));
 	}
 	// Return final result
 	return new LaserTankHighScores(table);

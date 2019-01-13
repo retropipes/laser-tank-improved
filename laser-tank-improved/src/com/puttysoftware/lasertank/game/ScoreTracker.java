@@ -16,7 +16,7 @@ import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.Extension;
 import com.puttysoftware.scoring.SavedScoreManager;
-import com.puttysoftware.scoring.ScoreManager;
+import com.puttysoftware.scoring.SortedScoreTable;
 
 class ScoreTracker {
     private static final String MAC_PREFIX = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_UNIX_HOME);
@@ -85,7 +85,7 @@ class ScoreTracker {
     // Methods
     boolean checkScore() {
 	if (this.trackScores) {
-	    return this.ssMgr.checkScore(new long[] { this.moves, this.shots, this.others });
+	    return this.ssMgr.check(this.moves, this.shots);
 	} else {
 	    return false;
 	}
@@ -93,9 +93,9 @@ class ScoreTracker {
 
     void commitScore() {
 	if (this.trackScores) {
-	    final boolean result = this.ssMgr.addScore(new long[] { this.moves, this.shots, this.others });
+	    final boolean result = this.ssMgr.add(this.moves, this.shots);
 	    if (result) {
-		this.ssMgr.viewTable();
+		this.ssMgr.view();
 	    }
 	}
     }
@@ -179,13 +179,10 @@ class ScoreTracker {
 	    }
 	    if (this.trackScores) {
 		final String scoresFile = sf.getAbsolutePath();
-		this.ssMgr = new SavedScoreManager(3, 10, ScoreManager.SORT_ORDER_DESCENDING, 10000L,
+		this.ssMgr = new SavedScoreManager(10, SortedScoreTable.SortOrder.DESCENDING,
 			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME)
 				+ StringLoader.loadCommon(CommonString.SPACE)
 				+ StringLoader.loadGame(GameString.SCORES),
-			new String[] { StringLoader.loadGame(GameString.SCORE_MOVES),
-				StringLoader.loadGame(GameString.SCORE_SHOTS),
-				StringLoader.loadGame(GameString.SCORE_OTHERS) },
 			scoresFile);
 	    }
 	}
@@ -197,7 +194,7 @@ class ScoreTracker {
 
     void showScoreTable() {
 	if (this.trackScores) {
-	    this.ssMgr.viewTable();
+	    this.ssMgr.view();
 	} else {
 	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.SCORES_UNAVAILABLE));
 	}

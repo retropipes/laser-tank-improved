@@ -16,6 +16,7 @@ import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 import com.puttysoftware.lasertank.utilities.Extension;
 
 public class StringLoader {
+    private static final String REPLACE_PREFIX = "$";
     private static final String LOCALIZED_LANGUAGES_FILE_NAME = "localizedlanguages.txt";
     private static final String LOAD_PATH = "/assets/locale/";
     private static Class<?> LOAD_CLASS = StringLoader.class;
@@ -107,47 +108,91 @@ public class StringLoader {
 	return StringLoader.CACHE.get(fileID);
     }
 
-    public static String loadCommon(final CommonString str) {
-	return str.getValue();
+    public static String loadCommon(final CommonString str, final Object... values) {
+	String string = str.getValue();
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadDialog(final DialogString str) {
-	return StringLoader.getFromCache(StringFile.DIALOGS).getProperty(Integer.toString(str.ordinal()));
+    public static String loadDialog(final DialogString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.DIALOGS).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadDifficulty(final DifficultyString str) {
-	return StringLoader.getFromCache(StringFile.DIFFICULTY).getProperty(Integer.toString(str.ordinal()));
+    public static String loadDifficulty(final DifficultyString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.DIFFICULTY).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadEditor(final EditorString str) {
-	return StringLoader.getFromCache(StringFile.EDITOR).getProperty(Integer.toString(str.ordinal()));
+    public static String loadEditor(final EditorString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.EDITOR).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadError(final ErrorString str) {
-	return StringLoader.getFromCache(StringFile.ERRORS).getProperty(Integer.toString(str.ordinal()));
+    public static String loadError(final ErrorString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.ERRORS).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadGame(final GameString str) {
-	return StringLoader.getFromCache(StringFile.GAME).getProperty(Integer.toString(str.ordinal()));
+    public static String loadGame(final GameString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.GAME).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadGeneric(final GenericString str) {
-	return StringLoader.getFromCache(StringFile.GENERIC).getProperty(Integer.toString(str.ordinal()));
+    public static String loadGeneric(final GenericString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.GENERIC).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadMenu(final MenuString str) {
-	return StringLoader.getFromCache(StringFile.MENUS).getProperty(Integer.toString(str.ordinal()));
+    public static String loadMenu(final MenuString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.MENUS).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadMessage(final MessageString str) {
-	return StringLoader.getFromCache(StringFile.MESSAGES).getProperty(Integer.toString(str.ordinal()));
+    public static String loadMessage(final MessageString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.MESSAGES).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadPref(final PrefString str) {
-	return StringLoader.getFromCache(StringFile.PREFS).getProperty(Integer.toString(str.ordinal()));
+    public static String loadPref(final PrefString str, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.PREFS).getProperty(Integer.toString(str.ordinal()));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 
-    public static String loadTime(final int strID) {
-	return StringLoader.getFromCache(StringFile.TIME).getProperty(Integer.toString(strID));
+    public static String loadTime(final int strID, final Object... values) {
+	String string = StringLoader.getFromCache(StringFile.TIME).getProperty(Integer.toString(strID));
+	for (int v = 0; v < values.length; v++) {
+	    string = string.replace(StringLoader.REPLACE_PREFIX + Integer.toString(v), values[v].toString());
+	}
+	return string;
     }
 }

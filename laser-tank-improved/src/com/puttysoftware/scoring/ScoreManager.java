@@ -6,11 +6,12 @@
 package com.puttysoftware.scoring;
 
 import com.puttysoftware.dialogs.CommonDialogs;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 public class ScoreManager {
     // Fields and Constants
     private static final String NAME_PROMPT = "Enter a name for the score list:";
-    private static final String DIALOG_TITLE = "Score Manager";
     public static final boolean SORT_ORDER_DESCENDING = false;
     protected SortedScoreTable table;
     private String name;
@@ -21,16 +22,16 @@ public class ScoreManager {
     public ScoreManager() {
 	this.table = new SortedScoreTable();
 	this.name = "";
-	this.title = ScoreManager.DIALOG_TITLE;
-	this.viewerTitle = ScoreManager.DIALOG_TITLE;
+	String dialogTitle = StringLoader.loadDialog(DialogString.SCORES_HEADER);
+	this.title = dialogTitle;
+	this.viewerTitle = dialogTitle;
     }
 
-    public ScoreManager(final int mv, final int length, final boolean sortOrder, final long startingScore,
-	    final String customTitle, final String[] customUnit) {
-	this.table = new SortedScoreTable(mv, length, sortOrder, startingScore, customUnit);
+    public ScoreManager(final int length, final SortedScoreTable.SortOrder sortOrder, final String customTitle) {
+	this.table = new SortedScoreTable(length, sortOrder);
 	this.name = "";
 	if (customTitle == null || customTitle.equals("")) {
-	    this.title = ScoreManager.DIALOG_TITLE;
+	    this.title = StringLoader.loadDialog(DialogString.SCORES_HEADER);
 	} else {
 	    this.title = customTitle;
 	}
@@ -38,43 +39,27 @@ public class ScoreManager {
     }
 
     // Methods
-    public boolean addScore(final long newScore) {
+    public boolean add(final long newMoves, final long newShots) {
 	boolean success = true;
 	this.name = CommonDialogs.showTextInputDialog(ScoreManager.NAME_PROMPT, this.title);
 	if (this.name != null) {
-	    this.table.addScore(newScore, this.name);
+	    this.table.add(new Score(newMoves, newShots, this.name));
 	} else {
 	    success = false;
 	}
 	return success;
     }
 
-    public boolean addScore(final long newScore, final String newName) {
-	this.table.addScore(newScore, newName);
+    public boolean add(final long newMoves, final long newShots, final String newName) {
+	this.table.add(new Score(newMoves, newShots, newName));
 	return true;
     }
 
-    public boolean addScore(final long[] newScore) {
-	boolean success = true;
-	this.name = CommonDialogs.showTextInputDialog(ScoreManager.NAME_PROMPT, this.title);
-	if (this.name != null) {
-	    this.table.addScore(newScore, this.name);
-	} else {
-	    success = false;
-	}
-	return success;
+    public boolean check(final long newMoves, final long newShots) {
+	return this.table.check(new Score(newMoves, newShots, this.name));
     }
 
-    public boolean addScore(final long[] newScore, final String newName) {
-	this.table.addScore(newScore, newName);
-	return true;
-    }
-
-    public boolean checkScore(final long[] newScore) {
-	return this.table.checkScore(newScore);
-    }
-
-    public void viewTable() {
-	ScoreTableViewer.view(this.table, this.viewerTitle, this.table.getUnits());
+    public void view() {
+	ScoreTableViewer.view(this.table, this.viewerTitle);
     }
 }

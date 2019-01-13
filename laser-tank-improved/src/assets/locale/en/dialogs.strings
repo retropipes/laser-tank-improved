@@ -5,8 +5,8 @@
 4=End
 5=This feature is disabled because new features are switched off in the Preferences.
 6=Cancel
-7=Graphics File
-8=Override
+7=LaserTank Scores
+8=$0: $1 moves, $2 shots
 9=Loading...
 10=Level file loaded.
 11=Loading the level file failed, probably due to illegal characters in the file name.

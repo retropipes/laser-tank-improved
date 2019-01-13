@@ -8,75 +8,40 @@ package com.puttysoftware.scoring;
 import java.util.ArrayList;
 
 public class ScoreTable {
-    protected static final String DEFAULT_UNIT = "";
-    // Fields and Constants
-    protected int scoreCount;
+    // Fields
     protected ArrayList<Score> table;
-    protected String[] unit;
 
     // Constructors
     public ScoreTable() {
-	this.scoreCount = 1;
-	this.table = new ArrayList<>(10);
-	int x;
-	for (x = 0; x < 10; x++) {
-	    this.table.set(x, new Score());
-	}
-	this.unit = new String[1];
-	this.unit[0] = ScoreTable.DEFAULT_UNIT;
+	this(10);
     }
 
-    public ScoreTable(final int mv, final int length, final String[] customUnit) {
-	this.scoreCount = mv;
+    public ScoreTable(final int length) {
 	this.table = new ArrayList<>(length);
 	int x;
 	for (x = 0; x < length; x++) {
-	    this.table.add(new Score(mv));
-	}
-	this.unit = new String[mv];
-	for (x = 0; x < mv; x++) {
-	    if (customUnit[x] == null || customUnit[x].isEmpty()) {
-		this.unit[x] = ScoreTable.DEFAULT_UNIT;
-	    } else {
-		this.unit[x] = " " + customUnit[x];
-	    }
+	    this.table.set(x, new Score());
 	}
     }
 
+    // Methods
     public String getEntryName(final int pos) {
 	return this.table.get(pos).getName();
     }
 
-    // Methods
-    public long getEntryScore(final int which, final int pos) {
-	return this.table.get(pos).getScore(which);
+    public long getEntryMoves(final int pos) {
+	return this.table.get(pos).getMoves();
+    }
+
+    public long getEntryShots(final int pos) {
+	return this.table.get(pos).getShots();
     }
 
     public int getLength() {
 	return this.table.size();
     }
-
-    public int getScoreCount() {
-	return this.scoreCount;
-    }
-
-    public String getUnit() {
-	return this.unit[0];
-    }
-
-    public String[] getUnits() {
-	return this.unit;
-    }
-
-    public void setEntryName(final int pos, final String newName) {
-	this.table.get(pos).setName(newName);
-    }
-
-    public void setEntryScore(final int pos, final int which, final long newScore) {
-	this.table.get(pos).setScore(which, newScore);
-    }
-
-    public void setEntryScore(final int pos, final long newScore) {
-	this.table.get(pos).setScore(newScore);
+    
+    public void add(final Score score) {
+	this.table.add(score);
     }
 }
