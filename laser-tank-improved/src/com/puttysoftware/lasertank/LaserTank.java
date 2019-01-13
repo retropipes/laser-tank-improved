@@ -85,7 +85,7 @@ public class LaserTank {
 	    ni.setPreferencesHandler(new PreferencesInvoker());
 	    ni.setQuitHandler(LaserTank.application.getGUIManager());
 	    // Display GUI
-	    LaserTank.application.getGUIManager().showGUI();
+	    LaserTank.application.bootGUI();
 	} catch (final Throwable t) {
 	    LaserTank.logError(t);
 	}

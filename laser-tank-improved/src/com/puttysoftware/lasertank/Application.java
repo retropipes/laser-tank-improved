@@ -10,9 +10,12 @@ import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import com.puttysoftware.dialogs.CommonDialogs;
@@ -98,6 +101,29 @@ public final class Application {
 	this.editor = new ArenaEditor();
 	// Cache Logo
 	this.guiMgr.updateLogo();
+    }
+
+    void bootGUI() {
+	// Set up default error handling
+	UncaughtExceptionHandler eh = new UncaughtExceptionHandler() {
+	    @Override
+	    public void uncaughtException(Thread t, Throwable e) {
+		LaserTank.logNonFatalError(e);
+	    }
+	};
+	Runnable doRun = new Runnable() {
+	    @Override
+	    public void run() {
+		Thread.currentThread().setUncaughtExceptionHandler(eh);
+	    }
+	};
+	try {
+	    SwingUtilities.invokeAndWait(doRun);
+	} catch (InvocationTargetException | InterruptedException e) {
+	    LaserTank.logError(e);
+	}
+	// Boot GUI
+	this.guiMgr.showGUI();
     }
 
     // Methods
