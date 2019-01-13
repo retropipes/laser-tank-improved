@@ -45,6 +45,7 @@ import com.puttysoftware.lasertank.arena.objects.AntiTankDisguise;
 import com.puttysoftware.lasertank.arena.objects.Empty;
 import com.puttysoftware.lasertank.arena.objects.PowerfulTank;
 import com.puttysoftware.lasertank.arena.objects.Tank;
+import com.puttysoftware.lasertank.cheats.CheatManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;

@@ -3,33 +3,32 @@
 
  Any questions should be directed to the author via email at: products@puttysoftware.com
  */
-package com.puttysoftware.lasertank.game;
+package com.puttysoftware.lasertank.cheats;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
 import com.puttysoftware.dialogs.CommonDialogs;
-import com.puttysoftware.fileio.ResourceStreamReader;
+import com.puttysoftware.lasertank.cheats.Cheat.Effect;
 import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
-final class CheatManager {
+public final class CheatManager {
     // Fields
-    private final ArrayList<String> cheatCache;
+    private final CheatList cheatCache;
     private int cheatCount;
 
     // Constructor
     public CheatManager() {
-	this.cheatCount = 0;
-	this.cheatCache = new ArrayList<>();
+	this.cheatCache = new CheatList();
 	this.loadCheatCache();
     }
 
-    String enterCheat() {
+    public String enterCheat() {
 	final String userInput = CommonDialogs.showTextInputDialog(
 		StringLoader.loadString(StringConstants.GAME_STRINGS_FILE, StringConstants.GAME_STRING_CHEAT_PROMPT),
 		StringLoader.loadString(StringConstants.DIALOG_STRINGS_FILE, StringConstants.DIALOG_STRING_CHEATS));
@@ -63,31 +62,40 @@ final class CheatManager {
 	}
     }
 
-    int getCheatCount() {
+    public int getCheatCount() {
 	return this.cheatCount;
     }
 
     // Methods
     private void loadCheatCache() {
-	try (InputStream is = CheatManager.class.getResourceAsStream(
-		StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_CHEATS_PATH));
-		ResourceStreamReader rsr = new ResourceStreamReader(is)) {
-	    String line = StringConstants.COMMON_STRING_EMPTY;
-	    while (line != null) {
-		line = rsr.readString();
-		if (line != null) {
-		    this.cheatCache.add(line);
-		    this.cheatCount++;
-		}
-	    }
-	    rsr.close();
-	    is.close();
+	Properties instant = new Properties();
+	try (InputStream is = CheatManager.class.getResourceAsStream(StringLoader
+		.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_INSTANT_CHEATS_PATH))) {
+	    instant.load(is);
 	} catch (final IOException ioe) {
 	    throw new InvalidArenaException(ioe);
 	}
+	Properties toggle = new Properties();
+	try (InputStream is = CheatManager.class.getResourceAsStream(StringLoader
+		.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_TOGGLE_CHEATS_PATH))) {
+	    toggle.load(is);
+	} catch (final IOException ioe) {
+	    throw new InvalidArenaException(ioe);
+	}
+	int iLimit = Cheat.instantCount();
+	for (int i = 0; i < iLimit; i++) {
+	    String code = instant.getProperty(Integer.toString(i));
+	    this.cheatCache.add(new InstantCheat(code, Effect.values()[i]));
+	}
+	int tLimit = Cheat.count();
+	for (int t = iLimit; t < tLimit; t++) {
+	    String code = toggle.getProperty(Integer.toString(t));
+	    this.cheatCache.add(new ToggleCheat(code, Effect.values()[t]));
+	}
+	this.cheatCount = tLimit;
     }
 
-    int queryCheatCache(final String query) {
+    public int queryCheatCache(final String query) {
 	return this.cheatCache.indexOf(query);
     }
 }

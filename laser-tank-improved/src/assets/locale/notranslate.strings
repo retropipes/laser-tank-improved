@@ -138,7 +138,7 @@
 137=/assets/sounds/
 138=.wav
 139=Playback File Loader
-140=/com/puttysoftware/lasertank/resources/cheats/cheats.txt
+140=UNUSED
 141=solution
 142=/Library/Application Support/Putty Software/LaserTank/Scores/
 143=\\Putty Software\\LaserTank\\Scores\\
@@ -148,9 +148,9 @@
 147=https://github.com/PuttySoftware/laser-tank-improved/releases/
 148=com.puttysoftware.lasertank
 149=Putty Software
-150=invalid
-151=invalid
-152=https://github.com/PuttySoftware/laser-tank-improved/releases/
+150=/assets/locale/cheats_instant.properties
+151=/assets/locale/cheats_toggle.properties
+152=UNUSED
 153=/assets/fonts/
 154=DejaVuLGCSansMono-Bold.ttf
 155=music

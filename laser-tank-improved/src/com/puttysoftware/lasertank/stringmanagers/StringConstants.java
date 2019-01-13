@@ -186,7 +186,7 @@ public class StringConstants {
     public static final int NOTL_STRING_SOUND_PATH = 137;
     public static final int NOTL_STRING_SOUND_EXTENSION = 138;
     public static final int NOTL_STRING_PLAYBACK_LOADER_NAME = 139;
-    public static final int NOTL_STRING_CHEATS_PATH = 140;
+    // public static final int NOTL_STRING_UNUSED_1 = 140;
     public static final int NOTL_STRING_SOLUTION = 141;
     public static final int NOTL_STRING_DIRECTORY_SCORES_MAC = 142;
     public static final int NOTL_STRING_DIRECTORY_SCORES_WINDOWS = 143;
@@ -196,9 +196,9 @@ public class StringConstants {
     public static final int NOTL_STRING_URL_NEW_VERSION_SITE = 147;
     public static final int NOTL_STRING_RDNS_COMPANY_NAME = 148;
     public static final int NOTL_STRING_COMPANY_NAME = 149;
-    // public static final int NOTL_STRING_URL_BETA_UPDATE_SITE = 150;
-    // public static final int NOTL_STRING_URL_BETA_BLURB_SITE = 151;
-    // public static final int NOTL_STRING_URL_NEW_BETA_VERSION_SITE = 152;
+    public static final int NOTL_STRING_INSTANT_CHEATS_PATH = 150;
+    public static final int NOTL_STRING_TOGGLE_CHEATS_PATH = 151;
+    // public static final int NOTL_STRING_UNUSED_2 = 152;
     public static final int NOTL_STRING_FONT_PATH = 153;
     public static final int NOTL_STRING_FONT_FILENAME = 154;
     public static final int NOTL_STRING_MUSIC_FOLDER = 155;
