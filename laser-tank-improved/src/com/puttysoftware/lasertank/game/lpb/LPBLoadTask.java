@@ -16,8 +16,11 @@ import javax.swing.WindowConstants;
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 class LPBLoadTask extends Thread {
@@ -29,10 +32,8 @@ class LPBLoadTask extends Thread {
     LPBLoadTask(final String file) {
 	JProgressBar loadBar;
 	this.filename = file;
-	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_PLAYBACK_LOADER_NAME));
-	this.loadFrame = new JFrame(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOADING));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.PLAYBACK_LOADER_NAME));
+	this.loadFrame = new JFrame(StringLoader.loadDialog(DialogString.LOADING));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	this.loadFrame.getContentPane().add(loadBar);
@@ -51,8 +52,7 @@ class LPBLoadTask extends Thread {
 	    LPBFile.loadLPB(arenaFile);
 	    arenaFile.close();
 	} catch (final FileNotFoundException fnfe) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_PLAYBACK_LOAD_FAILED));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.PLAYBACK_LOAD_FAILED));
 	} catch (final IOException ioe) {
 	    throw new InvalidArenaException(ioe);
 	} catch (final Exception ex) {

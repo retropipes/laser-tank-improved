@@ -5,12 +5,11 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 
 public class FrameResolver {
     public static String resolveFrameNumberToImageSuffix(final int fn) {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_FRAME, fn);
+	return GlobalLoader.loadFrame(fn);
     }
 
     private FrameResolver() {

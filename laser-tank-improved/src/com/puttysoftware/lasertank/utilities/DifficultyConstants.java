@@ -5,8 +5,8 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DifficultyString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 public final class DifficultyConstants {
     // Constants
@@ -25,17 +25,11 @@ public final class DifficultyConstants {
     }
 
     public static void reloadDifficultyNames() {
-	DifficultyConstants.DIFFICULTY_NAMES = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
-			StringConstants.DIFFICULTY_STRING_KIDS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
-			StringConstants.DIFFICULTY_STRING_EASY),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
-			StringConstants.DIFFICULTY_STRING_MEDIUM),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
-			StringConstants.DIFFICULTY_STRING_HARD),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIFFICULTY,
-			StringConstants.DIFFICULTY_STRING_DEADLY) };
+	DifficultyConstants.DIFFICULTY_NAMES = new String[] { StringLoader.loadDifficulty(DifficultyString.KIDS),
+		StringLoader.loadDifficulty(DifficultyString.EASY),
+		StringLoader.loadDifficulty(DifficultyString.MEDIUM),
+		StringLoader.loadDifficulty(DifficultyString.HARD),
+		StringLoader.loadDifficulty(DifficultyString.DEADLY) };
     }
 
     // Private Constructor

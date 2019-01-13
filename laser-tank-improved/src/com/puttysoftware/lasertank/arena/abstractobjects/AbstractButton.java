@@ -65,7 +65,7 @@ public abstract class AbstractButton extends AbstractArenaObject {
     @Override
     public void editorPlaceHook(final int x, final int y, final int z) {
 	final Application app = LaserTank.getApplication();
-	final int[] loc = app.getArenaManager().getArena().findObject(z, this.getButtonDoor().getBaseName());
+	final int[] loc = app.getArenaManager().getArena().findObject(z, this.getButtonDoor());
 	if (loc != null) {
 	    this.setDoorX(loc[0]);
 	    this.setDoorY(loc[1]);

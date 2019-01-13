@@ -23,8 +23,10 @@ import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.LogoManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.CleanupTask;
 
 public class GUIManager implements QuitHandler {
@@ -123,7 +125,7 @@ public class GUIManager implements QuitHandler {
 
     private void setUpGUI() {
 	this.guiPane.setLayout(new GridLayout(1, 1));
-	this.logoLabel = new JLabel(StringConstants.COMMON_STRING_EMPTY, null, SwingConstants.CENTER);
+	this.logoLabel = new JLabel(StringLoader.loadCommon(CommonString.EMPTY), null, SwingConstants.CENTER);
 	this.logoLabel.setLabelFor(null);
 	this.logoLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
 	final BufferedImageIcon logo = LogoManager.getOpening();
@@ -155,8 +157,7 @@ public class GUIManager implements QuitHandler {
 
     public void setUp() {
 	final Application app = LaserTank.getApplication();
-	app.setTitle(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME));
+	app.setTitle(GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	app.addWindowListener(this.cHandler);
 	app.addWindowFocusListener(this.fHandler);
     }

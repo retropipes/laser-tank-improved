@@ -16,8 +16,9 @@ import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.objects.Empty;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.DirectionResolver;
@@ -282,11 +283,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
     }
 
     public final String getBaseImageName() {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_IMAGE, this.getStringBaseID());
-    }
-
-    public final String getBaseName() {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_OBJECT, this.getStringBaseID() * 3 + 0);
+	return GlobalLoader.loadImage(this.getStringBaseID());
     }
 
     public int getBlockHeight() {
@@ -311,10 +308,6 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	return null;
     }
 
-    public final String getDescription() {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_OBJECT, this.getStringBaseID() * 3 + 2);
-    }
-
     public final Direction getDirection() {
 	return this.direction;
     }
@@ -323,7 +316,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	if (this.hasDirection()) {
 	    return DirectionResolver.resolveDirectionConstantToImageSuffix(this.direction);
 	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
+	    return StringLoader.loadCommon(CommonString.EMPTY);
 	}
     }
 
@@ -335,7 +328,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	if (this.isAnimated()) {
 	    return FrameResolver.resolveFrameNumberToImageSuffix(this.frameNumber);
 	} else {
-	    return StringConstants.COMMON_STRING_EMPTY;
+	    return StringLoader.loadCommon(CommonString.EMPTY);
 	}
     }
 

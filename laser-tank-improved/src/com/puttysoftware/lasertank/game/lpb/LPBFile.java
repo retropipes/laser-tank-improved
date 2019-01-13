@@ -10,8 +10,9 @@ import java.io.FileInputStream;
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.game.GameManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 class LPBFile {
     private static void decodeData(final byte d) {
@@ -41,11 +42,8 @@ class LPBFile {
 	// Load LPB
 	final boolean success = LPBFileLoader.loadLPB(file);
 	if (!success) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_LPB_LOAD_FAILURE),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_LOAD_PLAYBACK));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.LPB_LOAD_FAILURE),
+		    StringLoader.loadGame(GameString.LOAD_PLAYBACK));
 	} else {
 	    final GameManager gm = LaserTank.getApplication().getGameManager();
 	    gm.clearReplay();
@@ -53,11 +51,8 @@ class LPBFile {
 	    for (int x = data.length - 1; x >= 0; x--) {
 		LPBFile.decodeData(data[x]);
 	    }
-	    CommonDialogs.showTitledDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_PLAYBACK_LOADED),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_LOAD_PLAYBACK));
+	    CommonDialogs.showTitledDialog(StringLoader.loadGame(GameString.PLAYBACK_LOADED),
+		    StringLoader.loadGame(GameString.LOAD_PLAYBACK));
 	}
     }
 

@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractArenaObject;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class ImageManager {
@@ -70,17 +70,16 @@ public class ImageManager {
 	try {
 	    String name = obj.getImageName();
 	    final String normalName = ImageManager.normalizeName(name);
-	    final URL url = ImageManager.LOAD_CLASS.getResource(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OBJECTS_PATH)
-			    + normalName + StringConstants.COMMON_STRING_NOTL_IMAGE_EXTENSION_PNG);
+	    final URL url = ImageManager.LOAD_CLASS
+		    .getResource(GlobalLoader.loadUntranslated(UntranslatedString.OBJECTS_PATH) + normalName
+			    + GlobalLoader.loadUntranslated(UntranslatedString.IMAGE_FORMAT_PNG));
 	    final BufferedImage image = ImageIO.read(url);
 	    final String customText = obj.getCustomText();
 	    if (useText && customText != null) {
 		if (ImageManager.DRAW_FONT == null) {
-		    try (InputStream is = ImageManager.class.getResourceAsStream(StringLoader
-			    .loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_FONT_PATH)
-			    + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				    StringConstants.NOTL_STRING_FONT_FILENAME))) {
+		    try (InputStream is = ImageManager.class
+			    .getResourceAsStream(GlobalLoader.loadUntranslated(UntranslatedString.FONT_PATH)
+				    + GlobalLoader.loadUntranslated(UntranslatedString.FONT_FILENAME))) {
 			final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
 			ImageManager.DRAW_FONT = baseFont.deriveFont(ImageManager.DRAW_SIZE);
 		    } catch (final Exception ex) {

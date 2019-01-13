@@ -5,30 +5,30 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 
 public class Extension {
     // Constants
     private static final String STRINGS_EXTENSION = ".strings";
-    private static final String PREFERENCES_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_PREFS);
-    private static final String OLD_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_OLD_LEVEL);
-    private static final String OLD_PLAYBACK_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_OLD_PLAYBACK);
-    private static final String ARENA_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_ARENA);
-    private static final String PROTECTED_ARENA_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_PROTECTED_ARENA);
-    private static final String ARENA_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_ARENA_DATA);
-    private static final String SAVED_GAME_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_SAVED_GAME);
-    private static final String SCORES_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_SCORES);
-    private static final String SOLUTION_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_EXTENSION_SOLUTION);
+    private static final String PREFERENCES_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_PREFS);
+    private static final String OLD_LEVEL_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_OLD_LEVEL);
+    private static final String OLD_PLAYBACK_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_OLD_PLAYBACK);
+    private static final String ARENA_EXTENSION = GlobalLoader.loadUntranslated(UntranslatedString.EXTENSION_ARENA);
+    private static final String PROTECTED_ARENA_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_PROTECTED_ARENA);
+    private static final String ARENA_LEVEL_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_ARENA_DATA);
+    private static final String SAVED_GAME_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_SAVED_GAME);
+    private static final String SCORES_EXTENSION = GlobalLoader.loadUntranslated(UntranslatedString.EXTENSION_SCORES);
+    private static final String SOLUTION_EXTENSION = GlobalLoader
+	    .loadUntranslated(UntranslatedString.EXTENSION_SOLUTION);
 
     public static String getStringsExtensionWithPeriod() {
 	return Extension.STRINGS_EXTENSION;
@@ -39,11 +39,11 @@ public class Extension {
     }
 
     public static String getArenaExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.ARENA_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.ARENA_EXTENSION;
     }
 
     public static String getArenaLevelExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.ARENA_LEVEL_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.ARENA_LEVEL_EXTENSION;
     }
 
     public static String getGameExtension() {
@@ -51,7 +51,7 @@ public class Extension {
     }
 
     public static String getGameExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.SAVED_GAME_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.SAVED_GAME_EXTENSION;
     }
 
     public static String getOldLevelExtension() {
@@ -72,15 +72,15 @@ public class Extension {
     }
 
     public static String getProtectedArenaExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.PROTECTED_ARENA_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.PROTECTED_ARENA_EXTENSION;
     }
 
     public static String getScoresExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.SCORES_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.SCORES_EXTENSION;
     }
 
     public static String getSolutionExtensionWithPeriod() {
-	return StringConstants.COMMON_STRING_NOTL_PERIOD + Extension.SOLUTION_EXTENSION;
+	return StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Extension.SOLUTION_EXTENSION;
     }
 
     private Extension() {

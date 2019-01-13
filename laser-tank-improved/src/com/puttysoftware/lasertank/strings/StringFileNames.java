@@ -14,7 +14,7 @@ class StringFileNames {
     static int getFileCount() {
 	return StringFileNames.LIST.length;
     }
-    
+
     static String getFileName(final StringFile file) {
 	return StringFileNames.LIST[file.ordinal()];
     }

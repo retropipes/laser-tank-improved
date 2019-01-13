@@ -23,8 +23,12 @@ import com.puttysoftware.integration.NativeIntegration;
 import com.puttysoftware.lasertank.arena.ArenaManager;
 import com.puttysoftware.lasertank.editor.ArenaEditor;
 import com.puttysoftware.lasertank.game.GameManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.MessageString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 
 public final class Application {
@@ -39,28 +43,27 @@ public final class Application {
 
     public static String getLogoVersionString() {
 	if (Application.isBetaModeEnabled()) {
-	    return StringConstants.COMMON_STRING_LOGO_VERSION_PREFIX + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
-		    + StringConstants.COMMON_STRING_BETA_SHORT + Application.VERSION_BETA;
+	    return StringLoader.loadCommon(CommonString.LOGO_VERSION_PREFIX) + Application.VERSION_MAJOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_MINOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_BUGFIX
+		    + StringLoader.loadCommon(CommonString.BETA_SHORT) + Application.VERSION_BETA;
 	} else {
-	    return StringConstants.COMMON_STRING_LOGO_VERSION_PREFIX + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
+	    return StringLoader.loadCommon(CommonString.LOGO_VERSION_PREFIX) + Application.VERSION_MAJOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_MINOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_BUGFIX;
 	}
     }
 
     private static String getVersionString() {
 	if (Application.isBetaModeEnabled()) {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX
-		    + StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE, StringConstants.MESSAGE_STRING_BETA)
-		    + Application.VERSION_BETA;
+	    return StringLoader.loadCommon(CommonString.EMPTY) + Application.VERSION_MAJOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_MINOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_BUGFIX
+		    + StringLoader.loadMessage(MessageString.BETA) + Application.VERSION_BETA;
 	} else {
-	    return StringConstants.COMMON_STRING_EMPTY + Application.VERSION_MAJOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_MINOR
-		    + StringConstants.COMMON_STRING_NOTL_PERIOD + Application.VERSION_BUGFIX;
+	    return StringLoader.loadCommon(CommonString.EMPTY) + Application.VERSION_MAJOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_MINOR
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD) + Application.VERSION_BUGFIX;
 	}
     }
 
@@ -74,7 +77,6 @@ public final class Application {
     private GameManager gameMgr;
     private ArenaManager arenaMgr;
     private MenuManager menuMgr;
-    private HelpManager helpMgr;
     private ArenaEditor editor;
     private GUIManager guiMgr;
     private int mode, formerMode;
@@ -96,7 +98,6 @@ public final class Application {
 	this.menuMgr = new MenuManager();
 	this.about = new AboutDialog(Application.getVersionString());
 	this.guiMgr = new GUIManager();
-	this.helpMgr = new HelpManager();
 	this.gameMgr = new GameManager();
 	this.editor = new ArenaEditor();
 	// Cache Logo
@@ -132,7 +133,6 @@ public final class Application {
 	this.menuMgr.populateMenuBar();
 	this.ni.setDefaultMenuBar(this.menuMgr.getMenuBar(), this.masterFrame);
 	// Fire hooks
-	this.getHelpManager().activeLanguageChanged();
 	this.getGameManager().activeLanguageChanged();
 	this.getEditor().activeLanguageChanged();
     }
@@ -172,10 +172,6 @@ public final class Application {
 
     public GUIManager getGUIManager() {
 	return this.guiMgr;
-    }
-
-    HelpManager getHelpManager() {
-	return this.helpMgr;
     }
 
     public String[] getLevelInfoList() {
@@ -243,8 +239,7 @@ public final class Application {
 
     public void updateDirtyWindow(final boolean appDirty) {
 	this.masterFrame.getRootPane().putClientProperty(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_WINDOW_MODIFIED),
-		Boolean.valueOf(appDirty));
+		GlobalLoader.loadUntranslated(UntranslatedString.WINDOW_MODIFIED), Boolean.valueOf(appDirty));
     }
 
     public void pack() {
@@ -296,8 +291,7 @@ public final class Application {
     public void updateLevelInfoList() {
 	JFrame loadFrame;
 	JProgressBar loadBar;
-	loadFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_UPDATING_LEVEL_INFO));
+	loadFrame = new JFrame(StringLoader.loadDialog(DialogString.UPDATING_LEVEL_INFO));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	loadBar.setPreferredSize(new Dimension(600, 20));

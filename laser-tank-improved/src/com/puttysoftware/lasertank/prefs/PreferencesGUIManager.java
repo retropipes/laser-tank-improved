@@ -22,8 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.PrefString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.EditorLayoutConstants;
 
 class PreferencesGUIManager {
@@ -38,11 +39,9 @@ class PreferencesGUIManager {
 	    try {
 		final PreferencesGUIManager pm = PreferencesGUIManager.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		if (cmd.equals(StringLoader.loadDialog(DialogString.OK_BUTTON))) {
 		    pm.setPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
+		} else if (cmd.equals(StringLoader.loadDialog(DialogString.CANCEL_BUTTON))) {
 		    pm.hidePrefs();
 		}
 	    } catch (final Exception ex) {
@@ -162,41 +161,26 @@ class PreferencesGUIManager {
 
     private void setUpGUI() {
 	final EventHandler handler = new EventHandler();
-	this.prefFrame = new JFrame(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_TITLE));
+	this.prefFrame = new JFrame(StringLoader.loadPref(PrefString.TITLE));
 	final Container mainPrefPane = new Container();
 	final Container buttonPane = new Container();
 	final Container settingsPane = new Container();
-	final JButton prefsOK = new JButton(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
+	final JButton prefsOK = new JButton(StringLoader.loadDialog(DialogString.OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
 	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
-	final JButton prefsCancel = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
+	final JButton prefsCancel = new JButton(StringLoader.loadDialog(DialogString.CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
-	this.sounds = new JCheckBox(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ENABLE_SOUNDS),
-		true);
-	this.music = new JCheckBox(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ENABLE_MUSIC),
-		true);
-	this.checkUpdatesStartup = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
-		StringConstants.PREFS_STRING_STARTUP_UPDATES), true);
-	this.moveOneAtATime = new JCheckBox(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_ONE_MOVE),
-		true);
-	this.enableAnimation = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
-		StringConstants.PREFS_STRING_ENABLE_ANIMATION), true);
-	this.actionDelay = new JComboBox<>(new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_1),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_2),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_3),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_4),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_5) });
+	this.sounds = new JCheckBox(StringLoader.loadPref(PrefString.ENABLE_SOUNDS), true);
+	this.music = new JCheckBox(StringLoader.loadPref(PrefString.ENABLE_MUSIC), true);
+	this.checkUpdatesStartup = new JCheckBox(StringLoader.loadPref(PrefString.STARTUP_UPDATES), true);
+	this.moveOneAtATime = new JCheckBox(StringLoader.loadPref(PrefString.ONE_MOVE), true);
+	this.enableAnimation = new JCheckBox(StringLoader.loadPref(PrefString.ENABLE_ANIMATION), true);
+	this.actionDelay = new JComboBox<>(new String[] { StringLoader.loadPref(PrefString.SPEED_1),
+		StringLoader.loadPref(PrefString.SPEED_2), StringLoader.loadPref(PrefString.SPEED_3),
+		StringLoader.loadPref(PrefString.SPEED_4), StringLoader.loadPref(PrefString.SPEED_5) });
 	this.languageList = new JComboBox<>(StringLoader.loadLocalizedLanguagesList());
 	this.editorLayoutList = new JComboBox<>(EditorLayoutConstants.getEditorLayoutList());
-	this.editorShowAllObjects = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
-		StringConstants.PREFS_STRING_SHOW_ALL_OBJECTS), true);
+	this.editorShowAllObjects = new JCheckBox(StringLoader.loadPref(PrefString.SHOW_ALL_OBJECTS), true);
 	this.prefFrame.setContentPane(mainPrefPane);
 	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	this.prefFrame.addWindowListener(handler);
@@ -208,14 +192,11 @@ class PreferencesGUIManager {
 	settingsPane.add(this.enableAnimation);
 	settingsPane.add(this.checkUpdatesStartup);
 	settingsPane.add(this.moveOneAtATime);
-	settingsPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS, StringConstants.PREFS_STRING_SPEED_LABEL)));
+	settingsPane.add(new JLabel(StringLoader.loadPref(PrefString.SPEED_LABEL)));
 	settingsPane.add(this.actionDelay);
-	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
-		StringConstants.PREFS_STRING_ACTIVE_LANGUAGE_LABEL)));
+	settingsPane.add(new JLabel(StringLoader.loadPref(PrefString.ACTIVE_LANGUAGE_LABEL)));
 	settingsPane.add(this.languageList);
-	settingsPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_PREFS,
-		StringConstants.PREFS_STRING_EDITOR_LAYOUT_LABEL)));
+	settingsPane.add(new JLabel(StringLoader.loadPref(PrefString.EDITOR_LAYOUT_LABEL)));
 	settingsPane.add(this.editorLayoutList);
 	settingsPane.add(this.editorShowAllObjects);
 	buttonPane.setLayout(new FlowLayout());

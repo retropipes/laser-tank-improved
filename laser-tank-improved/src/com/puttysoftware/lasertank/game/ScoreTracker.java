@@ -9,35 +9,30 @@ import java.io.File;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.Extension;
 import com.puttysoftware.scoring.SavedScoreManager;
 import com.puttysoftware.scoring.ScoreManager;
 
 class ScoreTracker {
-    private static final String MAC_PREFIX = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_UNIX_HOME);
-    private static final String WIN_PREFIX = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_WINDOWS_APPDATA);
-    private static final String UNIX_PREFIX = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_UNIX_HOME);
-    private static final String MAC_DIR = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_SCORES_MAC);
-    private static final String WIN_DIR = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_SCORES_WINDOWS);
-    private static final String UNIX_DIR = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-	    StringConstants.NOTL_STRING_DIRECTORY_SCORES_UNIX);
+    private static final String MAC_PREFIX = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_UNIX_HOME);
+    private static final String WIN_PREFIX = GlobalLoader
+	    .loadUntranslated(UntranslatedString.DIRECTORY_WINDOWS_APPDATA);
+    private static final String UNIX_PREFIX = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_UNIX_HOME);
+    private static final String MAC_DIR = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_SCORES_MAC);
+    private static final String WIN_DIR = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_SCORES_WINDOWS);
+    private static final String UNIX_DIR = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_SCORES_UNIX);
 
     private static String getScoreDirectory() {
-	final String osName = System.getProperty(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME));
-	if (osName.indexOf(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
+	final String osName = System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME));
+	if (osName.indexOf(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X)) != -1) {
 	    // Mac OS X
 	    return ScoreTracker.MAC_DIR;
-	} else if (osName.indexOf(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
+	} else if (osName.indexOf(GlobalLoader.loadUntranslated(UntranslatedString.WINDOWS)) != -1) {
 	    // Windows
 	    return ScoreTracker.WIN_DIR;
 	} else {
@@ -47,14 +42,11 @@ class ScoreTracker {
     }
 
     private static String getScoreDirPrefix() {
-	final String osName = System.getProperty(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME));
-	if (osName.indexOf(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_MAC_OS_X)) != -1) {
+	final String osName = System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME));
+	if (osName.indexOf(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X)) != -1) {
 	    // Mac OS X
 	    return System.getenv(ScoreTracker.MAC_PREFIX);
-	} else if (osName.indexOf(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_WINDOWS)) != -1) {
+	} else if (osName.indexOf(GlobalLoader.loadUntranslated(UntranslatedString.WINDOWS)) != -1) {
 	    // Windows
 	    return System.getenv(ScoreTracker.WIN_PREFIX);
 	} else {
@@ -68,7 +60,7 @@ class ScoreTracker {
 	b.append(ScoreTracker.getScoreDirPrefix());
 	b.append(ScoreTracker.getScoreDirectory());
 	b.append(filename);
-	b.append(StringConstants.COMMON_STRING_UNDERSCORE);
+	b.append(StringLoader.loadCommon(CommonString.UNDERSCORE));
 	b.append(LaserTank.getApplication().getArenaManager().getArena().getActiveLevelNumber() + 1);
 	b.append(Extension.getScoresExtensionWithPeriod());
 	return new File(b.toString());
@@ -188,18 +180,12 @@ class ScoreTracker {
 	    if (this.trackScores) {
 		final String scoresFile = sf.getAbsolutePath();
 		this.ssMgr = new SavedScoreManager(3, 10, ScoreManager.SORT_ORDER_DESCENDING, 10000L,
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME)
-				+ StringConstants.COMMON_STRING_SPACE
-				+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-					StringConstants.GAME_STRING_SCORES),
-			new String[] {
-				StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-					StringConstants.GAME_STRING_SCORE_MOVES),
-				StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-					StringConstants.GAME_STRING_SCORE_SHOTS),
-				StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-					StringConstants.GAME_STRING_SCORE_OTHERS) },
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME)
+				+ StringLoader.loadCommon(CommonString.SPACE)
+				+ StringLoader.loadGame(GameString.SCORES),
+			new String[] { StringLoader.loadGame(GameString.SCORE_MOVES),
+				StringLoader.loadGame(GameString.SCORE_SHOTS),
+				StringLoader.loadGame(GameString.SCORE_OTHERS) },
 			scoresFile);
 	    }
 	}
@@ -213,8 +199,7 @@ class ScoreTracker {
 	if (this.trackScores) {
 	    this.ssMgr.viewTable();
 	} else {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_SCORES_UNAVAILABLE));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.SCORES_UNAVAILABLE));
 	}
     }
 }

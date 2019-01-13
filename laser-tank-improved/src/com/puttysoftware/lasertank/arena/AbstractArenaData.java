@@ -73,7 +73,7 @@ public abstract class AbstractArenaData implements Cloneable {
 
     public abstract void fillVirtual();
 
-    public abstract int[] findObject(final AbstractArena arena, final int z, final String targetName);
+    public abstract int[] findObject(final AbstractArena arena, final int z, final AbstractArenaObject target);
 
     public abstract int[] findPlayer(final AbstractArena arena, final int number);
 

@@ -14,8 +14,8 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.errors.ErrorLogger;
 import com.puttysoftware.integration.NativeIntegration;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 public class LaserTank {
     // Constants
@@ -52,14 +52,10 @@ public class LaserTank {
 
     private static void initStrings() {
 	StringLoader.setDefaultLanguage();
-	LaserTank.ERROR_TITLE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		StringConstants.ERROR_STRING_ERROR_TITLE);
-	LaserTank.ERROR_MESSAGE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		StringConstants.ERROR_STRING_ERROR_MESSAGE);
-	LaserTank.NONFATAL_TITLE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		StringConstants.ERROR_STRING_NONFATAL_TITLE);
-	LaserTank.NONFATAL_MESSAGE = StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		StringConstants.ERROR_STRING_NONFATAL_MESSAGE);
+	LaserTank.ERROR_TITLE = StringLoader.loadError(ErrorString.ERROR_TITLE);
+	LaserTank.ERROR_MESSAGE = StringLoader.loadError(ErrorString.ERROR_MESSAGE);
+	LaserTank.NONFATAL_TITLE = StringLoader.loadError(ErrorString.NONFATAL_TITLE);
+	LaserTank.NONFATAL_MESSAGE = StringLoader.loadError(ErrorString.NONFATAL_MESSAGE);
     }
 
     public static void main(final String[] args) {

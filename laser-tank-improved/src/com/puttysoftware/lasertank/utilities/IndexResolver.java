@@ -5,12 +5,11 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 
 public class IndexResolver {
     public static String resolveIndexNumberToImageSuffix(final int in) {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_INDEX, in);
+	return GlobalLoader.loadIndex(in);
     }
 
     private IndexResolver() {

@@ -10,17 +10,14 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 
 class ClassicAccelerators extends Accelerators {
     ClassicAccelerators() {
 	int modKey;
-	if (System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_MAC_OS_X))) {
+	if (System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.equalsIgnoreCase(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X))) {
 	    modKey = InputEvent.META_DOWN_MASK;
 	} else {
 	    modKey = InputEvent.CTRL_DOWN_MASK;

@@ -14,7 +14,7 @@ class GlobalFileNames {
     static int getFileCount() {
 	return GlobalFileNames.LIST.length;
     }
-    
+
     static String getFileName(final GlobalFile file) {
 	return GlobalFileNames.LIST[file.ordinal()];
     }

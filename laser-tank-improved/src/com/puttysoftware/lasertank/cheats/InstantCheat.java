@@ -10,7 +10,7 @@ class InstantCheat extends Cheat {
     public boolean getState() {
 	return false;
     }
-    
+
     @Override
     public boolean hasState() {
 	return false;

@@ -19,8 +19,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 
 public class AboutDialog implements AboutHandler {
     private class EventHandler implements ActionListener {
@@ -34,8 +37,7 @@ public class AboutDialog implements AboutHandler {
 	    try {
 		final AboutDialog ad = AboutDialog.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		if (cmd.equals(StringLoader.loadDialog(DialogString.OK_BUTTON))) {
 		    ad.hideAboutDialog();
 		}
 	    } catch (final Exception ex) {
@@ -61,36 +63,29 @@ public class AboutDialog implements AboutHandler {
 	JButton aboutOK;
 	EventHandler handler;
 	handler = new EventHandler();
-	this.aboutFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_ABOUT) + StringConstants.COMMON_STRING_SPACE
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME));
+	this.aboutFrame = new JFrame(
+		StringLoader.loadDialog(DialogString.ABOUT) + StringLoader.loadCommon(CommonString.SPACE)
+			+ GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	aboutPane = new Container();
 	textPane = new Container();
 	buttonPane = new Container();
 	logoPane = new Container();
-	aboutOK = new JButton(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
+	aboutOK = new JButton(StringLoader.loadDialog(DialogString.OK_BUTTON));
 	aboutOK.setDefaultCapable(true);
 	this.aboutFrame.getRootPane().setDefaultButton(aboutOK);
 	this.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	aboutPane.setLayout(new BorderLayout());
 	logoPane.setLayout(new FlowLayout());
 	textPane.setLayout(new GridLayout(4, 1));
-	textPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME)
-			+ StringConstants.COMMON_STRING_SPACE + StringLoader
-				.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_VERSION)
-			+ StringConstants.COMMON_STRING_SPACE + ver));
-	textPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_AUTHOR)
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_AUTHOR_NAME)));
-	textPane.add(new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_WEB_SITE)
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_GAME_WEB_URL)));
-	textPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_BUG_REPORTS)
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_GAME_EMAIL)));
+	textPane.add(new JLabel(GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadDialog(DialogString.VERSION)
+		+ StringLoader.loadCommon(CommonString.SPACE) + ver));
+	textPane.add(new JLabel(StringLoader.loadDialog(DialogString.AUTHOR)
+		+ GlobalLoader.loadUntranslated(UntranslatedString.AUTHOR_NAME)));
+	textPane.add(new JLabel(StringLoader.loadDialog(DialogString.WEB_SITE)
+		+ GlobalLoader.loadUntranslated(UntranslatedString.GAME_WEB_URL)));
+	textPane.add(new JLabel(StringLoader.loadDialog(DialogString.BUG_REPORTS)
+		+ GlobalLoader.loadUntranslated(UntranslatedString.GAME_EMAIL)));
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(aboutOK);
 	aboutPane.add(logoPane, BorderLayout.WEST);

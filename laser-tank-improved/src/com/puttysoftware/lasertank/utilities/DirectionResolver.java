@@ -5,12 +5,11 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 
 public class DirectionResolver {
     public static String resolveDirectionConstantToImageSuffix(final Direction dir) {
-	return StringLoader.loadString(StringConstants.STRINGS_FILE_DIRECTION, dir.getInternalValue());
+	return GlobalLoader.loadDirection(dir.getInternalValue());
     }
 
     public static Direction resolveRelativeDirection(final int dX, final int dY) {

@@ -50,8 +50,14 @@ import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.MenuString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ActionConstants;
 import com.puttysoftware.lasertank.utilities.AlreadyDeadException;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
@@ -78,8 +84,7 @@ public class GameManager {
 	public void actionPerformed(final ActionEvent e) {
 	    final String cmd = e.getActionCommand();
 	    final GameManager gm = GameManager.this;
-	    if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		    StringConstants.DIALOG_STRING_OK_BUTTON))) {
+	    if (cmd.equals(StringLoader.loadDialog(DialogString.OK_BUTTON))) {
 		gm.okButtonClicked();
 	    } else {
 		gm.cancelButtonClicked();
@@ -147,8 +152,7 @@ public class GameManager {
 		    TankInventory.fireBomb();
 		    gm.fireRange();
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_OUT_OF_BOMBS));
+		    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_BOMBS));
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -179,8 +183,7 @@ public class GameManager {
 			break;
 		    }
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_OUT_OF_BOOSTS));
+		    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_BOOSTS));
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -207,8 +210,7 @@ public class GameManager {
 		    TankInventory.fireHeatBomb();
 		    gm.fireRange();
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_OUT_OF_HEAT_BOMBS));
+		    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_HEAT_BOMBS));
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -223,8 +225,7 @@ public class GameManager {
 		    TankInventory.fireIceBomb();
 		    gm.fireRange();
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_OUT_OF_ICE_BOMBS));
+		    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_ICE_BOMBS));
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -311,8 +312,7 @@ public class GameManager {
 			break;
 		    }
 		} else {
-		    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_OUT_OF_MAGNETS));
+		    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_MAGNETS));
 		}
 	    } catch (final Exception ex) {
 		LaserTank.logError(ex);
@@ -621,18 +621,13 @@ public class GameManager {
     private static final int CHEAT_BOMBS = 9;
     private static final int CHEAT_HEAT_BOMBS = 10;
     private static final int CHEAT_ICE_BOMBS = 11;
-    private static String[] OTHER_AMMO_CHOICES = new String[] {
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MISSILES),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_STUNNERS),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BLUE_LASERS),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_DISRUPTORS) };
-    private static String[] OTHER_TOOL_CHOICES = new String[] {
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOOSTS),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MAGNETS) };
-    private static String[] OTHER_RANGE_CHOICES = new String[] {
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOMBS),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_HEAT_BOMBS),
-	    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_ICE_BOMBS) };
+    private static String[] OTHER_AMMO_CHOICES = new String[] { StringLoader.loadGame(GameString.MISSILES),
+	    StringLoader.loadGame(GameString.STUNNERS), StringLoader.loadGame(GameString.BLUE_LASERS),
+	    StringLoader.loadGame(GameString.DISRUPTORS) };
+    private static String[] OTHER_TOOL_CHOICES = new String[] { StringLoader.loadGame(GameString.BOOSTS),
+	    StringLoader.loadGame(GameString.MAGNETS) };
+    private static String[] OTHER_RANGE_CHOICES = new String[] { StringLoader.loadGame(GameString.BOMBS),
+	    StringLoader.loadGame(GameString.HEAT_BOMBS), StringLoader.loadGame(GameString.ICE_BOMBS) };
 
     public static boolean canObjectMove(final int locX, final int locY, final int dirX, final int dirY) {
 	return MLOTask.checkSolid(locX + dirX, locY + dirY);
@@ -772,18 +767,13 @@ public class GameManager {
     // Methods
     public void activeLanguageChanged() {
 	this.setUpDifficultyDialog();
-	GameManager.OTHER_AMMO_CHOICES = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MISSILES),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_STUNNERS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BLUE_LASERS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_DISRUPTORS) };
-	GameManager.OTHER_TOOL_CHOICES = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOOSTS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MAGNETS) };
-	GameManager.OTHER_RANGE_CHOICES = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOMBS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_HEAT_BOMBS),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_ICE_BOMBS) };
+	GameManager.OTHER_AMMO_CHOICES = new String[] { StringLoader.loadGame(GameString.MISSILES),
+		StringLoader.loadGame(GameString.STUNNERS), StringLoader.loadGame(GameString.BLUE_LASERS),
+		StringLoader.loadGame(GameString.DISRUPTORS) };
+	GameManager.OTHER_TOOL_CHOICES = new String[] { StringLoader.loadGame(GameString.BOOSTS),
+		StringLoader.loadGame(GameString.MAGNETS) };
+	GameManager.OTHER_RANGE_CHOICES = new String[] { StringLoader.loadGame(GameString.BOMBS),
+		StringLoader.loadGame(GameString.HEAT_BOMBS), StringLoader.loadGame(GameString.ICE_BOMBS) };
     }
 
     void cancelButtonClicked() {
@@ -792,10 +782,9 @@ public class GameManager {
     }
 
     public void changeOtherAmmoMode() {
-	final String choice = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_WHICH_AMMO),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_CHANGE_AMMO),
-		GameManager.OTHER_AMMO_CHOICES, GameManager.OTHER_AMMO_CHOICES[this.otherAmmoMode]);
+	final String choice = CommonDialogs.showInputDialog(StringLoader.loadGame(GameString.WHICH_AMMO),
+		StringLoader.loadGame(GameString.CHANGE_AMMO), GameManager.OTHER_AMMO_CHOICES,
+		GameManager.OTHER_AMMO_CHOICES[this.otherAmmoMode]);
 	if (choice != null) {
 	    for (int z = 0; z < GameManager.OTHER_AMMO_CHOICES.length; z++) {
 		if (choice.equals(GameManager.OTHER_AMMO_CHOICES[z])) {
@@ -804,18 +793,16 @@ public class GameManager {
 		}
 	    }
 	    this.updateScoreText();
-	    CommonDialogs.showDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_AMMO_CHANGED)
-			    + StringConstants.COMMON_STRING_SPACE + GameManager.OTHER_AMMO_CHOICES[this.otherAmmoMode]
-			    + StringConstants.COMMON_STRING_NOTL_PERIOD);
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.AMMO_CHANGED)
+		    + StringLoader.loadCommon(CommonString.SPACE) + GameManager.OTHER_AMMO_CHOICES[this.otherAmmoMode]
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD));
 	}
     }
 
     public void changeOtherRangeMode() {
-	final String choice = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_WHICH_RANGE),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_CHANGE_RANGE),
-		GameManager.OTHER_RANGE_CHOICES, GameManager.OTHER_RANGE_CHOICES[this.otherRangeMode]);
+	final String choice = CommonDialogs.showInputDialog(StringLoader.loadGame(GameString.WHICH_RANGE),
+		StringLoader.loadGame(GameString.CHANGE_RANGE), GameManager.OTHER_RANGE_CHOICES,
+		GameManager.OTHER_RANGE_CHOICES[this.otherRangeMode]);
 	if (choice != null) {
 	    for (int z = 0; z < GameManager.OTHER_RANGE_CHOICES.length; z++) {
 		if (choice.equals(GameManager.OTHER_RANGE_CHOICES[z])) {
@@ -824,17 +811,16 @@ public class GameManager {
 		}
 	    }
 	    this.updateScoreText();
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_RANGE_CHANGED) + StringConstants.COMMON_STRING_SPACE
-		    + GameManager.OTHER_RANGE_CHOICES[this.otherRangeMode] + StringConstants.COMMON_STRING_NOTL_PERIOD);
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.RANGE_CHANGED)
+		    + StringLoader.loadCommon(CommonString.SPACE) + GameManager.OTHER_RANGE_CHOICES[this.otherRangeMode]
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD));
 	}
     }
 
     public void changeOtherToolMode() {
-	final String choice = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_WHICH_TOOL),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_CHANGE_TOOL),
-		GameManager.OTHER_TOOL_CHOICES, GameManager.OTHER_TOOL_CHOICES[this.otherToolMode]);
+	final String choice = CommonDialogs.showInputDialog(StringLoader.loadGame(GameString.WHICH_TOOL),
+		StringLoader.loadGame(GameString.CHANGE_TOOL), GameManager.OTHER_TOOL_CHOICES,
+		GameManager.OTHER_TOOL_CHOICES[this.otherToolMode]);
 	if (choice != null) {
 	    for (int z = 0; z < GameManager.OTHER_TOOL_CHOICES.length; z++) {
 		if (choice.equals(GameManager.OTHER_TOOL_CHOICES[z])) {
@@ -843,10 +829,9 @@ public class GameManager {
 		}
 	    }
 	    this.updateScoreText();
-	    CommonDialogs.showDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_TOOL_CHANGED)
-			    + StringConstants.COMMON_STRING_SPACE + GameManager.OTHER_TOOL_CHOICES[this.otherToolMode]
-			    + StringConstants.COMMON_STRING_NOTL_PERIOD);
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.TOOL_CHANGED)
+		    + StringLoader.loadCommon(CommonString.SPACE) + GameManager.OTHER_TOOL_CHOICES[this.otherToolMode]
+		    + StringLoader.loadCommon(CommonString.NOTL_PERIOD));
 	}
     }
 
@@ -879,8 +864,7 @@ public class GameManager {
     public void enterCheatCode() {
 	final String rawCheat = this.cMgr.enterCheat();
 	if (rawCheat != null) {
-	    if (rawCheat.contains(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_ENABLE_CHEAT))) {
+	    if (rawCheat.contains(StringLoader.loadGame(GameString.ENABLE_CHEAT))) {
 		// Enable cheat
 		final String cheat = rawCheat.substring(7);
 		for (int x = 0; x < this.cMgr.getCheatCount(); x++) {
@@ -938,23 +922,19 @@ public class GameManager {
 	if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_MISSILES
 		&& this.activeLaserType == LaserTypeConstants.LASER_TYPE_MISSILE && TankInventory.getMissilesLeft() == 0
 		&& !this.getCheatStatus(GameManager.CHEAT_MISSILES)) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUT_OF_MISSILES));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_MISSILES));
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_STUNNERS
 		&& this.activeLaserType == LaserTypeConstants.LASER_TYPE_STUNNER && TankInventory.getStunnersLeft() == 0
 		&& !this.getCheatStatus(GameManager.CHEAT_STUNNERS)) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUT_OF_STUNNERS));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_STUNNERS));
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_BLUE_LASERS
 		&& this.activeLaserType == LaserTypeConstants.LASER_TYPE_BLUE && TankInventory.getBlueLasersLeft() == 0
 		&& !this.getCheatStatus(GameManager.CHEAT_BLUE_LASERS)) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUT_OF_BLUE_LASERS));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_BLUE_LASERS));
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_DISRUPTORS
 		&& this.activeLaserType == LaserTypeConstants.LASER_TYPE_DISRUPTOR
 		&& TankInventory.getDisruptorsLeft() == 0 && !this.getCheatStatus(GameManager.CHEAT_DISRUPTORS)) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUT_OF_DISRUPTORS));
+	    CommonDialogs.showDialog(StringLoader.loadGame(GameString.OUT_OF_DISRUPTORS));
 	} else {
 	    final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
 	    if (!a.isMoveShootAllowed() && !this.laserActive || a.isMoveShootAllowed()) {
@@ -1042,11 +1022,8 @@ public class GameManager {
 	    try {
 		this.resetCurrentLevel();
 	    } catch (final InvalidArenaException iae) {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_TANK_LOCATION),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		this.exitGame();
 		return;
 	    }
@@ -1160,11 +1137,8 @@ public class GameManager {
 	final Application app = LaserTank.getApplication();
 	final AbstractArena m = app.getArenaManager().getArena();
 	final String[] choices = app.getLevelInfoList();
-	final String res = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			StringConstants.GAME_STRING_LOAD_LEVEL_PROMPT),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_LOAD_LEVEL),
-		choices, choices[m.getActiveLevelNumber()]);
+	final String res = CommonDialogs.showInputDialog(StringLoader.loadGame(GameString.LOAD_LEVEL_PROMPT),
+		StringLoader.loadGame(GameString.LOAD_LEVEL), choices, choices[m.getActiveLevelNumber()]);
 	int number = -1;
 	for (number = 0; number < m.getLevels(); number++) {
 	    if (choices[number].equals(res)) {
@@ -1261,11 +1235,8 @@ public class GameManager {
 		try {
 		    this.resetPlayerLocation();
 		} catch (final InvalidArenaException iae) {
-		    CommonDialogs.showErrorDialog(
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				    StringConstants.ERROR_STRING_TANK_LOCATION),
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				    StringConstants.NOTL_STRING_PROGRAM_NAME));
+		    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			    GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		    this.exitGame();
 		    return;
 		}
@@ -1292,13 +1263,11 @@ public class GameManager {
 		    this.animator.start();
 		}
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			StringConstants.GAME_STRING_NO_LEVEL_WITH_DIFFICULTY));
+		CommonDialogs.showDialog(StringLoader.loadGame(GameString.NO_LEVEL_WITH_DIFFICULTY));
 		LaserTank.getApplication().getGUIManager().showGUI();
 	    }
 	} else {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		    StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
+	    CommonDialogs.showDialog(StringLoader.loadMenu(MenuString.ERROR_NO_ARENA_OPENED));
 	}
     }
 
@@ -1317,18 +1286,12 @@ public class GameManager {
 		m.setDirtyFlags(this.plMgr.getPlayerLocationZ());
 		this.processLevelExists();
 	    } else {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_NO_PREVIOUS_LEVEL),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.NO_PREVIOUS_LEVEL),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	    }
 	} else {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_NO_PREVIOUS_LEVEL),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			    StringConstants.NOTL_STRING_PROGRAM_NAME));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.NO_PREVIOUS_LEVEL),
+		    GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	}
     }
 
@@ -1337,92 +1300,67 @@ public class GameManager {
 	try {
 	    this.resetPlayerLocation();
 	} catch (final InvalidArenaException iae) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_TANK_LOCATION),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			    StringConstants.NOTL_STRING_PROGRAM_NAME));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+		    GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	    this.exitGame();
 	    return;
 	}
 	this.updateTank();
 	this.st.resetScore(app.getArenaManager().getScoresFileName());
 	TankInventory.resetInventory();
-	this.scoreMoves
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MOVES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
-	this.scoreShots
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_SHOTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
-	this.scoreOthers
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_OTHERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
+	this.scoreMoves.setText(StringLoader.loadGame(GameString.MOVES) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
+	this.scoreShots.setText(StringLoader.loadGame(GameString.SHOTS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
+	this.scoreOthers.setText(StringLoader.loadGame(GameString.OTHERS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
 	if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_MISSILES) {
 	    if (this.getCheatStatus(GameManager.CHEAT_MISSILES)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MISSILES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MISSILES) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MISSILES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MISSILES) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_STUNNERS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_STUNNERS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_STUNNERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.STUNNERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_STUNNERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.STUNNERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_BLUE_LASERS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_BLUE_LASERS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_BLUE_LASERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BLUE_LASERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_BLUE_LASERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BLUE_LASERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_DISRUPTORS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_DISRUPTORS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_DISRUPTORS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.DISRUPTORS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_DISRUPTORS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.DISRUPTORS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	}
 	this.updateInfo();
@@ -1434,10 +1372,10 @@ public class GameManager {
 	try {
 	    final int activeLevel = LaserTank.getApplication().getArenaManager().getArena().getActiveLevelNumber();
 	    final String levelFile = LaserTank.getApplication().getArenaManager().getLastUsedArena();
-	    final String filename = levelFile + StringConstants.COMMON_STRING_UNDERSCORE + activeLevel
+	    final String filename = levelFile + StringLoader.loadCommon(CommonString.UNDERSCORE) + activeLevel
 		    + Extension.getSolutionExtensionWithPeriod();
 	    try (XMLFileReader file = new XMLFileReader(filename,
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_SOLUTION))) {
+		    GlobalLoader.loadUntranslated(UntranslatedString.SOLUTION))) {
 		this.gre = GameReplayEngine.readReplay(file);
 	    }
 	    return true;
@@ -1494,11 +1432,8 @@ public class GameManager {
 	    try {
 		this.resetPlayerLocation();
 	    } catch (final InvalidArenaException iae) {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_TANK_LOCATION),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		this.exitGame();
 		return;
 	    }
@@ -1590,11 +1525,8 @@ public class GameManager {
 	    try {
 		this.resetCurrentLevel(false);
 	    } catch (final InvalidArenaException iae) {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_TANK_LOCATION),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		this.exitGame();
 		return;
 	    }
@@ -1603,11 +1535,8 @@ public class GameManager {
 	} else {
 	    final boolean success = this.readSolution();
 	    if (!success) {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_NO_SOLUTION_FILE),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.NO_SOLUTION_FILE),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	    } else {
 		this.replaying = true;
 		// Turn recording off
@@ -1616,11 +1545,8 @@ public class GameManager {
 		try {
 		    this.resetCurrentLevel(false);
 		} catch (final InvalidArenaException iae) {
-		    CommonDialogs.showErrorDialog(
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				    StringConstants.ERROR_STRING_TANK_LOCATION),
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				    StringConstants.NOTL_STRING_PROGRAM_NAME));
+		    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			    GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		    this.exitGame();
 		    return;
 		}
@@ -1686,8 +1612,7 @@ public class GameManager {
 	final AbstractArena m = app.getArenaManager().getArena();
 	final int[] found = m.findPlayer(1);
 	if (found == null) {
-	    throw new InvalidArenaException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		    StringConstants.ERROR_STRING_TANK_LOCATION));
+	    throw new InvalidArenaException(StringLoader.loadError(ErrorString.TANK_LOCATION));
 	}
 	this.plMgr.setPlayerLocation(found[0], found[1], found[2]);
     }
@@ -1747,16 +1672,13 @@ public class GameManager {
     private void setUpDifficultyDialog() {
 	// Set up Difficulty Dialog
 	final DifficultyEventHandler dhandler = new DifficultyEventHandler();
-	this.difficultyFrame = new JDialog((JFrame) null, StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		StringConstants.GAME_STRING_SELECT_DIFFICULTY));
+	this.difficultyFrame = new JDialog((JFrame) null, StringLoader.loadGame(GameString.SELECT_DIFFICULTY));
 	final Container difficultyPane = new Container();
 	final Container listPane = new Container();
 	final Container buttonPane = new Container();
 	this.difficultyList = new JList<>(DifficultyConstants.getDifficultyNames());
-	final JButton okButton = new JButton(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
-	final JButton cancelButton = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
+	final JButton okButton = new JButton(StringLoader.loadDialog(DialogString.OK_BUTTON));
+	final JButton cancelButton = new JButton(StringLoader.loadDialog(DialogString.CANCEL_BUTTON));
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(okButton);
 	buttonPane.add(cancelButton);
@@ -1787,29 +1709,26 @@ public class GameManager {
 		GameViewingWindowManager.getViewingWindowSizeY()));
 	this.outputPane.addMouseListener(this.handler);
 	this.scoreMoves = new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MOVES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
+		StringLoader.loadGame(GameString.MOVES) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
 	this.scoreShots = new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_SHOTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
+		StringLoader.loadGame(GameString.SHOTS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
 	this.scoreOthers = new JLabel(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_OTHERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringConstants.COMMON_STRING_ZERO);
-	this.otherAmmoLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MISSILES)
-		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
-	this.otherToolsLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOOSTS)
-		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
-	this.otherRangesLeft = new JLabel(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOMBS)
-		+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-		+ StringConstants.COMMON_STRING_ZERO + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		StringLoader.loadGame(GameString.OTHERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO));
+	this.otherAmmoLeft = new JLabel(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+		+ StringLoader.loadGame(GameString.MISSILES) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+		+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
+	this.otherToolsLeft = new JLabel(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+		+ StringLoader.loadGame(GameString.BOOSTS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+		+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
+	this.otherRangesLeft = new JLabel(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+		+ StringLoader.loadGame(GameString.BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadCommon(CommonString.ZERO)
+		+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	this.scorePane = new Container();
 	this.scorePane.setLayout(new FlowLayout());
 	this.scorePane.add(this.scoreMoves);
@@ -1818,7 +1737,7 @@ public class GameManager {
 	this.scorePane.add(this.otherAmmoLeft);
 	this.scorePane.add(this.otherToolsLeft);
 	this.scorePane.add(this.otherRangesLeft);
-	this.levelInfo = new JLabel(StringConstants.COMMON_STRING_SPACE);
+	this.levelInfo = new JLabel(StringLoader.loadCommon(CommonString.SPACE));
 	this.infoPane = new Container();
 	this.infoPane.setLayout(new FlowLayout());
 	this.infoPane.add(this.levelInfo);
@@ -1942,11 +1861,8 @@ public class GameManager {
 	    try {
 		this.resetPlayerLocation();
 	    } catch (final InvalidArenaException iae) {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_TANK_LOCATION),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_PROGRAM_NAME));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.TANK_LOCATION),
+			GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		this.exitGame();
 		return;
 	    }
@@ -1965,14 +1881,11 @@ public class GameManager {
 
     private void updateInfo() {
 	final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
-	this.levelInfo
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_LEVEL)
-			+ StringConstants.COMMON_STRING_SPACE + (a.getActiveLevelNumber() + 1)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE + a.getName().trim()
-			+ StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-				StringConstants.DIALOG_STRING_ARENA_LEVEL_BY)
-			+ StringConstants.COMMON_STRING_SPACE + a.getAuthor().trim());
+	this.levelInfo.setText(StringLoader.loadGame(GameString.LEVEL) + StringLoader.loadCommon(CommonString.SPACE)
+		+ (a.getActiveLevelNumber() + 1) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + a.getName().trim()
+		+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadDialog(DialogString.ARENA_LEVEL_BY)
+		+ StringLoader.loadCommon(CommonString.SPACE) + a.getAuthor().trim());
     }
 
     public void updatePositionAbsoluteNoEvents(final int z) {
@@ -2009,14 +1922,12 @@ public class GameManager {
 	    this.plMgr.restorePlayerLocation();
 	    m.setCell(this.tank, this.plMgr.getPlayerLocationX(), this.plMgr.getPlayerLocationY(),
 		    this.plMgr.getPlayerLocationZ(), template.getLayer());
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUTSIDE_ARENA));
+	    LaserTank.getApplication().showMessage(StringLoader.loadGame(GameString.OUTSIDE_ARENA));
 	} catch (final NullPointerException np) {
 	    this.plMgr.restorePlayerLocation();
 	    m.setCell(this.tank, this.plMgr.getPlayerLocationX(), this.plMgr.getPlayerLocationY(),
 		    this.plMgr.getPlayerLocationZ(), template.getLayer());
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-		    StringConstants.GAME_STRING_OUTSIDE_ARENA));
+	    LaserTank.getApplication().showMessage(StringLoader.loadGame(GameString.OUTSIDE_ARENA));
 	}
     }
 
@@ -2153,18 +2064,12 @@ public class GameManager {
     }
 
     private void updateScore() {
-	this.scoreMoves
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MOVES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getMoves());
-	this.scoreShots
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_SHOTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getShots());
-	this.scoreShots
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_OTHERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getOthers());
+	this.scoreMoves.setText(StringLoader.loadGame(GameString.MOVES) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getMoves());
+	this.scoreShots.setText(StringLoader.loadGame(GameString.SHOTS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getShots());
+	this.scoreShots.setText(StringLoader.loadGame(GameString.OTHERS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getOthers());
 	this.updateScoreText();
     }
 
@@ -2184,18 +2089,12 @@ public class GameManager {
 	} else if (others < 0) {
 	    this.st.decrementOthers();
 	}
-	this.scoreMoves
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_MOVES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getMoves());
-	this.scoreShots
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_SHOTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getShots());
-	this.scoreOthers
-		.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_OTHERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ this.st.getOthers());
+	this.scoreMoves.setText(StringLoader.loadGame(GameString.MOVES) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getMoves());
+	this.scoreShots.setText(StringLoader.loadGame(GameString.SHOTS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getShots());
+	this.scoreOthers.setText(StringLoader.loadGame(GameString.OTHERS) + StringLoader.loadCommon(CommonString.COLON)
+		+ StringLoader.loadCommon(CommonString.SPACE) + this.st.getOthers());
 	this.updateScoreText();
     }
 
@@ -2203,147 +2102,115 @@ public class GameManager {
 	// Ammo
 	if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_MISSILES) {
 	    if (this.getCheatStatus(GameManager.CHEAT_MISSILES)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MISSILES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MISSILES) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MISSILES)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getMissilesLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MISSILES) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getMissilesLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_STUNNERS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_STUNNERS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_STUNNERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.STUNNERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_STUNNERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getStunnersLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.STUNNERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getStunnersLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_BLUE_LASERS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_BLUE_LASERS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_BLUE_LASERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BLUE_LASERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_BLUE_LASERS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getBlueLasersLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BLUE_LASERS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getBlueLasersLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherAmmoMode == GameManager.OTHER_AMMO_MODE_DISRUPTORS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_DISRUPTORS)) {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_DISRUPTORS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.DISRUPTORS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherAmmoLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_DISRUPTORS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getDisruptorsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherAmmoLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.DISRUPTORS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getDisruptorsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	}
 	// Tools
 	if (this.otherToolMode == GameManager.OTHER_TOOL_MODE_BOOSTS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_BOOSTS)) {
-		this.otherToolsLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOOSTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherToolsLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BOOSTS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherToolsLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOOSTS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getBoostsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherToolsLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BOOSTS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getBoostsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherToolMode == GameManager.OTHER_TOOL_MODE_MAGNETS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_MAGNETS)) {
-		this.otherToolsLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MAGNETS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherToolsLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MAGNETS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherToolsLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_MAGNETS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getMagnetsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherToolsLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.MAGNETS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getMagnetsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	}
 	// Ranges
 	if (this.otherRangeMode == GameManager.OTHER_RANGE_MODE_BOMBS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_BOMBS)) {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getBombsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getBombsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherRangeMode == GameManager.OTHER_RANGE_MODE_HEAT_BOMBS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_HEAT_BOMBS)) {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_HEAT_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.HEAT_BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_HEAT_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getHeatBombsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.HEAT_BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getHeatBombsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	} else if (this.otherRangeMode == GameManager.OTHER_RANGE_MODE_ICE_BOMBS) {
 	    if (this.getCheatStatus(GameManager.CHEAT_ICE_BOMBS)) {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_ICE_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_INFINITE)
-			+ StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.ICE_BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + StringLoader.loadGame(GameString.INFINITE)
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    } else {
-		this.otherRangesLeft.setText(StringConstants.COMMON_STRING_OPEN_PARENTHESES
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_ICE_BOMBS)
-			+ StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE
-			+ TankInventory.getIceBombsLeft() + StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+		this.otherRangesLeft.setText(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES)
+			+ StringLoader.loadGame(GameString.ICE_BOMBS) + StringLoader.loadCommon(CommonString.COLON)
+			+ StringLoader.loadCommon(CommonString.SPACE) + TankInventory.getIceBombsLeft()
+			+ StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	    }
 	}
     }
@@ -2373,10 +2240,10 @@ public class GameManager {
 	try {
 	    final int activeLevel = LaserTank.getApplication().getArenaManager().getArena().getActiveLevelNumber();
 	    final String levelFile = LaserTank.getApplication().getArenaManager().getLastUsedArena();
-	    final String filename = levelFile + StringConstants.COMMON_STRING_UNDERSCORE + activeLevel
+	    final String filename = levelFile + StringLoader.loadCommon(CommonString.UNDERSCORE) + activeLevel
 		    + Extension.getSolutionExtensionWithPeriod();
 	    try (XMLFileWriter file = new XMLFileWriter(filename,
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_SOLUTION))) {
+		    GlobalLoader.loadUntranslated(UntranslatedString.SOLUTION))) {
 		this.gre.writeReplay(file);
 	    }
 	} catch (final IOException ioe) {
@@ -2386,8 +2253,7 @@ public class GameManager {
 
     public void setUp() {
 	Application app = LaserTank.getApplication();
-	app.setTitle(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME));
+	app.setTitle(GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 	app.addKeyListener(this.handler);
 	app.addWindowListener(this.handler);
 	app.addWindowFocusListener(this.fHandler);

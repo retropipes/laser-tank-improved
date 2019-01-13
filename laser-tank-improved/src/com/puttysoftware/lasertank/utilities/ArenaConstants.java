@@ -5,8 +5,8 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.EditorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 public class ArenaConstants {
     public static final int LAYER_LOWER_GROUND = 0;
@@ -27,21 +27,14 @@ public class ArenaConstants {
     public static final int NUM_PLAYERS = 9;
 
     public static void activeLanguageChanged() {
-	ArenaConstants.LAYER_LIST = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER) };
-	ArenaConstants.ERA_LIST = new String[] {
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE) };
+	ArenaConstants.LAYER_LIST = new String[] { StringLoader.loadEditor(EditorString.LOWER_GROUND_LAYER),
+		StringLoader.loadEditor(EditorString.UPPER_GROUND_LAYER),
+		StringLoader.loadEditor(EditorString.LOWER_OBJECTS_LAYER),
+		StringLoader.loadEditor(EditorString.UPPER_OBJECTS_LAYER) };
+	ArenaConstants.ERA_LIST = new String[] { StringLoader.loadTime(ArenaConstants.ERA_DISTANT_PAST),
+		StringLoader.loadTime(ArenaConstants.ERA_PAST), StringLoader.loadTime(ArenaConstants.ERA_PRESENT),
+		StringLoader.loadTime(ArenaConstants.ERA_FUTURE),
+		StringLoader.loadTime(ArenaConstants.ERA_DISTANT_FUTURE) };
     }
 
     public static String[] getEraList() {

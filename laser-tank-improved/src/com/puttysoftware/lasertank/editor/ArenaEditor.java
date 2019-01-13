@@ -39,8 +39,10 @@ import com.puttysoftware.lasertank.arena.objects.Tank;
 import com.puttysoftware.lasertank.game.GameManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.EditorString;
+import com.puttysoftware.lasertank.strings.MenuString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.ArenaObjectList;
 import com.puttysoftware.lasertank.utilities.DrawGrid;
@@ -213,17 +215,13 @@ public class ArenaEditor {
 	    try {
 		final String cmd = e.getActionCommand();
 		final ArenaEditor ae = ArenaEditor.this;
-		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER))) {
+		if (cmd.equals(StringLoader.loadEditor(EditorString.LOWER_GROUND_LAYER))) {
 		    ae.changeLayerImpl(ArenaConstants.LAYER_LOWER_GROUND);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER))) {
+		} else if (cmd.equals(StringLoader.loadEditor(EditorString.UPPER_GROUND_LAYER))) {
 		    ae.changeLayerImpl(ArenaConstants.LAYER_UPPER_GROUND);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER))) {
+		} else if (cmd.equals(StringLoader.loadEditor(EditorString.LOWER_OBJECTS_LAYER))) {
 		    ae.changeLayerImpl(ArenaConstants.LAYER_LOWER_OBJECTS);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER))) {
+		} else if (cmd.equals(StringLoader.loadEditor(EditorString.UPPER_OBJECTS_LAYER))) {
 		    ae.changeLayerImpl(ArenaConstants.LAYER_UPPER_OBJECTS);
 		}
 	    } catch (final Exception ex) {
@@ -277,11 +275,9 @@ public class ArenaEditor {
     public boolean addLevel() {
 	final boolean success = this.addLevelInternal();
 	if (success) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_LEVEL_ADDED));
+	    CommonDialogs.showDialog(StringLoader.loadEditor(EditorString.LEVEL_ADDED));
 	} else {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_LEVEL_ADDING_FAILED));
+	    CommonDialogs.showDialog(StringLoader.loadEditor(EditorString.LEVEL_ADDING_FAILED));
 	}
 	return success;
     }
@@ -308,11 +304,8 @@ public class ArenaEditor {
 
     public void changeLayer() {
 	final String[] list = ArenaConstants.getLayerList();
-	final String choice = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_CHANGE_LAYER_PROMPT),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR),
-		list, list[this.elMgr.getEditorLocationW()]);
+	final String choice = CommonDialogs.showInputDialog(StringLoader.loadEditor(EditorString.CHANGE_LAYER_PROMPT),
+		StringLoader.loadEditor(EditorString.EDITOR), list, list[this.elMgr.getEditorLocationW()]);
 	if (choice != null) {
 	    final int len = list.length;
 	    int index = -1;
@@ -352,9 +345,8 @@ public class ArenaEditor {
 
     private boolean confirmNonUndoable() {
 	final int confirm = CommonDialogs.showConfirmDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_CONFIRM_CANNOT_BE_UNDONE),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR));
+		StringLoader.loadEditor(EditorString.CONFIRM_CANNOT_BE_UNDONE),
+		StringLoader.loadEditor(EditorString.EDITOR));
 	if (confirm == JOptionPane.YES_OPTION) {
 	    this.clearHistory();
 	    return true;
@@ -386,24 +378,19 @@ public class ArenaEditor {
 	    this.resetBorderPane();
 	    app.getMenuManager().updateMenuItemState();
 	} else {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		    StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
+	    CommonDialogs.showDialog(StringLoader.loadMenu(MenuString.ERROR_NO_ARENA_OPENED));
 	}
     }
 
     public void editJumpBox(final AbstractJumpObject jumper) {
 	final int currentX = jumper.getJumpCols();
 	final int currentY = jumper.getJumpRows();
-	final String newXStr = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_HORZ_JUMP),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR),
-		ArenaEditor.JUMP_LIST, ArenaEditor.JUMP_LIST[currentX]);
+	final String newXStr = CommonDialogs.showInputDialog(StringLoader.loadEditor(EditorString.HORZ_JUMP),
+		StringLoader.loadEditor(EditorString.EDITOR), ArenaEditor.JUMP_LIST, ArenaEditor.JUMP_LIST[currentX]);
 	if (newXStr != null) {
-	    final String newYStr = CommonDialogs.showInputDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			    StringConstants.EDITOR_STRING_VERT_JUMP),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR),
-		    ArenaEditor.JUMP_LIST, ArenaEditor.JUMP_LIST[currentY]);
+	    final String newYStr = CommonDialogs.showInputDialog(StringLoader.loadEditor(EditorString.VERT_JUMP),
+		    StringLoader.loadEditor(EditorString.EDITOR), ArenaEditor.JUMP_LIST,
+		    ArenaEditor.JUMP_LIST[currentY]);
 	    if (newYStr != null) {
 		final int newX = Integer.parseInt(newXStr);
 		final int newY = Integer.parseInt(newYStr);
@@ -466,8 +453,7 @@ public class ArenaEditor {
 	    if (!mo.defersSetProperties()) {
 		final AbstractArenaObject mo2 = mo.editorPropertiesHook();
 		if (mo2 == null) {
-		    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			    StringConstants.EDITOR_STRING_NO_PROPERTIES));
+		    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.NO_PROPERTIES));
 		} else {
 		    this.updateUndoHistory(this.savedArenaObject, gridX, gridY, this.elMgr.getEditorLocationZ(),
 			    this.elMgr.getEditorLocationW(), this.elMgr.getEditorLocationU());
@@ -489,8 +475,7 @@ public class ArenaEditor {
 	// Swap event handlers
 	this.secondaryPane.removeMouseListener(this.mhandler);
 	this.secondaryPane.addMouseListener(this.shandler);
-	LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_SET_START_POINT));
+	LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.SET_START_POINT));
     }
 
     void enableOutput() {
@@ -516,8 +501,7 @@ public class ArenaEditor {
     public void fillLevel() {
 	if (this.confirmNonUndoable()) {
 	    LaserTank.getApplication().getArenaManager().getArena().fillDefault();
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_LEVEL_FILLED));
+	    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.LEVEL_FILLED));
 	    LaserTank.getApplication().getArenaManager().setDirty(true);
 	    this.redrawEditor();
 	}
@@ -537,12 +521,11 @@ public class ArenaEditor {
 
     public void goToLevelHandler() {
 	int locW;
-	final String msg = StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_GO_TO_LEVEL);
+	final String msg = StringLoader.loadEditor(EditorString.GO_TO_LEVEL);
 	String input;
 	final String[] choices = LaserTank.getApplication().getLevelInfoList();
-	input = CommonDialogs.showInputDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_GO_TO_WHICH_LEVEL), msg, choices, choices[0]);
+	input = CommonDialogs.showInputDialog(StringLoader.loadEditor(EditorString.GO_TO_WHICH_LEVEL), msg, choices,
+		choices[0]);
 	if (input != null) {
 	    for (locW = 0; locW < choices.length; locW++) {
 		if (input.equals(choices[locW])) {
@@ -613,11 +596,9 @@ public class ArenaEditor {
 	}
 	if (success) {
 	    this.arenaChanged = true;
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_ARENA_CREATED));
+	    CommonDialogs.showDialog(StringLoader.loadEditor(EditorString.ARENA_CREATED));
 	} else {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_ARENA_CREATION_FAILED));
+	    CommonDialogs.showDialog(StringLoader.loadEditor(EditorString.ARENA_CREATION_FAILED));
 	}
 	return success;
     }
@@ -640,8 +621,7 @@ public class ArenaEditor {
 	    app.getMenuManager().updateMenuItemState();
 	    this.redrawEditor();
 	} else {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_NOTHING_TO_REDO));
+	    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.NOTHING_TO_REDO));
 	}
     }
 
@@ -661,13 +641,9 @@ public class ArenaEditor {
 	    this.redrawEditorGroundObjects();
 	}
 	app.pack();
-	app.setTitle(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_EDITOR_TITLE_1)
-		+ (z + 1)
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_EDITOR_TITLE_2)
-		+ (u + 1) + StringConstants.COMMON_STRING_SPACE_DASH_SPACE
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, e));
+	app.setTitle(StringLoader.loadEditor(EditorString.EDITOR_TITLE_1) + (z + 1)
+		+ StringLoader.loadEditor(EditorString.EDITOR_TITLE_2) + (u + 1)
+		+ StringLoader.loadCommon(CommonString.SPACE_DASH_SPACE) + StringLoader.loadTime(e));
 	this.outputPane.repaint();
     }
 
@@ -771,12 +747,8 @@ public class ArenaEditor {
 	    choices = app.getLevelInfoList();
 	}
 	String input;
-	input = CommonDialogs.showInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_WHICH_LEVEL_TO_REMOVE),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_REMOVE_LEVEL),
-		choices, choices[0]);
+	input = CommonDialogs.showInputDialog(StringLoader.loadEditor(EditorString.WHICH_LEVEL_TO_REMOVE),
+		StringLoader.loadEditor(EditorString.REMOVE_LEVEL), choices, choices[0]);
 	if (input != null) {
 	    for (level = 0; level < choices.length; level++) {
 		if (input.equals(choices[level])) {
@@ -818,24 +790,19 @@ public class ArenaEditor {
 	int levelSizeZ;
 	final int maxF = AbstractArena.getMaxFloors();
 	final int minF = AbstractArena.getMinFloors();
-	final String msg = StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_RESIZE_LEVEL);
+	final String msg = StringLoader.loadEditor(EditorString.RESIZE_LEVEL);
 	boolean success = true;
 	String input3;
-	input3 = CommonDialogs.showTextInputDialogWithDefault(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			StringConstants.EDITOR_STRING_NUMBER_OF_FLOORS),
+	input3 = CommonDialogs.showTextInputDialogWithDefault(StringLoader.loadEditor(EditorString.NUMBER_OF_FLOORS),
 		msg, Integer.toString(app.getArenaManager().getArena().getFloors()));
 	if (input3 != null) {
 	    try {
 		levelSizeZ = Integer.parseInt(input3);
 		if (levelSizeZ < minF) {
-		    throw new NumberFormatException(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			    StringConstants.EDITOR_STRING_FLOORS_TOO_LOW));
+		    throw new NumberFormatException(StringLoader.loadEditor(EditorString.FLOORS_TOO_LOW));
 		}
 		if (levelSizeZ > maxF) {
-		    throw new NumberFormatException(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-			    StringConstants.EDITOR_STRING_FLOORS_TOO_HIGH));
+		    throw new NumberFormatException(StringLoader.loadEditor(EditorString.FLOORS_TOO_HIGH));
 		}
 		app.getArenaManager().getArena().resize(levelSizeZ, new Ground());
 		this.fixLimits();
@@ -904,8 +871,7 @@ public class ArenaEditor {
 	    app.getArenaManager().getArena().setStartFloor(this.activePlayer, this.elMgr.getEditorLocationZ());
 	    app.getArenaManager().getArena().setCell(template, destX, destY, this.elMgr.getEditorLocationZ(),
 		    template.getLayer());
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_START_POINT_SET));
+	    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.START_POINT_SET));
 	} catch (final ArrayIndexOutOfBoundsException aioob) {
 	    try {
 		app.getArenaManager().getArena().setStartRow(this.activePlayer, oldY);
@@ -914,8 +880,7 @@ public class ArenaEditor {
 	    } catch (final ArrayIndexOutOfBoundsException aioob2) {
 		// Ignore
 	    }
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_AIM_WITHIN_THE_ARENA));
+	    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.AIM_WITHIN_THE_ARENA));
 	}
 	// Swap event handlers
 	this.secondaryPane.removeMouseListener(this.shandler);
@@ -930,7 +895,7 @@ public class ArenaEditor {
     }
 
     private void setUpGUI() {
-	this.messageLabel = new JLabel(StringConstants.COMMON_STRING_SPACE);
+	this.messageLabel = new JLabel(StringLoader.loadCommon(CommonString.SPACE));
 	this.outputPane = new EditorDraw();
 	this.secondaryPane = new Container();
 	this.borderPane = new Container();
@@ -957,14 +922,10 @@ public class ArenaEditor {
 	this.switcherPane = new Container();
 	final SwitcherHandler switcherHandler = new SwitcherHandler();
 	final ButtonGroup switcherGroup = new ButtonGroup();
-	this.lowerGround = new JToggleButton(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LOWER_GROUND_LAYER));
-	this.upperGround = new JToggleButton(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_UPPER_GROUND_LAYER));
-	this.lowerObjects = new JToggleButton(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LOWER_OBJECTS_LAYER));
-	this.upperObjects = new JToggleButton(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_UPPER_OBJECTS_LAYER));
+	this.lowerGround = new JToggleButton(StringLoader.loadEditor(EditorString.LOWER_GROUND_LAYER));
+	this.upperGround = new JToggleButton(StringLoader.loadEditor(EditorString.UPPER_GROUND_LAYER));
+	this.lowerObjects = new JToggleButton(StringLoader.loadEditor(EditorString.LOWER_OBJECTS_LAYER));
+	this.upperObjects = new JToggleButton(StringLoader.loadEditor(EditorString.UPPER_OBJECTS_LAYER));
 	this.lowerGround.setSelected(true);
 	this.lowerGround.addActionListener(switcherHandler);
 	this.upperGround.addActionListener(switcherHandler);
@@ -1011,8 +972,7 @@ public class ArenaEditor {
 	    app.getMenuManager().updateMenuItemState();
 	    this.redrawEditor();
 	} else {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		    StringConstants.EDITOR_STRING_NOTHING_TO_UNDO));
+	    LaserTank.getApplication().showMessage(StringLoader.loadEditor(EditorString.NOTHING_TO_UNDO));
 	}
     }
 
@@ -1078,8 +1038,7 @@ public class ArenaEditor {
 
     public void setUp() {
 	final Application app = LaserTank.getApplication();
-	app.setTitle(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR, StringConstants.EDITOR_STRING_EDITOR));
+	app.setTitle(StringLoader.loadEditor(EditorString.EDITOR));
 	app.addWindowListener(this.mhandler);
 	app.addWindowFocusListener(this.fHandler);
     }

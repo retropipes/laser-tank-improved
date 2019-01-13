@@ -9,8 +9,8 @@ import java.io.FileInputStream;
 
 import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.current.CurrentArenaData;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 class V4File {
@@ -25,8 +25,7 @@ class V4File {
 		a.setData(t, levelCount);
 		final int[] found = a.findPlayer(1);
 		if (found == null) {
-		    throw new InvalidArenaException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_TANK_LOCATION));
+		    throw new InvalidArenaException(StringLoader.loadError(ErrorString.TANK_LOCATION));
 		} else {
 		    a.setStartColumn(0, found[0]);
 		    a.setStartRow(0, found[1]);

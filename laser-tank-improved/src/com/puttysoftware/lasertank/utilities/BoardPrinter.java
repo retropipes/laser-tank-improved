@@ -26,8 +26,11 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 
 import com.puttysoftware.dialogs.CommonDialogs;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.MenuString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 
 public class BoardPrinter {
     public static void printBoard(final Container c) {
@@ -36,8 +39,7 @@ public class BoardPrinter {
 	    final BufferedImage bi = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 	    c.paintComponents(bi.createGraphics());
 	    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    ImageIO.write(bi, StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		    StringConstants.NOTL_STRING_IMAGE_FORMAT_PNG), baos);
+	    ImageIO.write(bi, GlobalLoader.loadUntranslated(UntranslatedString.IMAGE_FORMAT_PNG), baos);
 	    final byte[] data = baos.toByteArray();
 	    final ByteArrayInputStream bais = new ByteArrayInputStream(data);
 	    final PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
@@ -52,23 +54,14 @@ public class BoardPrinter {
 		job.print(doc, pras);
 	    }
 	} catch (final IOException ioe) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.PRINTING_FAILURE),
+		    StringLoader.loadMenu(MenuString.ITEM_PRINT_GAMEBOARD));
 	} catch (final PrintException pe) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.PRINTING_FAILURE),
+		    StringLoader.loadMenu(MenuString.ITEM_PRINT_GAMEBOARD));
 	} catch (final NullPointerException npe) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			    StringConstants.ERROR_STRING_PRINTING_FAILURE),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			    StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
+	    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.PRINTING_FAILURE),
+		    StringLoader.loadMenu(MenuString.ITEM_PRINT_GAMEBOARD));
 	}
     }
 

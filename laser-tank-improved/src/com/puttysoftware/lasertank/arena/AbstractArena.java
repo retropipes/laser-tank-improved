@@ -13,8 +13,8 @@ import com.puttysoftware.lasertank.arena.abstractobjects.AbstractButton;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractButtonDoor;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractCharacter;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractTunnel;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.Direction;
 
 public abstract class AbstractArena {
@@ -25,11 +25,8 @@ public abstract class AbstractArena {
 
     // Static methods
     public static String getArenaTempFolder() {
-	return System
-		.getProperty(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_TEMP_DIR))
-		+ File.separator
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME);
+	return System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.TEMP_DIR)) + File.separator
+		+ GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME);
     }
 
     public static int getMaxFloors() {
@@ -110,7 +107,7 @@ public abstract class AbstractArena {
 
     public abstract void fillDefault();
 
-    public abstract int[] findObject(int z, String targetName);
+    public abstract int[] findObject(int z, AbstractArenaObject target);
 
     public abstract int[] findPlayer(final int number);
 

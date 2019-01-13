@@ -18,8 +18,11 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class LoadTask extends Thread {
@@ -35,10 +38,8 @@ public class LoadTask extends Thread {
 	this.filename = file;
 	this.isSavedGame = saved;
 	this.arenaProtected = protect;
-	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_NEW_AG_LOADER_NAME));
-	this.loadFrame = new JFrame(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOADING));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.NEW_AG_LOADER_NAME));
+	this.loadFrame = new JFrame(StringLoader.loadDialog(DialogString.LOADING));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	this.loadFrame.getContentPane().add(loadBar);
@@ -68,11 +69,8 @@ public class LoadTask extends Thread {
 		    ZipUtilities.unzipDirectory(tempLock, new File(gameArena.getBasePath()));
 		    app.getArenaManager().setArenaProtected(true);
 		} catch (final ZipException ze) {
-		    CommonDialogs.showErrorDialog(
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				    StringConstants.ERROR_STRING_BAD_PROTECTION_KEY),
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				    StringConstants.ERROR_STRING_PROTECTION));
+		    CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.BAD_PROTECTION_KEY),
+			    StringLoader.loadError(ErrorString.PROTECTION));
 		    app.getArenaManager().handleDeferredSuccess(false);
 		    return;
 		} finally {
@@ -92,8 +90,7 @@ public class LoadTask extends Thread {
 	    }
 	    gameArena = gameArena.readArena();
 	    if (gameArena == null) {
-		throw new InvalidArenaException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-			StringConstants.ERROR_STRING_UNKNOWN_OBJECT));
+		throw new InvalidArenaException(StringLoader.loadError(ErrorString.UNKNOWN_OBJECT));
 	    }
 	    app.getArenaManager().setArena(gameArena);
 	    final boolean playerExists = gameArena.doesPlayerExist(0);
@@ -114,31 +111,25 @@ public class LoadTask extends Thread {
 	    }
 	    app.getEditor().arenaChanged();
 	    if (this.isSavedGame) {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_GAME_LOADING_SUCCESS));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.GAME_LOADING_SUCCESS));
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_ARENA_LOADING_SUCCESS));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_LOADING_SUCCESS));
 	    }
 	    app.getArenaManager().handleDeferredSuccess(true);
 	} catch (final FileNotFoundException fnfe) {
 	    if (this.isSavedGame) {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_GAME_LOADING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.GAME_LOADING_FAILED));
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_ARENA_LOADING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_LOADING_FAILED));
 	    }
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final ProtectionCancelException pce) {
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final IOException ie) {
 	    if (this.isSavedGame) {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_GAME_LOADING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.GAME_LOADING_FAILED));
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_ARENA_LOADING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_LOADING_FAILED));
 	    }
 	    LaserTank.logNonFatalError(ie);
 	    app.getArenaManager().handleDeferredSuccess(false);

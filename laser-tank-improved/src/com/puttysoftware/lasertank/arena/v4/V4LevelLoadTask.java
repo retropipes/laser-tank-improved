@@ -18,8 +18,10 @@ import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.ArenaManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 
 public class V4LevelLoadTask extends Thread {
     // Fields
@@ -30,10 +32,8 @@ public class V4LevelLoadTask extends Thread {
     public V4LevelLoadTask(final String file) {
 	JProgressBar loadBar;
 	this.filename = file;
-	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_OLD_AG_LOADER_NAME));
-	this.loadFrame = new JFrame(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOADING));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.OLD_AG_LOADER_NAME));
+	this.loadFrame = new JFrame(StringLoader.loadDialog(DialogString.LOADING));
 	loadBar = new JProgressBar();
 	loadBar.setIndeterminate(true);
 	this.loadFrame.getContentPane().add(loadBar);
@@ -64,12 +64,10 @@ public class V4LevelLoadTask extends Thread {
 	    app.getArenaManager().setLastUsedArena(lum);
 	    app.updateLevelInfoList();
 	    app.getEditor().arenaChanged();
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		    StringConstants.DIALOG_STRING_ARENA_LOADING_SUCCESS));
+	    CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_LOADING_SUCCESS));
 	    app.getArenaManager().handleDeferredSuccess(true);
 	} catch (final FileNotFoundException fnfe) {
-	    CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		    StringConstants.DIALOG_STRING_ARENA_LOADING_FAILED));
+	    CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_LOADING_FAILED));
 	    app.getArenaManager().handleDeferredSuccess(false);
 	} catch (final IOException ie) {
 	    LaserTank.logNonFatalError(ie);

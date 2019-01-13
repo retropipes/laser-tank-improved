@@ -22,8 +22,8 @@ import com.puttysoftware.lasertank.arena.objects.Wall;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ActionConstants;
 import com.puttysoftware.lasertank.utilities.AlreadyDeadException;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
@@ -117,7 +117,7 @@ final class MLOTask extends Thread {
 
     // Constructors
     public MLOTask() {
-	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_MLOH_NAME));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.MLOH_NAME));
 	this.setPriority(Thread.MIN_PRIORITY);
 	this.abort = false;
 	this.laserTrackers = new ArrayList<>();

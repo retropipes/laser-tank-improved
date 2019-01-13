@@ -25,8 +25,12 @@ import com.puttysoftware.lasertank.arena.abstractobjects.AbstractButtonDoor;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractCharacter;
 import com.puttysoftware.lasertank.arena.abstractobjects.AbstractTunnel;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.Extension;
@@ -72,18 +76,13 @@ public class CurrentArena extends AbstractArena {
 	this.levelInfoData = new ArrayList<>();
 	this.levelInfoList = new ArrayList<>();
 	final String randomID = IDGenerator.getRandomIDString(16);
-	this.basePath = System
-		.getProperty(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_TEMP_DIR))
-		+ File.separator
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_PROGRAM_NAME)
-		+ File.separator + randomID + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_FOLDER);
+	this.basePath = System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.TEMP_DIR)) + File.separator
+		+ GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME) + File.separator + randomID
+		+ GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_FOLDER);
 	final File base = new File(this.basePath);
 	final boolean res = base.mkdirs();
 	if (!res) {
-	    throw new IOException(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR, StringConstants.ERROR_STRING_TEMP_DIR));
+	    throw new IOException(StringLoader.loadError(ErrorString.TEMP_DIR));
 	}
     }
 
@@ -228,8 +227,8 @@ public class CurrentArena extends AbstractArena {
     }
 
     @Override
-    public int[] findObject(final int z, final String targetName) {
-	return this.arenaData.findObject(this, z, targetName);
+    public int[] findObject(final int z, final AbstractArenaObject target) {
+	return this.arenaData.findObject(this, z, target);
     }
 
     @Override
@@ -274,21 +273,19 @@ public class CurrentArena extends AbstractArena {
 
     private String generateCurrentLevelInfo() {
 	final StringBuilder sb = new StringBuilder();
-	sb.append(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_ARENA_LEVEL));
-	sb.append(StringConstants.COMMON_STRING_SPACE);
+	sb.append(StringLoader.loadDialog(DialogString.ARENA_LEVEL));
+	sb.append(StringLoader.loadCommon(CommonString.SPACE));
 	sb.append(this.getActiveLevelNumber() + 1);
-	sb.append(StringConstants.COMMON_STRING_COLON + StringConstants.COMMON_STRING_SPACE);
+	sb.append(StringLoader.loadCommon(CommonString.COLON) + StringLoader.loadCommon(CommonString.SPACE));
 	sb.append(this.getName().trim());
-	sb.append(StringConstants.COMMON_STRING_SPACE);
-	sb.append(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_ARENA_LEVEL_BY));
-	sb.append(StringConstants.COMMON_STRING_SPACE);
+	sb.append(StringLoader.loadCommon(CommonString.SPACE));
+	sb.append(StringLoader.loadDialog(DialogString.ARENA_LEVEL_BY));
+	sb.append(StringLoader.loadCommon(CommonString.SPACE));
 	sb.append(this.getAuthor().trim());
-	sb.append(StringConstants.COMMON_STRING_SPACE);
-	sb.append(StringConstants.COMMON_STRING_OPEN_PARENTHESES);
+	sb.append(StringLoader.loadCommon(CommonString.SPACE));
+	sb.append(StringLoader.loadCommon(CommonString.OPEN_PARENTHESES));
 	sb.append(CurrentArena.convertDifficultyNumberToName(this.getDifficulty()));
-	sb.append(StringConstants.COMMON_STRING_CLOSE_PARENTHESES);
+	sb.append(StringLoader.loadCommon(CommonString.CLOSE_PARENTHESES));
 	return sb.toString();
     }
 
@@ -317,8 +314,7 @@ public class CurrentArena extends AbstractArena {
     // Methods
     @Override
     public String getArenaTempMusicFolder() {
-	return this.basePath + File.separator
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_MUSIC_FOLDER)
+	return this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.MUSIC_FOLDER)
 		+ File.separator;
     }
 
@@ -358,13 +354,10 @@ public class CurrentArena extends AbstractArena {
     }
 
     private File getLevelFile(final int level, final int era) {
-	return new File(this.basePath + File.separator
-		+ StringLoader
-			.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
-		+ level
-		+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
-		+ era + Extension.getArenaLevelExtensionWithPeriod());
+	return new File(
+		this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL)
+			+ level + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_ERA) + era
+			+ Extension.getArenaLevelExtensionWithPeriod());
     }
 
     @Override
@@ -374,25 +367,17 @@ public class CurrentArena extends AbstractArena {
 
     private XMLFileReader getLevelReaderG5() throws IOException {
 	return new XMLFileReader(
-		this.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
+		this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL)
 			+ this.activeLevel + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
+		GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL));
     }
 
     private XMLFileReader getLevelReaderG6() throws IOException {
 	return new XMLFileReader(
-		this.basePath + File.separator
-			+ StringLoader.loadString(
-				StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
-			+ this.activeLevel
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
+		this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL)
+			+ this.activeLevel + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_ERA)
 			+ this.activeEra + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
+		GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL));
     }
 
     @Override
@@ -402,15 +387,10 @@ public class CurrentArena extends AbstractArena {
 
     private XMLFileWriter getLevelWriter() throws IOException {
 	return new XMLFileWriter(
-		this.basePath + File.separator
-			+ StringLoader.loadString(
-				StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL)
-			+ this.activeLevel
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_ARENA_FORMAT_ERA)
+		this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL)
+			+ this.activeLevel + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_ERA)
 			+ this.activeEra + Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_LEVEL));
+		GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_LEVEL));
     }
 
     @Override
@@ -535,12 +515,9 @@ public class CurrentArena extends AbstractArena {
 	int version = -1;
 	// Create metafile reader
 	try (XMLFileReader metaReader = new XMLFileReader(
-		m.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_ARENA_FORMAT_METAFILE)
+		m.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_METAFILE)
 			+ Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_ARENA))) {
+		GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_ARENA))) {
 	    // Read metafile
 	    version = m.readArenaMetafileVersion(metaReader);
 	    if (FormatConstants.isFormatVersionValidGeneration6(version)) {
@@ -849,12 +826,9 @@ public class CurrentArena extends AbstractArena {
     public void writeArena() throws IOException {
 	// Create metafile writer
 	try (XMLFileWriter metaWriter = new XMLFileWriter(
-		this.basePath + File.separator
-			+ StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				StringConstants.NOTL_STRING_ARENA_FORMAT_METAFILE)
+		this.basePath + File.separator + GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_METAFILE)
 			+ Extension.getArenaLevelExtensionWithPeriod(),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_ARENA_FORMAT_ARENA))) {
+		GlobalLoader.loadUntranslated(UntranslatedString.ARENA_FORMAT_ARENA))) {
 	    // Write metafile
 	    this.writeArenaMetafile(metaWriter);
 	} catch (final IOException ioe) {

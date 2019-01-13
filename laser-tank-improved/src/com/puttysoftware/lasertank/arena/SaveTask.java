@@ -12,8 +12,11 @@ import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.ZipUtilities;
 import com.puttysoftware.lasertank.Application;
 import com.puttysoftware.lasertank.LaserTank;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.MessageString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.Extension;
 
 public class SaveTask extends Thread {
@@ -40,8 +43,7 @@ public class SaveTask extends Thread {
 	this.filename = file;
 	this.isSavedGame = saved;
 	this.saveProtected = protect;
-	this.setName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-		StringConstants.NOTL_STRING_NEW_AG_SAVER_NAME));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.NEW_AG_SAVER_NAME));
     }
 
     @Override
@@ -81,11 +83,9 @@ public class SaveTask extends Thread {
 	    }
 	} catch (final FileNotFoundException fnfe) {
 	    if (this.isSavedGame) {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_GAME_SAVING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.GAME_SAVING_FAILED));
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_ARENA_SAVING_FAILED));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.ARENA_SAVING_FAILED));
 	    }
 	    success = false;
 	} catch (final ProtectionCancelException pce) {
@@ -94,11 +94,9 @@ public class SaveTask extends Thread {
 	    LaserTank.logError(ex);
 	}
 	if (this.isSavedGame) {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE,
-		    StringConstants.MESSAGE_STRING_GAME_SAVED));
+	    LaserTank.getApplication().showMessage(StringLoader.loadMessage(MessageString.GAME_SAVED));
 	} else {
-	    LaserTank.getApplication().showMessage(StringLoader.loadString(StringConstants.STRINGS_FILE_MESSAGE,
-		    StringConstants.MESSAGE_STRING_ARENA_SAVED));
+	    LaserTank.getApplication().showMessage(StringLoader.loadMessage(MessageString.ARENA_SAVED));
 	}
 	app.getArenaManager().handleDeferredSuccess(success);
     }

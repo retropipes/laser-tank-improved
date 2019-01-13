@@ -8,8 +8,8 @@ package com.puttysoftware.lasertank.game;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
 import com.puttysoftware.lasertank.arena.current.CurrentArenaData;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 
 class AnimationTask extends Thread {
@@ -18,8 +18,7 @@ class AnimationTask extends Thread {
 
     // Constructors
     public AnimationTask() {
-	this.setName(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_ANIMATOR_NAME));
+	this.setName(GlobalLoader.loadUntranslated(UntranslatedString.ANIMATOR_NAME));
 	this.setPriority(Thread.MIN_PRIORITY);
     }
 

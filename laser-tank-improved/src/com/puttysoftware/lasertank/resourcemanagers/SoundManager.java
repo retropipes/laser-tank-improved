@@ -8,8 +8,8 @@ package com.puttysoftware.lasertank.resourcemanagers;
 import java.net.URL;
 
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.sound.SoundFactory;
 
 public class SoundManager {
@@ -20,9 +20,8 @@ public class SoundManager {
     private static SoundFactory getSound(final int soundID) {
 	try {
 	    final String filename = SoundConstants.SOUND_NAMES[soundID];
-	    final URL url = SoundManager.LOAD_CLASS
-		    .getResource(SoundManager.LOAD_PATH + filename.toLowerCase() + StringLoader.loadString(
-			    StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_SOUND_EXTENSION));
+	    final URL url = SoundManager.LOAD_CLASS.getResource(SoundManager.LOAD_PATH + filename.toLowerCase()
+		    + GlobalLoader.loadUntranslated(UntranslatedString.SOUND_EXTENSION));
 	    return SoundFactory.loadResource(url);
 	} catch (final NullPointerException np) {
 	    return null;

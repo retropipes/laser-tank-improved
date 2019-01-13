@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import com.puttysoftware.fileio.XMLFileReader;
 import com.puttysoftware.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.FormatConstants;
 
 public class PrefixHandler implements AbstractPrefixIO {
@@ -37,8 +37,7 @@ public class PrefixHandler implements AbstractPrefixIO {
 	final byte formatVer = PrefixHandler.readFormatVersion(reader);
 	final boolean res = PrefixHandler.checkFormatVersion(formatVer);
 	if (!res) {
-	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
+	    throw new IOException(StringLoader.loadError(ErrorString.UNKNOWN_ARENA_FORMAT));
 	}
 	return formatVer;
     }

@@ -13,8 +13,13 @@ import javax.swing.JOptionPane;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.cheats.Cheat.Effect;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public final class CheatManager {
@@ -29,32 +34,23 @@ public final class CheatManager {
     }
 
     public String enterCheat() {
-	final String userInput = CommonDialogs.showTextInputDialog(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_CHEAT_PROMPT),
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_CHEATS));
+	final String userInput = CommonDialogs.showTextInputDialog(StringLoader.loadGame(GameString.CHEAT_PROMPT),
+		StringLoader.loadDialog(DialogString.CHEATS));
 	if (userInput != null) {
 	    final int index = this.cheatCache.indexOf(userInput.toLowerCase());
 	    if (index != -1) {
-		final int value = CommonDialogs.showConfirmDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-				StringConstants.GAME_STRING_CHEAT_ACTION),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-				StringConstants.DIALOG_STRING_CHEATS));
+		final int value = CommonDialogs.showConfirmDialog(StringLoader.loadGame(GameString.CHEAT_ACTION),
+			StringLoader.loadDialog(DialogString.CHEATS));
 		if (value == JOptionPane.YES_OPTION) {
-		    return StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_ENABLE_CHEAT) + StringConstants.COMMON_STRING_SPACE
+		    return StringLoader.loadGame(GameString.ENABLE_CHEAT) + StringLoader.loadCommon(CommonString.SPACE)
 			    + userInput.toLowerCase();
 		} else {
-		    return StringLoader.loadString(StringConstants.STRINGS_FILE_GAME,
-			    StringConstants.GAME_STRING_DISABLE_CHEAT) + StringConstants.COMMON_STRING_SPACE
+		    return StringLoader.loadGame(GameString.DISABLE_CHEAT) + StringLoader.loadCommon(CommonString.SPACE)
 			    + userInput.toLowerCase();
 		}
 	    } else {
-		CommonDialogs.showErrorDialog(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-				StringConstants.ERROR_STRING_INVALID_CHEAT),
-			StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-				StringConstants.DIALOG_STRING_CHEATS));
+		CommonDialogs.showErrorDialog(StringLoader.loadError(ErrorString.INVALID_CHEAT),
+			StringLoader.loadDialog(DialogString.CHEATS));
 		return null;
 	    }
 	} else {
@@ -69,15 +65,15 @@ public final class CheatManager {
     // Methods
     private void loadCheatCache() {
 	Properties instant = new Properties();
-	try (InputStream is = CheatManager.class.getResourceAsStream(StringLoader
-		.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_INSTANT_CHEATS_PATH))) {
+	try (InputStream is = CheatManager.class
+		.getResourceAsStream(GlobalLoader.loadUntranslated(UntranslatedString.INSTANT_CHEATS_PATH))) {
 	    instant.load(is);
 	} catch (final IOException ioe) {
 	    throw new InvalidArenaException(ioe);
 	}
 	Properties toggle = new Properties();
-	try (InputStream is = CheatManager.class.getResourceAsStream(StringLoader
-		.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_TOGGLE_CHEATS_PATH))) {
+	try (InputStream is = CheatManager.class
+		.getResourceAsStream(GlobalLoader.loadUntranslated(UntranslatedString.TOGGLE_CHEATS_PATH))) {
 	    toggle.load(is);
 	} catch (final IOException ioe) {
 	    throw new InvalidArenaException(ioe);

@@ -9,8 +9,9 @@ import java.io.IOException;
 
 import com.puttysoftware.fileio.XMLFileReader;
 import com.puttysoftware.fileio.XMLFileWriter;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.GenericString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.storage.NumberStorage;
 
@@ -51,11 +52,9 @@ public final class LevelInfo {
 	this.playerData.fill(-1);
 	this.horizontalWraparoundEnabled = false;
 	this.verticalWraparoundEnabled = false;
-	this.name = StringLoader.loadString(StringConstants.STRINGS_FILE_GENERIC,
-		StringConstants.GENERIC_STRING_UN_NAMED_LEVEL);
-	this.author = StringLoader.loadString(StringConstants.STRINGS_FILE_GENERIC,
-		StringConstants.GENERIC_STRING_UNKNOWN_AUTHOR);
-	this.hint = StringConstants.COMMON_STRING_EMPTY;
+	this.name = StringLoader.loadGeneric(GenericString.UN_NAMED_LEVEL);
+	this.author = StringLoader.loadGeneric(GenericString.UNKNOWN_AUTHOR);
+	this.hint = StringLoader.loadCommon(CommonString.EMPTY);
 	this.difficulty = 1;
 	this.moveShootAllowed = false;
     }

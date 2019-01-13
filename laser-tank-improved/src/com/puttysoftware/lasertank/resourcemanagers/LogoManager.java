@@ -17,8 +17,9 @@ import javax.imageio.ImageIO;
 
 import com.puttysoftware.images.BufferedImageIcon;
 import com.puttysoftware.lasertank.Application;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
 
 public class LogoManager {
@@ -66,10 +67,9 @@ public class LogoManager {
 	    final String logoVer = Application.getLogoVersionString();
 	    if (drawing) {
 		if (LogoManager.LOGO_DRAW_FONT == null) {
-		    try (InputStream is = LogoManager.class.getResourceAsStream(StringLoader
-			    .loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_FONT_PATH)
-			    + StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				    StringConstants.NOTL_STRING_FONT_FILENAME))) {
+		    try (InputStream is = LogoManager.class
+			    .getResourceAsStream(GlobalLoader.loadUntranslated(UntranslatedString.FONT_PATH)
+				    + GlobalLoader.loadUntranslated(UntranslatedString.FONT_FILENAME))) {
 			final Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
 			LogoManager.LOGO_DRAW_FONT = baseFont.deriveFont((float) 24);
 			g2.setFont(LogoManager.LOGO_DRAW_FONT);

@@ -29,8 +29,8 @@ import com.puttysoftware.lasertank.arena.objects.ThinIce;
 import com.puttysoftware.lasertank.arena.objects.Tunnel;
 import com.puttysoftware.lasertank.arena.objects.Wall;
 import com.puttysoftware.lasertank.arena.objects.Water;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ColorConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.InvalidArenaException;
@@ -213,9 +213,7 @@ class V4FileLevel {
 	    if (bytesRead != V4FileLevel.NAME_SIZE) {
 		return null;
 	    }
-	    final String levelName = Charset
-		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
+	    final String levelName = Charset.forName(GlobalLoader.loadUntranslated(UntranslatedString.DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.name)).toString();
 	    a.setName(levelName);
 	    // Convert level hint
@@ -223,9 +221,7 @@ class V4FileLevel {
 	    if (bytesRead != V4FileLevel.HINT_SIZE) {
 		return null;
 	    }
-	    final String levelHint = Charset
-		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
+	    final String levelHint = Charset.forName(GlobalLoader.loadUntranslated(UntranslatedString.DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.hint)).toString();
 	    a.setHint(levelHint);
 	    // Convert level author
@@ -234,8 +230,7 @@ class V4FileLevel {
 		return null;
 	    }
 	    final String levelAuthor = Charset
-		    .forName(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			    StringConstants.NOTL_STRING_DEFAULT_CHARSET))
+		    .forName(GlobalLoader.loadUntranslated(UntranslatedString.DEFAULT_CHARSET))
 		    .decode(ByteBuffer.wrap(V4FileLevel.author)).toString();
 	    a.setAuthor(levelAuthor);
 	    // Convert level difficulty

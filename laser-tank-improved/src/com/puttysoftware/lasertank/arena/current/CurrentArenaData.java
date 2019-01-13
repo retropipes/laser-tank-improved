@@ -31,8 +31,8 @@ import com.puttysoftware.lasertank.arena.objects.Wall;
 import com.puttysoftware.lasertank.game.GameManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.ErrorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.DirectionResolver;
@@ -790,15 +790,14 @@ public final class CurrentArenaData extends AbstractArenaData {
     }
 
     @Override
-    public int[] findObject(final AbstractArena arena, final int z, final String targetName) {
+    public int[] findObject(final AbstractArena arena, final int z, final AbstractArenaObject target) {
 	// Perform the scan
 	for (int x = 0; x < AbstractArenaData.MIN_COLUMNS; x++) {
 	    for (int y = 0; y < AbstractArenaData.MIN_ROWS; y++) {
 		for (int w = 0; w < ArenaConstants.NUM_LAYERS; w++) {
 		    try {
 			final AbstractArenaObject obj = this.getCell(arena, x, y, z, w);
-			final String testName = obj.getBaseName();
-			if (testName.equals(targetName)) {
+			if (target.equals(obj)) {
 			    return new int[] { x, y };
 			}
 		    } catch (final ArrayIndexOutOfBoundsException aioob) {
@@ -1360,8 +1359,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	    final CurrentArenaData tempData = CurrentArenaData.readDataG6(arena, reader, formatVersion);
 	    return tempData;
 	} else {
-	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
+	    throw new IOException(StringLoader.loadError(ErrorString.UNKNOWN_ARENA_FORMAT));
 	}
     }
 
@@ -1380,8 +1378,7 @@ public final class CurrentArenaData extends AbstractArenaData {
 	} else if (FormatConstants.isFormatVersionValidGeneration6(formatVersion)) {
 	    this.readSavedStateG6(reader, formatVersion);
 	} else {
-	    throw new IOException(StringLoader.loadString(StringConstants.STRINGS_FILE_ERROR,
-		    StringConstants.ERROR_STRING_UNKNOWN_ARENA_FORMAT));
+	    throw new IOException(StringLoader.loadError(ErrorString.UNKNOWN_ARENA_FORMAT));
 	}
     }
 

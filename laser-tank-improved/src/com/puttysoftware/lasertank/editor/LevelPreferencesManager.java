@@ -25,8 +25,9 @@ import javax.swing.WindowConstants;
 
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.arena.AbstractArena;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.EditorString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 
 class LevelPreferencesManager {
@@ -41,12 +42,10 @@ class LevelPreferencesManager {
 	    try {
 		final LevelPreferencesManager lpm = LevelPreferencesManager.this;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_OK_BUTTON))) {
+		if (cmd.equals(StringLoader.loadDialog(DialogString.OK_BUTTON))) {
 		    lpm.setPrefs();
 		    lpm.hidePrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_CANCEL_BUTTON))) {
+		} else if (cmd.equals(StringLoader.loadDialog(DialogString.CANCEL_BUTTON))) {
 		    lpm.hidePrefs();
 		}
 	    } catch (final Exception ex) {
@@ -155,30 +154,23 @@ class LevelPreferencesManager {
 	Container mainPrefPane, contentPane, buttonPane;
 	JButton prefsOK, prefsCancel;
 	final EventHandler handler = new EventHandler();
-	this.prefFrame = new JFrame(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LEVEL_PREFERENCES));
+	this.prefFrame = new JFrame(StringLoader.loadEditor(EditorString.LEVEL_PREFERENCES));
 	mainPrefPane = new Container();
 	contentPane = new Container();
 	buttonPane = new Container();
-	prefsOK = new JButton(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_OK_BUTTON));
+	prefsOK = new JButton(StringLoader.loadDialog(DialogString.OK_BUTTON));
 	prefsOK.setDefaultCapable(true);
 	this.prefFrame.getRootPane().setDefaultButton(prefsOK);
-	prefsCancel = new JButton(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-		StringConstants.DIALOG_STRING_CANCEL_BUTTON));
+	prefsCancel = new JButton(StringLoader.loadDialog(DialogString.CANCEL_BUTTON));
 	prefsCancel.setDefaultCapable(false);
-	this.horizontalWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_ENABLE_HORIZONTAL_WRAP_AROUND), false);
-	this.verticalWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_ENABLE_VERTICAL_WRAP_AROUND), false);
-	this.thirdWrap = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_ENABLE_THIRD_DIMENSION_WRAP_AROUND), false);
+	this.horizontalWrap = new JCheckBox(StringLoader.loadEditor(EditorString.ENABLE_HORIZONTAL_WRAP_AROUND), false);
+	this.verticalWrap = new JCheckBox(StringLoader.loadEditor(EditorString.ENABLE_VERTICAL_WRAP_AROUND), false);
+	this.thirdWrap = new JCheckBox(StringLoader.loadEditor(EditorString.ENABLE_THIRD_DIMENSION_WRAP_AROUND), false);
 	this.name = new JTextField();
 	this.author = new JTextField();
 	this.hint = new JTextArea(8, 32);
 	this.difficulty = new JComboBox<>(DifficultyConstants.getDifficultyNames());
-	this.moveShoot = new JCheckBox(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_ENABLE_MOVE_SHOOT), true);
+	this.moveShoot = new JCheckBox(StringLoader.loadEditor(EditorString.ENABLE_MOVE_SHOOT), true);
 	this.prefFrame.setContentPane(mainPrefPane);
 	this.prefFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	this.prefFrame.addWindowListener(handler);
@@ -188,17 +180,13 @@ class LevelPreferencesManager {
 	contentPane.add(this.horizontalWrap);
 	contentPane.add(this.verticalWrap);
 	contentPane.add(this.thirdWrap);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LEVEL_NAME)));
+	contentPane.add(new JLabel(StringLoader.loadEditor(EditorString.LEVEL_NAME)));
 	contentPane.add(this.name);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LEVEL_AUTHOR)));
+	contentPane.add(new JLabel(StringLoader.loadEditor(EditorString.LEVEL_AUTHOR)));
 	contentPane.add(this.author);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LEVEL_HINT)));
+	contentPane.add(new JLabel(StringLoader.loadEditor(EditorString.LEVEL_HINT)));
 	contentPane.add(this.hint);
-	contentPane.add(new JLabel(StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-		StringConstants.EDITOR_STRING_LEVEL_DIFFICULTY)));
+	contentPane.add(new JLabel(StringLoader.loadEditor(EditorString.LEVEL_DIFFICULTY)));
 	contentPane.add(this.difficulty);
 	contentPane.add(this.moveShoot);
 	buttonPane.setLayout(new FlowLayout());

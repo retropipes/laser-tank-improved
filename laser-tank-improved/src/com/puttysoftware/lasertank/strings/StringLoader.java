@@ -10,7 +10,6 @@ import com.puttysoftware.fileio.ResourceStreamReader;
 import com.puttysoftware.lasertank.LaserTank;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
 import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
@@ -41,19 +40,14 @@ public class StringLoader {
 	return StringLoader.LANGUAGE_NAME;
     }
 
-    public static String getLocalizedLanguage(final int languageID) {
-	StringLoader.loadLocalizedLanguagesList();
-	return StringLoader.LOCALIZED_LANGUAGES_CACHE.get(languageID);
-    }
-
-    private static void loadLocalizedLanguagesList() {
+    public static String[] loadLocalizedLanguagesList() {
 	if (StringLoader.LOCALIZED_LANGUAGES_CACHE == null) {
 	    StringLoader.LOCALIZED_LANGUAGES_CACHE = new ArrayList<>();
 	    final String filename = StringLoader.LOCALIZED_LANGUAGES_FILE_NAME;
 	    try (final InputStream is = StringLoader.LOAD_CLASS
 		    .getResourceAsStream(StringLoader.LOAD_PATH + StringLoader.LANGUAGE_NAME + filename);
 		    final ResourceStreamReader rsr = new ResourceStreamReader(is, "UTF-8")) {
-		String line = StringConstants.COMMON_STRING_EMPTY;
+		String line = StringLoader.loadCommon(CommonString.EMPTY);
 		while (line != null) {
 		    // Read line
 		    line = rsr.readString();
@@ -68,6 +62,8 @@ public class StringLoader {
 		LaserTank.logErrorDirectly(ioe);
 	    }
 	}
+	int size = StringLoader.LOCALIZED_LANGUAGES_CACHE.size();
+	return StringLoader.LOCALIZED_LANGUAGES_CACHE.toArray(new String[size]);
     }
 
     public static void setDefaultLanguage() {
@@ -115,6 +111,10 @@ public class StringLoader {
 	return str.getValue();
     }
 
+    public static String loadDialog(final DialogString str) {
+	return StringLoader.getFromCache(StringFile.DIALOGS).getProperty(Integer.toString(str.ordinal()));
+    }
+
     public static String loadDifficulty(final DifficultyString str) {
 	return StringLoader.getFromCache(StringFile.DIFFICULTY).getProperty(Integer.toString(str.ordinal()));
     }
@@ -145,5 +145,9 @@ public class StringLoader {
 
     public static String loadPref(final PrefString str) {
 	return StringLoader.getFromCache(StringFile.PREFS).getProperty(Integer.toString(str.ordinal()));
+    }
+
+    public static String loadTime(final int strID) {
+	return StringLoader.getFromCache(StringFile.TIME).getProperty(Integer.toString(strID));
     }
 }

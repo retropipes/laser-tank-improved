@@ -13,8 +13,9 @@ import javax.swing.JFrame;
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.fileio.FilenameChecker;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.DialogString;
+import com.puttysoftware.lasertank.strings.GameString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.utilities.Extension;
 
 public class LPBManager {
@@ -51,10 +52,8 @@ public class LPBManager {
 
     public static void loadFile(final String filename) {
 	if (!FilenameChecker.isFilenameOK(LPBManager.getNameWithoutExtension(LPBManager.getFileNameOnly(filename)))) {
-	    CommonDialogs.showErrorDialog(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			    StringConstants.DIALOG_STRING_ILLEGAL_CHARACTERS),
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG, StringConstants.DIALOG_STRING_LOAD));
+	    CommonDialogs.showErrorDialog(StringLoader.loadDialog(DialogString.ILLEGAL_CHARACTERS),
+		    StringLoader.loadDialog(DialogString.LOAD));
 	} else {
 	    final LPBLoadTask lpblt = new LPBLoadTask(filename);
 	    lpblt.start();
@@ -65,8 +64,7 @@ public class LPBManager {
     public static void loadLPB() {
 	String filename, extension, file, dir;
 	final String lastOpen = PreferencesManager.getLastDirOpen();
-	final FileDialog fd = new FileDialog((JFrame) null,
-		StringLoader.loadString(StringConstants.STRINGS_FILE_GAME, StringConstants.GAME_STRING_LOAD_PLAYBACK),
+	final FileDialog fd = new FileDialog((JFrame) null, StringLoader.loadGame(GameString.LOAD_PLAYBACK),
 		FileDialog.LOAD);
 	fd.setDirectory(lastOpen);
 	fd.setVisible(true);
@@ -78,8 +76,7 @@ public class LPBManager {
 	    if (extension.equals(Extension.getOldPlaybackExtension())) {
 		LPBManager.loadFile(filename);
 	    } else {
-		CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_DIALOG,
-			StringConstants.DIALOG_STRING_NON_PLAYBACK_FILE));
+		CommonDialogs.showDialog(StringLoader.loadDialog(DialogString.NON_PLAYBACK_FILE));
 	    }
 	}
     }

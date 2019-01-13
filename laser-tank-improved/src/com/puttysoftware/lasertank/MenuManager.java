@@ -24,8 +24,11 @@ import com.puttysoftware.lasertank.game.lpb.LPBManager;
 import com.puttysoftware.lasertank.prefs.PreferencesManager;
 import com.puttysoftware.lasertank.resourcemanagers.SoundConstants;
 import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
-import com.puttysoftware.lasertank.stringmanagers.StringLoader;
+import com.puttysoftware.lasertank.strings.EditorString;
+import com.puttysoftware.lasertank.strings.MenuString;
+import com.puttysoftware.lasertank.strings.StringLoader;
+import com.puttysoftware.lasertank.strings.global.GlobalLoader;
+import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.BoardPrinter;
 
@@ -45,20 +48,16 @@ public class MenuManager {
 		final MenuManager menu = MenuManager.this;
 		boolean loaded = false;
 		final String cmd = e.getActionCommand();
-		if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_NEW))) {
+		if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_NEW))) {
 		    loaded = app.getEditor().newArena();
 		    app.getArenaManager().setLoaded(loaded);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_OPEN))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_OPEN))) {
 		    loaded = app.getArenaManager().loadArena();
 		    app.getArenaManager().setLoaded(loaded);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_OPEN_DEFAULT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_OPEN_DEFAULT))) {
 		    loaded = app.getArenaManager().loadArenaDefault();
 		    app.getArenaManager().setLoaded(loaded);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CLOSE))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CLOSE))) {
 		    // Close the window
 		    if (app.isInEditorMode()) {
 			app.getEditor().handleCloseWindow();
@@ -80,120 +79,91 @@ public class MenuManager {
 			}
 		    }
 		    app.getGUIManager().showGUI();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SAVE))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SAVE))) {
 		    if (app.getArenaManager().getLoaded()) {
 			app.getArenaManager().saveArena(app.getArenaManager().isArenaProtected());
 		    } else {
-			CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-				StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
+			CommonDialogs.showDialog(StringLoader.loadMenu(MenuString.ERROR_NO_ARENA_OPENED));
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SAVE_AS))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SAVE_AS))) {
 		    if (app.getArenaManager().getLoaded()) {
 			app.getArenaManager().saveArenaAs(false);
 		    } else {
-			CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-				StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
+			CommonDialogs.showDialog(StringLoader.loadMenu(MenuString.ERROR_NO_ARENA_OPENED));
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SAVE_AS_PROTECTED))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SAVE_AS_PROTECTED))) {
 		    if (app.getArenaManager().getLoaded()) {
 			app.getArenaManager().saveArenaAs(true);
 		    } else {
-			CommonDialogs.showDialog(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-				StringConstants.MENU_STRING_ERROR_NO_ARENA_OPENED));
+			CommonDialogs.showDialog(StringLoader.loadMenu(MenuString.ERROR_NO_ARENA_OPENED));
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_PREFERENCES))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_PREFERENCES))) {
 		    // Show preferences dialog
 		    PreferencesManager.showPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_PRINT_GAMEBOARD))) {
 		    BoardPrinter.printBoard(app.getMasterContent());
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_EXIT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_EXIT))) {
 		    // Exit program
 		    if (app.getGUIManager().quitHandler()) {
 			System.exit(0);
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_QUIT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_QUIT))) {
 		    // Quit program
 		    if (app.getGUIManager().quitHandler()) {
 			System.exit(0);
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_PLAY))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_PLAY))) {
 		    // Play the current arena
 		    final boolean proceed = app.getGameManager().newGame();
 		    if (proceed) {
 			app.exitCurrentMode();
 			app.getGameManager().playArena();
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_EDIT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_EDIT))) {
 		    // Edit the current arena
 		    app.exitCurrentMode();
 		    app.getEditor().editArena();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_USE_CLASSIC_ACCELERATORS))) {
 		    // Toggle accelerators
 		    app.getMenuManager().toggleAccelerators();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_RESET_CURRENT_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_RESET_CURRENT_LEVEL))) {
 		    final int result = CommonDialogs.showConfirmDialog(
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-				    StringConstants.MENU_STRING_CONFIRM_RESET_CURRENT_LEVEL),
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-				    StringConstants.NOTL_STRING_PROGRAM_NAME));
+			    StringLoader.loadMenu(MenuString.CONFIRM_RESET_CURRENT_LEVEL),
+			    GlobalLoader.loadUntranslated(UntranslatedString.PROGRAM_NAME));
 		    if (result == JOptionPane.YES_OPTION) {
 			game.abortAndWaitForMLOLoop();
 			game.resetCurrentLevel();
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SHOW_SCORE_TABLE))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SHOW_SCORE_TABLE))) {
 		    game.showScoreTable();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_REPLAY_SOLUTION))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_REPLAY_SOLUTION))) {
 		    game.abortAndWaitForMLOLoop();
 		    game.replaySolution();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_RECORD_SOLUTION))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_RECORD_SOLUTION))) {
 		    game.toggleRecording();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_LOAD_PLAYBACK_FILE))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_LOAD_PLAYBACK_FILE))) {
 		    game.abortAndWaitForMLOLoop();
 		    LPBManager.loadLPB();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_PREVIOUS_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_PREVIOUS_LEVEL))) {
 		    game.abortAndWaitForMLOLoop();
 		    game.previousLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SKIP_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SKIP_LEVEL))) {
 		    game.abortAndWaitForMLOLoop();
 		    game.solvedLevel(false);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_LOAD_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_LOAD_LEVEL))) {
 		    game.abortAndWaitForMLOLoop();
 		    game.loadLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SHOW_HINT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SHOW_HINT))) {
 		    CommonDialogs.showDialog(app.getArenaManager().getArena().getHint().trim());
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CHEATS))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CHEATS))) {
 		    game.enterCheatCode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_AMMO))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_AMMO))) {
 		    game.changeOtherAmmoMode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_TOOL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_TOOL))) {
 		    game.changeOtherToolMode();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_RANGE))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_RANGE))) {
 		    game.changeOtherRangeMode();
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_PAST))) {
 		    // Time Travel: Distant Past
 		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_PAST);
@@ -202,8 +172,7 @@ public class MenuManager {
 		    menu.gameEraPresent.setSelected(false);
 		    menu.gameEraFuture.setSelected(false);
 		    menu.gameEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_PAST))) {
 		    // Time Travel: Past
 		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PAST);
@@ -212,8 +181,7 @@ public class MenuManager {
 		    menu.gameEraPresent.setSelected(false);
 		    menu.gameEraFuture.setSelected(false);
 		    menu.gameEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_PRESENT))) {
 		    // Time Travel: Present
 		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PRESENT);
@@ -222,8 +190,7 @@ public class MenuManager {
 		    menu.gameEraPresent.setSelected(true);
 		    menu.gameEraFuture.setSelected(false);
 		    menu.gameEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_FUTURE))) {
 		    // Time Travel: Future
 		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_FUTURE);
@@ -232,8 +199,7 @@ public class MenuManager {
 		    menu.gameEraPresent.setSelected(false);
 		    menu.gameEraFuture.setSelected(true);
 		    menu.gameEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_FUTURE))) {
 		    // Time Travel: Distant Future
 		    SoundManager.playSound(SoundConstants.SOUND_ERA_CHANGE);
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_FUTURE);
@@ -242,8 +208,7 @@ public class MenuManager {
 		    menu.gameEraPresent.setSelected(false);
 		    menu.gameEraFuture.setSelected(false);
 		    menu.gameEraDistantFuture.setSelected(true);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_UNDO))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_UNDO))) {
 		    // Undo most recent action
 		    if (app.isInEditorMode()) {
 			editor.undo();
@@ -251,8 +216,7 @@ public class MenuManager {
 			app.getGameManager().abortAndWaitForMLOLoop();
 			app.getGameManager().undoLastMove();
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_REDO))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_REDO))) {
 		    // Redo most recent undone action
 		    if (app.isInEditorMode()) {
 			editor.redo();
@@ -260,101 +224,78 @@ public class MenuManager {
 			app.getGameManager().abortAndWaitForMLOLoop();
 			app.getGameManager().redoLastMove();
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CUT_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CUT_LEVEL))) {
 		    // Cut Level
 		    final int level = editor.getLocationManager().getEditorLocationU();
 		    app.getArenaManager().getArena().cutLevel();
 		    editor.fixLimits();
 		    editor.updateEditorLevelAbsolute(level);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_COPY_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_COPY_LEVEL))) {
 		    // Copy Level
 		    app.getArenaManager().getArena().copyLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_PASTE_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_PASTE_LEVEL))) {
 		    // Paste Level
 		    app.getArenaManager().getArena().pasteLevel();
 		    editor.fixLimits();
 		    editor.redrawEditor();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_INSERT_LEVEL_FROM_CLIPBOARD))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_INSERT_LEVEL_FROM_CLIPBOARD))) {
 		    // Insert Level From Clipboard
 		    app.getArenaManager().getArena().insertLevelFromClipboard();
 		    editor.fixLimits();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CLEAR_HISTORY))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CLEAR_HISTORY))) {
 		    // Clear undo/redo history, confirm first
 		    final int res = CommonDialogs.showConfirmDialog(
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-				    StringConstants.MENU_STRING_CONFIRM_CLEAR_HISTORY),
-			    StringLoader.loadString(StringConstants.STRINGS_FILE_EDITOR,
-				    StringConstants.EDITOR_STRING_EDITOR));
+			    StringLoader.loadMenu(MenuString.CONFIRM_CLEAR_HISTORY),
+			    StringLoader.loadEditor(EditorString.EDITOR));
 		    if (res == JOptionPane.YES_OPTION) {
 			editor.clearHistory();
 		    }
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_GO_TO_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_GO_TO_LEVEL))) {
 		    // Go To Level
 		    editor.goToLevelHandler();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_UP_ONE_FLOOR))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_UP_ONE_FLOOR))) {
 		    // Go up one floor
 		    editor.updateEditorPosition(1, 0);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_DOWN_ONE_FLOOR))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_DOWN_ONE_FLOOR))) {
 		    // Go down one floor
 		    editor.updateEditorPosition(-1, 0);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_UP_ONE_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_UP_ONE_LEVEL))) {
 		    // Go up one level
 		    editor.updateEditorPosition(0, 1);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_DOWN_ONE_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_DOWN_ONE_LEVEL))) {
 		    // Go down one level
 		    editor.updateEditorPosition(0, -1);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_ADD_A_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_ADD_A_LEVEL))) {
 		    // Add a level
 		    editor.addLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_REMOVE_A_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_REMOVE_A_LEVEL))) {
 		    // Remove a level
 		    editor.removeLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_FILL_CURRENT_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_FILL_CURRENT_LEVEL))) {
 		    // Fill level
 		    editor.fillLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_RESIZE_CURRENT_LEVEL))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_RESIZE_CURRENT_LEVEL))) {
 		    // Resize level
 		    editor.resizeLevel();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_LEVEL_PREFERENCES))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_LEVEL_PREFERENCES))) {
 		    // Set Level Preferences
 		    editor.setLevelPrefs();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_SET_START_POINT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_SET_START_POINT))) {
 		    // Set Start Point
 		    editor.editPlayerLocation();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_CHANGE_LAYER))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_CHANGE_LAYER))) {
 		    // Change Layer
 		    editor.changeLayer();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_ENABLE_GLOBAL_MOVE_SHOOT))) {
 		    // Enable Global Move-Shoot
 		    LaserTank.getApplication().getArenaManager().getArena().setMoveShootAllowedGlobally(true);
-		    menu.editorGlobalMoveShoot.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			    StringConstants.MENU_STRING_ITEM_DISABLE_GLOBAL_MOVE_SHOOT));
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_DISABLE_GLOBAL_MOVE_SHOOT))) {
+		    menu.editorGlobalMoveShoot
+			    .setText(StringLoader.loadMenu(MenuString.ITEM_DISABLE_GLOBAL_MOVE_SHOOT));
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_DISABLE_GLOBAL_MOVE_SHOOT))) {
 		    // Disable Global Move-Shoot
-		    menu.editorGlobalMoveShoot.setText(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			    StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
+		    menu.editorGlobalMoveShoot.setText(StringLoader.loadMenu(MenuString.ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
 		    app.getArenaManager().getArena().setMoveShootAllowedGlobally(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_PAST))) {
 		    // Time Travel: Distant Past
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_PAST);
 		    menu.editorEraDistantPast.setSelected(true);
@@ -362,8 +303,7 @@ public class MenuManager {
 		    menu.editorEraPresent.setSelected(false);
 		    menu.editorEraFuture.setSelected(false);
 		    menu.editorEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_PAST))) {
 		    // Time Travel: Past
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PAST);
 		    menu.editorEraDistantPast.setSelected(false);
@@ -371,8 +311,7 @@ public class MenuManager {
 		    menu.editorEraPresent.setSelected(false);
 		    menu.editorEraFuture.setSelected(false);
 		    menu.editorEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_PRESENT))) {
 		    // Time Travel: Present
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_PRESENT);
 		    menu.editorEraDistantPast.setSelected(false);
@@ -380,8 +319,7 @@ public class MenuManager {
 		    menu.editorEraPresent.setSelected(true);
 		    menu.editorEraFuture.setSelected(false);
 		    menu.editorEraDistantFuture.setSelected(false);
-		} else if (cmd
-			.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_FUTURE))) {
 		    // Time Travel: Future
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_FUTURE);
 		    menu.editorEraDistantPast.setSelected(false);
@@ -389,8 +327,7 @@ public class MenuManager {
 		    menu.editorEraPresent.setSelected(false);
 		    menu.editorEraFuture.setSelected(true);
 		    menu.editorEraDistantFuture.setSelected(false);
-		} else if (cmd.equals(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE))) {
+		} else if (cmd.equals(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_FUTURE))) {
 		    // Time Travel: Distant Future
 		    app.getArenaManager().getArena().switchEra(ArenaConstants.ERA_DISTANT_FUTURE);
 		    menu.editorEraDistantPast.setSelected(false);
@@ -398,12 +335,8 @@ public class MenuManager {
 		    menu.editorEraPresent.setSelected(false);
 		    menu.editorEraFuture.setSelected(false);
 		    menu.editorEraDistantFuture.setSelected(true);
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK))) {
+		} else if (cmd.equals(StringLoader.loadMenu(MenuString.ITEM_ABOUT_LASERTANK))) {
 		    app.getAboutDialog().showAboutDialog();
-		} else if (cmd.equals(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-			StringConstants.MENU_STRING_ITEM_LASERTANK_HELP))) {
-		    app.getHelpManager().showHelp();
 		}
 		app.getMenuManager().updateMenuItemState();
 	    } catch (final Exception ex) {
@@ -682,36 +615,21 @@ public class MenuManager {
     }
 
     private JMenu buildFileMenu(final MenuHandler mhandler) {
-	final JMenu fileMenu = new JMenu(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_MENU_FILE));
-	this.fileNew = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_NEW));
-	this.fileOpen = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_OPEN));
-	this.fileOpenDefault = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_OPEN_DEFAULT));
-	this.fileClose = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_CLOSE));
-	this.fileSave = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_SAVE));
-	this.fileSaveAs = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_SAVE_AS));
-	this.fileSaveAsProtected = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_SAVE_AS_PROTECTED));
-	this.filePreferences = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_PREFERENCES));
-	this.filePrint = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_PRINT_GAMEBOARD));
-	if (System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.contains(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_WINDOWS))) {
-	    this.fileExit = new JMenuItem(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_EXIT));
+	final JMenu fileMenu = new JMenu(StringLoader.loadMenu(MenuString.MENU_FILE));
+	this.fileNew = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_NEW));
+	this.fileOpen = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_OPEN));
+	this.fileOpenDefault = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_OPEN_DEFAULT));
+	this.fileClose = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CLOSE));
+	this.fileSave = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SAVE));
+	this.fileSaveAs = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SAVE_AS));
+	this.fileSaveAsProtected = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SAVE_AS_PROTECTED));
+	this.filePreferences = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_PREFERENCES));
+	this.filePrint = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_PRINT_GAMEBOARD));
+	if (System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.contains(GlobalLoader.loadUntranslated(UntranslatedString.WINDOWS))) {
+	    this.fileExit = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_EXIT));
 	} else {
-	    this.fileExit = new JMenuItem(
-		    StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_QUIT));
+	    this.fileExit = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_QUIT));
 	}
 	this.fileNew.addActionListener(mhandler);
 	this.fileOpen.addActionListener(mhandler);
@@ -730,19 +648,13 @@ public class MenuManager {
 	fileMenu.add(this.fileSave);
 	fileMenu.add(this.fileSaveAs);
 	fileMenu.add(this.fileSaveAsProtected);
-	if (!System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_MAC_OS_X))) {
+	if (!System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.equalsIgnoreCase(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X))) {
 	    fileMenu.add(this.filePreferences);
 	}
 	fileMenu.add(this.filePrint);
-	if (!System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_MAC_OS_X))) {
+	if (!System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.equalsIgnoreCase(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X))) {
 	    fileMenu.add(this.fileExit);
 	}
 	this.fileNew.setEnabled(true);
@@ -759,14 +671,11 @@ public class MenuManager {
     }
 
     private JMenu buildPlayMenu(final MenuHandler mhandler) {
-	final JMenu playMenu = new JMenu(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_MENU_PLAY));
-	this.playPlay = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_PLAY));
-	this.playEdit = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_EDIT));
-	this.playToggleAccelerators = new JCheckBoxMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_USE_CLASSIC_ACCELERATORS));
+	final JMenu playMenu = new JMenu(StringLoader.loadMenu(MenuString.MENU_PLAY));
+	this.playPlay = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_PLAY));
+	this.playEdit = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_EDIT));
+	this.playToggleAccelerators = new JCheckBoxMenuItem(
+		StringLoader.loadMenu(MenuString.ITEM_USE_CLASSIC_ACCELERATORS));
 	this.playPlay.addActionListener(mhandler);
 	this.playEdit.addActionListener(mhandler);
 	this.playToggleAccelerators.addActionListener(mhandler);
@@ -780,44 +689,26 @@ public class MenuManager {
     }
 
     private JMenu buildGameMenu(final MenuHandler mhandler) {
-	final JMenu gameMenu = new JMenu(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_MENU_GAME));
-	this.gameReset = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_RESET_CURRENT_LEVEL));
-	this.gameShowTable = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_SHOW_SCORE_TABLE));
-	this.gameReplaySolution = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_REPLAY_SOLUTION));
-	this.gameRecordSolution = new JCheckBoxMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_RECORD_SOLUTION));
-	this.gameLoadLPB = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_LOAD_PLAYBACK_FILE));
-	this.gamePreviousLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_PREVIOUS_LEVEL));
-	this.gameSkipLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_SKIP_LEVEL));
-	this.gameLoadLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_LOAD_LEVEL));
-	this.gameShowHint = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_SHOW_HINT));
-	this.gameCheats = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_CHEATS));
-	this.gameChangeOtherAmmoMode = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_AMMO));
-	this.gameChangeOtherToolMode = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_TOOL));
-	this.gameChangeOtherRangeMode = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_CHANGE_OTHER_RANGE));
-	this.gameEraDistantPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST), false);
-	this.gameEraPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST), false);
-	this.gameEraPresent = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT), true);
-	this.gameEraFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE), false);
-	this.gameEraDistantFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE), false);
+	final JMenu gameMenu = new JMenu(StringLoader.loadMenu(MenuString.MENU_GAME));
+	this.gameReset = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_RESET_CURRENT_LEVEL));
+	this.gameShowTable = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SHOW_SCORE_TABLE));
+	this.gameReplaySolution = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_REPLAY_SOLUTION));
+	this.gameRecordSolution = new JCheckBoxMenuItem(StringLoader.loadMenu(MenuString.ITEM_RECORD_SOLUTION));
+	this.gameLoadLPB = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_LOAD_PLAYBACK_FILE));
+	this.gamePreviousLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_PREVIOUS_LEVEL));
+	this.gameSkipLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SKIP_LEVEL));
+	this.gameLoadLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_LOAD_LEVEL));
+	this.gameShowHint = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SHOW_HINT));
+	this.gameCheats = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CHEATS));
+	this.gameChangeOtherAmmoMode = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_AMMO));
+	this.gameChangeOtherToolMode = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_TOOL));
+	this.gameChangeOtherRangeMode = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CHANGE_OTHER_RANGE));
+	this.gameEraDistantPast = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_PAST), false);
+	this.gameEraPast = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_PAST), false);
+	this.gameEraPresent = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_PRESENT), true);
+	this.gameEraFuture = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_FUTURE), false);
+	this.gameEraDistantFuture = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_FUTURE),
+		false);
 	this.gameReset.addActionListener(mhandler);
 	this.gameShowTable.addActionListener(mhandler);
 	this.gameReplaySolution.addActionListener(mhandler);
@@ -836,8 +727,7 @@ public class MenuManager {
 	this.gameEraPresent.addActionListener(mhandler);
 	this.gameEraFuture.addActionListener(mhandler);
 	this.gameEraDistantFuture.addActionListener(mhandler);
-	this.gameTimeTravelSubMenu = new JMenu(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_SUB_TIME_TRAVEL));
+	this.gameTimeTravelSubMenu = new JMenu(StringLoader.loadMenu(MenuString.SUB_TIME_TRAVEL));
 	this.gameTimeTravelSubMenu.add(this.gameEraDistantPast);
 	this.gameTimeTravelSubMenu.add(this.gameEraPast);
 	this.gameTimeTravelSubMenu.add(this.gameEraPresent);
@@ -879,60 +769,36 @@ public class MenuManager {
     }
 
     private JMenu buildEditorMenu(final MenuHandler mhandler) {
-	final JMenu editorMenu = new JMenu(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_MENU_EDITOR));
-	this.editorUndo = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_UNDO));
-	this.editorRedo = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_REDO));
-	this.editorCutLevel = new JMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_ITEM_CUT_LEVEL));
-	this.editorCopyLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_COPY_LEVEL));
-	this.editorPasteLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_PASTE_LEVEL));
-	this.editorInsertLevelFromClipboard = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_INSERT_LEVEL_FROM_CLIPBOARD));
-	this.editorClearHistory = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_CLEAR_HISTORY));
-	this.editorGoToLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_GO_TO_LEVEL));
-	this.editorUpOneFloor = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_UP_ONE_FLOOR));
-	this.editorDownOneFloor = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_DOWN_ONE_FLOOR));
-	this.editorUpOneLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_UP_ONE_LEVEL));
-	this.editorDownOneLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_DOWN_ONE_LEVEL));
-	this.editorAddLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_ADD_A_LEVEL));
-	this.editorRemoveLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_REMOVE_A_LEVEL));
-	this.editorFillLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_FILL_CURRENT_LEVEL));
-	this.editorResizeLevel = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_RESIZE_CURRENT_LEVEL));
-	this.editorLevelPreferences = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_LEVEL_PREFERENCES));
-	this.editorSetStartPoint = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_SET_START_POINT));
-	this.editorChangeLayer = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_CHANGE_LAYER));
-	this.editorGlobalMoveShoot = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
-	this.editorTimeTravelSubMenu = new JMenu(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_SUB_TIME_TRAVEL));
-	this.editorEraDistantPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_PAST), false);
-	this.editorEraPast = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PAST), false);
-	this.editorEraPresent = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_PRESENT), true);
-	this.editorEraFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_FUTURE), false);
-	this.editorEraDistantFuture = new JCheckBoxMenuItem(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_ERA, ArenaConstants.ERA_DISTANT_FUTURE), false);
+	final JMenu editorMenu = new JMenu(StringLoader.loadMenu(MenuString.MENU_EDITOR));
+	this.editorUndo = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_UNDO));
+	this.editorRedo = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_REDO));
+	this.editorCutLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CUT_LEVEL));
+	this.editorCopyLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_COPY_LEVEL));
+	this.editorPasteLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_PASTE_LEVEL));
+	this.editorInsertLevelFromClipboard = new JMenuItem(
+		StringLoader.loadMenu(MenuString.ITEM_INSERT_LEVEL_FROM_CLIPBOARD));
+	this.editorClearHistory = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CLEAR_HISTORY));
+	this.editorGoToLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_GO_TO_LEVEL));
+	this.editorUpOneFloor = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_UP_ONE_FLOOR));
+	this.editorDownOneFloor = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_DOWN_ONE_FLOOR));
+	this.editorUpOneLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_UP_ONE_LEVEL));
+	this.editorDownOneLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_DOWN_ONE_LEVEL));
+	this.editorAddLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_ADD_A_LEVEL));
+	this.editorRemoveLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_REMOVE_A_LEVEL));
+	this.editorFillLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_FILL_CURRENT_LEVEL));
+	this.editorResizeLevel = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_RESIZE_CURRENT_LEVEL));
+	this.editorLevelPreferences = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_LEVEL_PREFERENCES));
+	this.editorSetStartPoint = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_SET_START_POINT));
+	this.editorChangeLayer = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_CHANGE_LAYER));
+	this.editorGlobalMoveShoot = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_ENABLE_GLOBAL_MOVE_SHOOT));
+	this.editorTimeTravelSubMenu = new JMenu(StringLoader.loadMenu(MenuString.SUB_TIME_TRAVEL));
+	this.editorEraDistantPast = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_PAST),
+		false);
+	this.editorEraPast = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_PAST), false);
+	this.editorEraPresent = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_PRESENT), true);
+	this.editorEraFuture = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_FUTURE), false);
+	this.editorEraDistantFuture = new JCheckBoxMenuItem(StringLoader.loadTime(ArenaConstants.ERA_DISTANT_FUTURE),
+		false);
 	this.editorUndo.addActionListener(mhandler);
 	this.editorRedo.addActionListener(mhandler);
 	this.editorCutLevel.addActionListener(mhandler);
@@ -1013,19 +879,13 @@ public class MenuManager {
     }
 
     private JMenu buildHelpMenu(final MenuHandler mhandler) {
-	final JMenu helpMenu = new JMenu(
-		StringLoader.loadString(StringConstants.STRINGS_FILE_MENU, StringConstants.MENU_STRING_MENU_HELP));
-	this.helpAbout = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_ABOUT_LASERTANK));
-	this.helpHelp = new JMenuItem(StringLoader.loadString(StringConstants.STRINGS_FILE_MENU,
-		StringConstants.MENU_STRING_ITEM_LASERTANK_HELP));
+	final JMenu helpMenu = new JMenu(StringLoader.loadMenu(MenuString.MENU_HELP));
+	this.helpAbout = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_ABOUT_LASERTANK));
+	this.helpHelp = new JMenuItem(StringLoader.loadMenu(MenuString.ITEM_LASERTANK_HELP));
 	this.helpAbout.addActionListener(mhandler);
 	this.helpHelp.addActionListener(mhandler);
-	if (!System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.equalsIgnoreCase(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_MAC_OS_X))) {
+	if (!System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.equalsIgnoreCase(GlobalLoader.loadUntranslated(UntranslatedString.MAC_OS_X))) {
 	    helpMenu.add(this.helpAbout);
 	}
 	helpMenu.add(this.helpHelp);
@@ -1042,11 +902,8 @@ public class MenuManager {
 	this.fileSaveAs.setAccelerator(this.accel.fileSaveAsAccel);
 	this.filePreferences.setAccelerator(this.accel.filePreferencesAccel);
 	this.filePrint.setAccelerator(this.accel.filePrintAccel);
-	if (System
-		.getProperty(
-			StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL, StringConstants.NOTL_STRING_OS_NAME))
-		.contains(StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
-			StringConstants.NOTL_STRING_WINDOWS))) {
+	if (System.getProperty(GlobalLoader.loadUntranslated(UntranslatedString.OS_NAME))
+		.contains(GlobalLoader.loadUntranslated(UntranslatedString.WINDOWS))) {
 	    this.fileExit.setAccelerator(null);
 	} else {
 	    this.fileExit.setAccelerator(this.accel.fileExitAccel);

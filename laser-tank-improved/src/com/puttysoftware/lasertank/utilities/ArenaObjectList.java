@@ -141,7 +141,8 @@ import com.puttysoftware.lasertank.arena.objects.WoodenTriggerButton;
 import com.puttysoftware.lasertank.arena.objects.WoodenTriggerButtonDoor;
 import com.puttysoftware.lasertank.arena.objects.WoodenWall;
 import com.puttysoftware.lasertank.resourcemanagers.ImageManager;
-import com.puttysoftware.lasertank.stringmanagers.StringConstants;
+import com.puttysoftware.lasertank.strings.CommonString;
+import com.puttysoftware.lasertank.strings.StringLoader;
 
 public class ArenaObjectList {
     // Fields
@@ -181,14 +182,6 @@ public class ArenaObjectList {
 	for (final AbstractArenaObject allObject : this.allObjects) {
 	    allObject.setEnabled(true);
 	}
-    }
-
-    public String[] getAllDescriptions() {
-	final String[] allDescriptions = new String[this.allObjects.length];
-	for (int x = 0; x < this.allObjects.length; x++) {
-	    allDescriptions[x] = this.allObjects[x].getDescription();
-	}
-	return allDescriptions;
     }
 
     public BufferedImageIcon[] getAllEditorAppearances() {
@@ -234,30 +227,6 @@ public class ArenaObjectList {
 	    }
 	    return allEditorAppearancesOnLayer;
 	}
-    }
-
-    public String[] getAllNamesOnLayer(final int layer) {
-	final String[] tempAllNamesOnLayer = new String[this.allObjects.length];
-	int objectCount = 0;
-	for (int x = 0; x < this.allObjects.length; x++) {
-	    if (this.allObjects[x].getLayer() == layer) {
-		tempAllNamesOnLayer[x] = this.allObjects[x].getBaseName();
-	    }
-	}
-	for (final String element : tempAllNamesOnLayer) {
-	    if (element != null) {
-		objectCount++;
-	    }
-	}
-	final String[] allNamesOnLayer = new String[objectCount];
-	objectCount = 0;
-	for (final String element : tempAllNamesOnLayer) {
-	    if (element != null) {
-		allNamesOnLayer[objectCount] = element;
-		objectCount++;
-	    }
-	}
-	return allNamesOnLayer;
     }
 
     public AbstractArenaObject[] getAllObjectsOnLayer(final int layer, final boolean useDisable) {
@@ -310,7 +279,7 @@ public class ArenaObjectList {
     public AbstractArenaObject readArenaObjectG2(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
-	String UID = StringConstants.COMMON_STRING_SPACE;
+	String UID = StringLoader.loadCommon(CommonString.SPACE);
 	if (FormatConstants.isFormatVersionValidGeneration1(formatVersion)
 		|| FormatConstants.isFormatVersionValidGeneration2(formatVersion)) {
 	    UID = reader.readString();
@@ -349,7 +318,7 @@ public class ArenaObjectList {
     public AbstractArenaObject readArenaObjectG3(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
-	String UID = StringConstants.COMMON_STRING_SPACE;
+	String UID = StringLoader.loadCommon(CommonString.SPACE);
 	if (FormatConstants.isFormatVersionValidGeneration3(formatVersion)) {
 	    UID = reader.readString();
 	} else {
@@ -386,7 +355,7 @@ public class ArenaObjectList {
     public AbstractArenaObject readArenaObjectG4(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
-	String UID = StringConstants.COMMON_STRING_SPACE;
+	String UID = StringLoader.loadCommon(CommonString.SPACE);
 	if (FormatConstants.isFormatVersionValidGeneration4(formatVersion)) {
 	    UID = reader.readString();
 	} else {
@@ -423,7 +392,7 @@ public class ArenaObjectList {
     public AbstractArenaObject readArenaObjectG5(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
-	String UID = StringConstants.COMMON_STRING_SPACE;
+	String UID = StringLoader.loadCommon(CommonString.SPACE);
 	if (FormatConstants.isFormatVersionValidGeneration5(formatVersion)) {
 	    UID = reader.readString();
 	} else {
@@ -460,7 +429,7 @@ public class ArenaObjectList {
     public AbstractArenaObject readArenaObjectG6(final XMLFileReader reader, final int formatVersion)
 	    throws IOException {
 	AbstractArenaObject o = null;
-	String UID = StringConstants.COMMON_STRING_SPACE;
+	String UID = StringLoader.loadCommon(CommonString.SPACE);
 	if (FormatConstants.isFormatVersionValidGeneration6(formatVersion)) {
 	    UID = reader.readString();
 	} else {
