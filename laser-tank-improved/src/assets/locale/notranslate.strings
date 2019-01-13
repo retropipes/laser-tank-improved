@@ -148,8 +148,8 @@
 147=https://github.com/PuttySoftware/laser-tank-improved/releases/
 148=com.puttysoftware.lasertank
 149=Putty Software
-150=/assets/locale/cheats_instant.properties
-151=/assets/locale/cheats_toggle.properties
+150=/assets/locale/cheats_instant.strings
+151=/assets/locale/cheats_toggle.strings
 152=UNUSED
 153=/assets/fonts/
 154=DejaVuLGCSansMono-Bold.ttf
