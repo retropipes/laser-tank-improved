@@ -534,14 +534,15 @@ public class MenuManager {
 		this.disableRedo();
 	    }
 	}
-	if (app.getArenaManager().getArena().isPasteBlocked()) {
+	AbstractArena a = app.getArenaManager().getArena();
+	if (a != null && a.isPasteBlocked()) {
 	    this.disablePasteLevel();
 	    this.disableInsertLevelFromClipboard();
 	} else {
 	    this.enablePasteLevel();
 	    this.enableInsertLevelFromClipboard();
 	}
-	if (app.getArenaManager().getArena().isCutBlocked()) {
+	if (a != null && a.isCutBlocked()) {
 	    this.disableCutLevel();
 	} else {
 	    this.enableCutLevel();
