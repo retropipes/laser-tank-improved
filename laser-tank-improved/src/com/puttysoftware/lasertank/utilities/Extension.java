@@ -10,6 +10,7 @@ import com.puttysoftware.lasertank.stringmanagers.StringLoader;
 
 public class Extension {
     // Constants
+    private static final String STRINGS_EXTENSION = ".strings";
     private static final String PREFERENCES_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_PREFS);
     private static final String OLD_LEVEL_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
@@ -28,6 +29,10 @@ public class Extension {
 	    StringConstants.NOTL_STRING_EXTENSION_SCORES);
     private static final String SOLUTION_EXTENSION = StringLoader.loadString(StringConstants.STRINGS_FILE_GLOBAL,
 	    StringConstants.NOTL_STRING_EXTENSION_SOLUTION);
+
+    public static String getStringsExtensionWithPeriod() {
+	return Extension.STRINGS_EXTENSION;
+    }
 
     public static String getArenaExtension() {
 	return Extension.ARENA_EXTENSION;
