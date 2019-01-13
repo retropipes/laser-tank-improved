@@ -28,8 +28,6 @@ import com.puttysoftware.lasertank.utilities.TypeConstants;
 public class ImageManager {
     public static final int MAX_WINDOW_SIZE = 700;
     private static final Color TRANSPARENT = new Color(200, 100, 100);
-    private static final String DEFAULT_LOAD_PATH = "/assets/images/";
-    private static String LOAD_PATH = ImageManager.DEFAULT_LOAD_PATH;
     private static Class<?> LOAD_CLASS = ImageManager.class;
     private static Font DRAW_FONT = null;
     private static final String DRAW_FONT_FALLBACK = "Times-BOLD-14";
@@ -123,22 +121,16 @@ public class ImageManager {
 
     static BufferedImageIcon getUncachedImage(final AbstractArenaObject obj, final boolean useText) {
 	try {
-	    String name, extraPath;
+	    String name;
 	    if (obj.isOfType(TypeConstants.TYPE_TUNNEL)) {
 		name = obj.getBaseImageName();
 	    } else {
 		name = obj.getImageName();
 	    }
-	    if (obj.isEnabled()) {
-		extraPath = "enabled/";
-	    } else {
-		extraPath = "disabled/";
-	    }
 	    final String normalName = ImageManager.normalizeName(name);
-	    final URL url = ImageManager.LOAD_CLASS.getResource(ImageManager.LOAD_PATH
-		    + StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE,
-			    StringConstants.NOTL_STRING_OBJECTS_SUBPATH)
-		    + extraPath + normalName + StringConstants.COMMON_STRING_NOTL_IMAGE_EXTENSION_PNG);
+	    final URL url = ImageManager.LOAD_CLASS.getResource(
+		    StringLoader.loadString(StringConstants.NOTL_STRINGS_FILE, StringConstants.NOTL_STRING_OBJECTS_PATH)
+			    + normalName + StringConstants.COMMON_STRING_NOTL_IMAGE_EXTENSION_PNG);
 	    final BufferedImage image = ImageIO.read(url);
 	    final String customText = obj.getCustomText();
 	    if (useText && customText != null) {

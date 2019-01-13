@@ -128,9 +128,9 @@
 127= products@puttysoftware.com  
 128=Game Animator
 129=Movement/Laser/Object Handler
-130=/assets/images/
-131=objects/
-132=assets/locale/
+130=UNUSED
+131=/assets/images/
+132=/assets/locale/
 133=opening
 134=control
 135=micrologo

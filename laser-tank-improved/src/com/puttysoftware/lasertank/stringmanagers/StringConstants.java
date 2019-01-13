@@ -176,9 +176,9 @@ public class StringConstants {
     public static final int NOTL_STRING_GAME_EMAIL = 127;
     public static final int NOTL_STRING_ANIMATOR_NAME = 128;
     public static final int NOTL_STRING_MLOH_NAME = 129;
-    public static final int NOTL_STRING_GRAPHICS_PATH = 130;
-    public static final int NOTL_STRING_OBJECTS_SUBPATH = 131;
-    public static final int NOTL_STRING_LOGO_SUBPATH = 132;
+    // public static final int NOTL_STRING_UNUSED = 130;
+    public static final int NOTL_STRING_OBJECTS_PATH = 131;
+    public static final int NOTL_STRING_LOGO_PATH = 132;
     public static final int NOTL_STRING_LOGO = 133;
     public static final int NOTL_STRING_MINILOGO = 134;
     public static final int NOTL_STRING_MICROLOGO = 135;
@@ -186,7 +186,7 @@ public class StringConstants {
     public static final int NOTL_STRING_SOUND_PATH = 137;
     public static final int NOTL_STRING_SOUND_EXTENSION = 138;
     public static final int NOTL_STRING_PLAYBACK_LOADER_NAME = 139;
-    // public static final int NOTL_STRING_UNUSED_1 = 140;
+    // public static final int NOTL_STRING_UNUSED = 140;
     public static final int NOTL_STRING_SOLUTION = 141;
     public static final int NOTL_STRING_DIRECTORY_SCORES_MAC = 142;
     public static final int NOTL_STRING_DIRECTORY_SCORES_WINDOWS = 143;
@@ -198,7 +198,7 @@ public class StringConstants {
     public static final int NOTL_STRING_COMPANY_NAME = 149;
     public static final int NOTL_STRING_INSTANT_CHEATS_PATH = 150;
     public static final int NOTL_STRING_TOGGLE_CHEATS_PATH = 151;
-    // public static final int NOTL_STRING_UNUSED_2 = 152;
+    // public static final int NOTL_STRING_UNUSED = 152;
     public static final int NOTL_STRING_FONT_PATH = 153;
     public static final int NOTL_STRING_FONT_FILENAME = 154;
     public static final int NOTL_STRING_MUSIC_FOLDER = 155;
