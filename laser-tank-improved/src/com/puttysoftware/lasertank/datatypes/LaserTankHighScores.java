@@ -9,8 +9,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import com.puttysoftware.fileio.GameIOUtilities;
-import com.puttysoftware.scoring.Score;
-import com.puttysoftware.scoring.ScoreTable;
+import com.puttysoftware.lasertank.scoring.Score;
+import com.puttysoftware.lasertank.scoring.ScoreTable;
 
 public class LaserTankHighScores {
     // Constants

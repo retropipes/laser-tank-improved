@@ -9,14 +9,14 @@ import java.io.File;
 
 import com.puttysoftware.dialogs.CommonDialogs;
 import com.puttysoftware.lasertank.LaserTank;
+import com.puttysoftware.lasertank.scoring.SavedScoreManager;
+import com.puttysoftware.lasertank.scoring.SortedScoreTable;
 import com.puttysoftware.lasertank.strings.CommonString;
 import com.puttysoftware.lasertank.strings.GameString;
 import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 import com.puttysoftware.lasertank.strings.global.UntranslatedString;
 import com.puttysoftware.lasertank.utilities.Extension;
-import com.puttysoftware.scoring.SavedScoreManager;
-import com.puttysoftware.scoring.SortedScoreTable;
 
 class ScoreTracker {
     private static final String MAC_PREFIX = GlobalLoader.loadUntranslated(UntranslatedString.DIRECTORY_UNIX_HOME);

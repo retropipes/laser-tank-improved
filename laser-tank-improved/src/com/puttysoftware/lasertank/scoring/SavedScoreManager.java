@@ -3,7 +3,7 @@
 
  Any questions should be directed to the author via email at: lasertank@worldwizard.net
  */
-package com.puttysoftware.scoring;
+package com.puttysoftware.lasertank.scoring;
 
 import java.io.IOException;
 
