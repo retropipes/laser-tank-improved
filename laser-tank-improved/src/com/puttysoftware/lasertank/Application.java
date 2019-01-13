@@ -35,7 +35,7 @@ public final class Application {
     private static final int VERSION_MAJOR = 0;
     private static final int VERSION_MINOR = 0;
     private static final int VERSION_BUGFIX = 0;
-    private static final int VERSION_BETA = 1;
+    private static final int VERSION_BETA = 2;
     private static final int STATUS_GUI = 0;
     private static final int STATUS_GAME = 1;
     private static final int STATUS_EDITOR = 2;
