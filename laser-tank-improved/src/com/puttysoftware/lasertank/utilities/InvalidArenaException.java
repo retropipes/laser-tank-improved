@@ -5,7 +5,7 @@
  */
 package com.puttysoftware.lasertank.utilities;
 
-public class InvalidArenaException extends Exception {
+public class InvalidArenaException extends RuntimeException {
     // Serialization
     private static final long serialVersionUID = 999L;
 
