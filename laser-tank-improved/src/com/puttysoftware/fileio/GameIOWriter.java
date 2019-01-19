@@ -8,11 +8,14 @@ public abstract class GameIOWriter implements AutoCloseable {
 	super();
     }
 
+    // Methods
+    @Override
+    public abstract void close() throws IOException;
+
     public abstract void writeBoolean(final boolean value) throws IOException;
 
     public abstract void writeByte(final byte value) throws IOException;
 
-    // Methods
     public abstract void writeDouble(final double value) throws IOException;
 
     public abstract void writeInt(final int value) throws IOException;
@@ -20,4 +23,6 @@ public abstract class GameIOWriter implements AutoCloseable {
     public abstract void writeLong(final long value) throws IOException;
 
     public abstract void writeString(final String value) throws IOException;
+
+    public abstract void writeUnsignedByte(final int value) throws IOException;
 }

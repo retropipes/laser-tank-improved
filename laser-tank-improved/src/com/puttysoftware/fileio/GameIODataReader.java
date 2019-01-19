@@ -29,6 +29,13 @@ public class GameIODataReader extends GameIOReader {
     }
 
     @Override
+    public byte[] readBytes(final int len) throws IOException {
+	final byte[] buf = new byte[len];
+	this.raf.read(buf);
+	return buf;
+    }
+
+    @Override
     public double readDouble() throws IOException {
 	return this.raf.readDouble();
     }
@@ -46,5 +53,23 @@ public class GameIODataReader extends GameIOReader {
     @Override
     public String readString() throws IOException {
 	return this.raf.readUTF();
+    }
+
+    @Override
+    public int readUnsignedByte() throws IOException {
+	return this.raf.readUnsignedByte();
+    }
+
+    @Override
+    public int readUnsignedShortByteArrayAsInt() throws IOException {
+	final byte[] buf = new byte[Short.BYTES];
+	this.raf.read(buf);
+	return GameIOUtilities.unsignedShortByteArrayToInt(buf);
+    }
+
+    @Override
+    public String readWindowsString(final byte[] buf) throws IOException {
+	this.raf.read(buf);
+	return GameIOUtilities.decodeWindowsStringData(buf);
     }
 }

@@ -47,4 +47,9 @@ public class GameIODataWriter extends GameIOWriter {
     public void writeString(final String value) throws IOException {
 	this.raf.writeUTF(value);
     }
+
+    @Override
+    public void writeUnsignedByte(final int value) throws IOException {
+	this.raf.writeByte(value);
+    }
 }
