@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.puttysoftware.fileio.GameIODataReader;
+import com.puttysoftware.fileio.GameIODataWriter;
 import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.fileio.GameIOWriter;
 import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 import com.puttysoftware.storage.StringStorage;
 
@@ -213,8 +215,47 @@ public class LaserTankLevel {
 	}
     }
 
+    public static LaserTankLevel load(final String filename) throws IOException {
+	try (GameIOReader gio = new GameIODataReader(filename)) {
+	    return LaserTankLevel.loadFromGameIO(gio);
+	}
+    }
+
     // Internal stuff
     private static LaserTankLevel loadLVLFromGameIO(final GameIOReader gio) throws IOException {
+	// Create a level object
+	LaserTankLevel levelData = new LaserTankLevel();
+	int levelIndex = 0;
+	while (!gio.atEOF()) {
+	    // Add a level
+	    levelData.addLevel();
+	    // Load and decode object data
+	    LaserTankLevel.decodeLVLObjectData(gio.readBytes(LaserTankLevel.LVL_OBJECT_DATA_LEN),
+		    levelData.objectData.get(levelIndex));
+	    // Load name
+	    final byte[] nameData = new byte[LaserTankLevel.LVL_NAME_LEN];
+	    final String loadName = gio.readWindowsString(nameData);
+	    // Load author
+	    final byte[] authorData = new byte[LaserTankLevel.LVL_AUTHOR_LEN];
+	    final String loadAuthor = gio.readWindowsString(authorData);
+	    // Load hint
+	    final byte[] hintData = new byte[LaserTankLevel.LVL_HINT_LEN];
+	    final String loadHint = gio.readWindowsString(hintData);
+	    // Load difficulty
+	    final int loadDifficulty = gio.readUnsignedShortByteArrayAsInt();
+	    // Populate metadata
+	    levelData.setName(loadName, levelIndex);
+	    levelData.setAuthor(loadAuthor, levelIndex);
+	    levelData.setHint(loadHint, levelIndex);
+	    levelData.setDifficulty(loadDifficulty, levelIndex);
+	    // Next level
+	    levelIndex += 1;
+	}
+	return levelData;
+    }
+
+    private static LaserTankLevel loadFromGameIO(final GameIOReader gio) throws IOException {
+	// TODO: Make this not identical to loadLVLFromGameIO()
 	// Create a level object
 	LaserTankLevel levelData = new LaserTankLevel();
 	int levelIndex = 0;
@@ -271,6 +312,16 @@ public class LaserTankLevel {
 	this.metaData.remove(level);
 	this.difficulty.remove(level);
 	this.objectData.remove(level);
+    }
+
+    public void save(final String filename) throws IOException {
+	try (GameIOWriter gio = new GameIODataWriter(filename)) {
+	    this.saveToGameIO(gio);
+	}
+    }
+
+    private void saveToGameIO(final GameIOWriter gio) throws IOException {
+	// TODO: Implement this method
     }
 
     public final String getAuthor(final int level) {
