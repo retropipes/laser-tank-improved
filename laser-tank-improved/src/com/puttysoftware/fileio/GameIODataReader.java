@@ -72,4 +72,9 @@ public class GameIODataReader extends GameIOReader {
 	this.raf.read(buf);
 	return GameIOUtilities.decodeWindowsStringData(buf);
     }
+
+    @Override
+    public boolean atEOF() throws IOException {
+	return this.raf.getFilePointer() == this.raf.length();
+    }
 }

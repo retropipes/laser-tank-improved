@@ -1,14 +1,16 @@
 package com.puttysoftware.lasertank.datatypes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.puttysoftware.fileio.GameIODataReader;
 import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.lasertank.utilities.DifficultyConstants;
 import com.puttysoftware.storage.StringStorage;
 
 public class LaserTankLevel {
     // Constants for Improved Level Files
-    // Internal object data layout: rows, cols, floors, metas, levels
+    // Internal object data layout: rows, cols, floors, metas
     // Object meta layout: object, attribute, direction, index, frame
     // Internal meta layout: level_number, metadata
     // Level metadata layout: name, author, hint
@@ -31,8 +33,7 @@ public class LaserTankLevel {
     private static final int LVL_HINT_LEN = 256;
     private static final int LVL_AUTHOR_LEN = 31;
 
-    private static void decodeLVLObjectData(final byte[] rawData, final int levelIndex,
-	    final LaserTankLevelStorage storage) {
+    private static void decodeLVLObjectData(final byte[] rawData, final LaserTankLevelStorage storage) {
 	final int floorIndex = 0;
 	for (int x = 0; x < 16; x++) {
 	    for (int y = 0; y < 16; y++) {
@@ -193,15 +194,15 @@ public class LaserTankLevel {
 		    objID = 105; // Placeholder
 		}
 		// Populate Object ID
-		storage.setCell(objID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS, levelIndex);
+		storage.setCell(objID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS);
 		// Populate Attribute ID
-		storage.setCell(attrID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES, levelIndex);
+		storage.setCell(attrID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES);
 		// Populate Direction ID
-		storage.setCell(dirID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS, levelIndex);
+		storage.setCell(dirID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS);
 		// Populate Index ID
-		storage.setCell(indexID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES, levelIndex);
+		storage.setCell(indexID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES);
 		// Populate Frame ID
-		storage.setCell(frameID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES, levelIndex);
+		storage.setCell(frameID, x, y, floorIndex, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES);
 	    }
 	}
     }
@@ -214,113 +215,133 @@ public class LaserTankLevel {
 
     // Internal stuff
     private static LaserTankLevel loadLVLFromGameIO(final GameIOReader gio) throws IOException {
-	// Load name
-	final byte[] nameData = new byte[LaserTankLevel.LVL_NAME_LEN];
-	final String loadName = gio.readWindowsString(nameData);
-	// Load author
-	final byte[] authorData = new byte[LaserTankLevel.LVL_AUTHOR_LEN];
-	final String loadAuthor = gio.readWindowsString(authorData);
-	// Load hint
-	final byte[] hintData = new byte[LaserTankLevel.LVL_HINT_LEN];
-	final String loadHint = gio.readWindowsString(hintData);
-	// Load difficulty
-	final int loadDifficulty = gio.readUnsignedShortByteArrayAsInt();
-	// Load and decode object data
-	final LaserTankLevelStorage loadObjectData = new LaserTankLevelStorage(LaserTankLevel.ILVL_OBJECT_DATA_ROWS,
-		LaserTankLevel.ILVL_OBJECT_DATA_COLS, LaserTankLevel.ILVL_OBJECT_DATA_FLOORS,
-		LaserTankLevel.ILVL_OBJECT_DATA_METAS, 1);
-	LaserTankLevel.decodeLVLObjectData(gio.readBytes(LaserTankLevel.LVL_OBJECT_DATA_LEN), 0, loadObjectData);
-	// Build and return final result
-	LaserTankLevel level = new LaserTankLevel(1, loadObjectData);
-	level.setName(loadName, 0);
-	level.setAuthor(loadAuthor, 0);
-	level.setDifficulty(loadDifficulty, 0);
-	level.setHint(loadHint, 0);
-	return level;
+	// Create a level object
+	LaserTankLevel levelData = new LaserTankLevel();
+	int levelIndex = 0;
+	while (!gio.atEOF()) {
+	    // Add a level
+	    levelData.addLevel();
+	    // Load and decode object data
+	    LaserTankLevel.decodeLVLObjectData(gio.readBytes(LaserTankLevel.LVL_OBJECT_DATA_LEN),
+		    levelData.objectData.get(levelIndex));
+	    // Load name
+	    final byte[] nameData = new byte[LaserTankLevel.LVL_NAME_LEN];
+	    final String loadName = gio.readWindowsString(nameData);
+	    // Load author
+	    final byte[] authorData = new byte[LaserTankLevel.LVL_AUTHOR_LEN];
+	    final String loadAuthor = gio.readWindowsString(authorData);
+	    // Load hint
+	    final byte[] hintData = new byte[LaserTankLevel.LVL_HINT_LEN];
+	    final String loadHint = gio.readWindowsString(hintData);
+	    // Load difficulty
+	    final int loadDifficulty = gio.readUnsignedShortByteArrayAsInt();
+	    // Populate metadata
+	    levelData.setName(loadName, levelIndex);
+	    levelData.setAuthor(loadAuthor, levelIndex);
+	    levelData.setHint(loadHint, levelIndex);
+	    levelData.setDifficulty(loadDifficulty, levelIndex);
+	    // Next level
+	    levelIndex += 1;
+	}
+	return levelData;
     }
 
     // Fields
-    private final StringStorage metaData;
-    private final int[] difficulty;
-    private final LaserTankLevelStorage objectData;
+    private final ArrayList<StringStorage> metaData;
+    private final ArrayList<Integer> difficulty;
+    private final ArrayList<LaserTankLevelStorage> objectData;
 
     // Constructor - used only internally
-    private LaserTankLevel(final int levelCount, final LaserTankLevelStorage loadObjectData) {
-	this.metaData = new StringStorage(levelCount, LaserTankLevel.ILVL_METADATA_INDEXES);
-	this.difficulty = new int[levelCount];
-	this.objectData = loadObjectData;
+    private LaserTankLevel() {
+	this.metaData = new ArrayList<>();
+	this.difficulty = new ArrayList<>();
+	this.objectData = new ArrayList<>();
     }
 
     // Methods
+    public final void addLevel() {
+	this.metaData.add(new StringStorage(LaserTankLevel.ILVL_METADATA_INDEXES));
+	this.difficulty.add(DifficultyConstants.DIFFICULTY_KIDS);
+	this.objectData.add(
+		new LaserTankLevelStorage(LaserTankLevel.ILVL_OBJECT_DATA_ROWS, LaserTankLevel.ILVL_OBJECT_DATA_COLS,
+			LaserTankLevel.ILVL_OBJECT_DATA_FLOORS, LaserTankLevel.ILVL_OBJECT_DATA_METAS));
+    }
+
+    public final void removeLevel(final int level) {
+	this.metaData.remove(level);
+	this.difficulty.remove(level);
+	this.objectData.remove(level);
+    }
+
     public final String getAuthor(final int level) {
-	return this.metaData.getCell(level, LaserTankLevel.ILVL_METADATA_INDEX_AUTHOR);
+	return this.metaData.get(level).getCell(LaserTankLevel.ILVL_METADATA_INDEX_AUTHOR);
     }
 
     public final int getDifficulty(final int level) {
-	return this.difficulty[level];
+	return this.difficulty.get(level);
     }
 
     public final String getHint(final int level) {
-	return this.metaData.getCell(level, LaserTankLevel.ILVL_METADATA_INDEX_HINT);
+	return this.metaData.get(level).getCell(LaserTankLevel.ILVL_METADATA_INDEX_HINT);
     }
 
     public final String getName(final int level) {
-	return this.metaData.getCell(level, LaserTankLevel.ILVL_METADATA_INDEX_NAME);
+	return this.metaData.get(level).getCell(LaserTankLevel.ILVL_METADATA_INDEX_NAME);
     }
 
     public final int getObjectID(final int row, final int col, final int floor, final int level) {
-	return this.objectData.getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS, level);
+	return this.objectData.get(level).getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS);
     }
 
     public final int getAttributeID(final int row, final int col, final int floor, final int level) {
-	return this.objectData.getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES, level);
+	return this.objectData.get(level).getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES);
     }
 
     public final int getDirectionID(final int row, final int col, final int floor, final int level) {
-	return this.objectData.getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS, level);
+	return this.objectData.get(level).getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS);
     }
 
     public final int getIndexID(final int row, final int col, final int floor, final int level) {
-	return this.objectData.getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES, level);
+	return this.objectData.get(level).getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES);
     }
 
     public final int getFrameID(final int row, final int col, final int floor, final int level) {
-	return this.objectData.getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES, level);
+	return this.objectData.get(level).getCell(row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES);
     }
 
     public final void setAuthor(final String newValue, final int level) {
-	this.metaData.setCell(newValue, level, LaserTankLevel.ILVL_METADATA_INDEX_AUTHOR);
+	this.metaData.get(level).setCell(newValue, LaserTankLevel.ILVL_METADATA_INDEX_AUTHOR);
     }
 
     public final void setDifficulty(final int newValue, final int level) {
-	this.difficulty[level] = newValue;
+	this.difficulty.set(level, newValue);
     }
 
     public final void setHint(final String newValue, final int level) {
-	this.metaData.setCell(newValue, level, LaserTankLevel.ILVL_METADATA_INDEX_HINT);
+	this.metaData.get(level).setCell(newValue, LaserTankLevel.ILVL_METADATA_INDEX_HINT);
     }
 
     public final void setName(final String newValue, final int level) {
-	this.metaData.setCell(newValue, level, LaserTankLevel.ILVL_METADATA_INDEX_NAME);
+	this.metaData.get(level).setCell(newValue, LaserTankLevel.ILVL_METADATA_INDEX_NAME);
     }
 
     public final void setObjectID(final int newID, final int row, final int col, final int floor, final int level) {
-	this.objectData.setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS, level);
+	this.objectData.get(level).setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_OBJECTS);
     }
 
     public final void setAttributeID(final int newID, final int row, final int col, final int floor, final int level) {
-	this.objectData.setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES, level);
+	this.objectData.get(level).setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_ATTRIBUTES);
     }
 
     public final void setDirectionID(final int newID, final int row, final int col, final int floor, final int level) {
-	this.objectData.setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS, level);
+	this.objectData.get(level).setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_DIRECTIONS);
     }
 
     public final void setIndexID(final int newID, final int row, final int col, final int floor, final int level) {
-	this.objectData.setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES, level);
+	this.objectData.get(level).setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_INDEXES);
     }
 
     public final void setFrameID(final int newID, final int row, final int col, final int floor, final int level) {
-	this.objectData.setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES, level);
+	this.objectData.get(level).setCell(newID, row, col, floor, LaserTankLevel.ILVL_OBJECT_META_INDEX_FRAMES);
     }
 }

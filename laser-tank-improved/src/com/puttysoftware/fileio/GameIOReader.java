@@ -31,4 +31,6 @@ public abstract class GameIOReader implements AutoCloseable {
     public abstract int readUnsignedShortByteArrayAsInt() throws IOException;
     
     public abstract String readWindowsString(byte[] buf) throws IOException;
+    
+    public abstract boolean atEOF() throws IOException;
 }
