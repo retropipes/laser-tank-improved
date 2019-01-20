@@ -33,6 +33,10 @@ public class LevelObjectData {
 	return DataLoader.loadDirection(objID);
     }
 
+    public static boolean hasDirection(final int objID) {
+	return DataLoader.loadDirection(objID).length > 1;
+    }
+
     public static boolean isAnimated(final int objID) {
 	int finalFrame = DataLoader.loadFrame(objID);
 	if (finalFrame > 1) {
@@ -61,15 +65,58 @@ public class LevelObjectData {
 	return DataLoader.loadIndex(objID);
     }
 
-    public static boolean canMove(final int objID) {
+    public static boolean moves(final int objID) {
 	return DataLoader.loadMovable(objID);
     }
 
-    public static boolean canShoot(final int objID) {
+    public static boolean shoots(final int objID) {
 	return DataLoader.loadShoot(objID);
     }
 
     public static int getWeight(final int objID) {
 	return DataLoader.loadWeight(objID);
+    }
+
+    public static int getFireTransformation(final int objID) {
+	return DataLoader.loadTransformFire(objID);
+    }
+
+    public static int getIceTransformation(final int objID) {
+	return DataLoader.loadTransformIce(objID);
+    }
+
+    public static int getStoneTransformation(final int objID) {
+	return DataLoader.loadTransformStone(objID);
+    }
+
+    public static int getMaterial(final int objID) {
+	return DataLoader.loadMaterial(objID);
+    }
+
+    public static int getHeight(final int objID) {
+	return DataLoader.loadHeight(objID);
+    }
+
+    public static int getLayer(final int objID) {
+	return DataLoader.loadLayer(objID);
+    }
+
+    public static boolean isLethal(final int objID) {
+	return DataLoader.loadLethal(objID);
+    }
+
+    public static boolean isReflective(final int objID, final Direction dir) {
+	switch (dir) {
+	case NORTH:
+	    return DataLoader.loadReflectNorth(objID);
+	case EAST:
+	    return DataLoader.loadReflectEast(objID);
+	case SOUTH:
+	    return DataLoader.loadReflectSouth(objID);
+	case WEST:
+	    return DataLoader.loadReflectWest(objID);
+	default:
+	    return false;
+	}
     }
 }

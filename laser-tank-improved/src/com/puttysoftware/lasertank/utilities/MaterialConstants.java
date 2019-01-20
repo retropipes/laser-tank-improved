@@ -15,6 +15,7 @@ public class MaterialConstants {
     public static final int MATERIAL_FIRE = 5;
     public static final int MATERIAL_STONE = 6;
     public static final int MATERIAL_MAGNETIC = 7;
+    public static final int MATERIAL_SHADOW = 8;
 
     private MaterialConstants() {
 	// Do nothing

@@ -31,6 +31,17 @@ public class DataLoader {
 	DataLoader.cacheFile(DataFile.MOVABLE);
 	DataLoader.cacheFile(DataFile.SHOOT);
 	DataLoader.cacheFile(DataFile.WEIGHT);
+	DataLoader.cacheFile(DataFile.TRANSFORM_FIRE);
+	DataLoader.cacheFile(DataFile.TRANSFORM_ICE);
+	DataLoader.cacheFile(DataFile.TRANSFORM_STONE);
+	DataLoader.cacheFile(DataFile.MATERIAL);
+	DataLoader.cacheFile(DataFile.HEIGHT);
+	DataLoader.cacheFile(DataFile.LAYER);
+	DataLoader.cacheFile(DataFile.LETHAL);
+	DataLoader.cacheFile(DataFile.REFLECT_EAST);
+	DataLoader.cacheFile(DataFile.REFLECT_NORTH);
+	DataLoader.cacheFile(DataFile.REFLECT_SOUTH);
+	DataLoader.cacheFile(DataFile.REFLECT_WEST);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_BLUE_LASER);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_GREEN_LASER);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_HEAT_LASER);
@@ -125,5 +136,53 @@ public class DataLoader {
 
     public static int loadWeight(final int objID) {
 	return Integer.parseInt(DataLoader.getFromCache(DataFile.WEIGHT).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadTransformFire(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.TRANSFORM_FIRE).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadTransformIce(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.TRANSFORM_ICE).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadTransformStone(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.TRANSFORM_STONE).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadMaterial(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.MATERIAL).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadHeight(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.HEIGHT).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadLayer(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.LAYER).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadLethal(final int objID) {
+	return Boolean.parseBoolean(DataLoader.getFromCache(DataFile.LETHAL).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadReflectEast(final int objID) {
+	return Boolean
+		.parseBoolean(DataLoader.getFromCache(DataFile.REFLECT_EAST).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadReflectNorth(final int objID) {
+	return Boolean
+		.parseBoolean(DataLoader.getFromCache(DataFile.REFLECT_NORTH).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadReflectSouth(final int objID) {
+	return Boolean
+		.parseBoolean(DataLoader.getFromCache(DataFile.REFLECT_SOUTH).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadReflectWest(final int objID) {
+	return Boolean
+		.parseBoolean(DataLoader.getFromCache(DataFile.REFLECT_WEST).getProperty(Integer.toString(objID)));
     }
 }
