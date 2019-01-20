@@ -7,14 +7,21 @@ package com.puttysoftware.lasertank.scoring;
 
 import java.io.IOException;
 
+import com.puttysoftware.fileio.GameIODataReader;
+import com.puttysoftware.fileio.GameIODataWriter;
+import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.fileio.GameIOWriter;
+import com.puttysoftware.lasertank.LaserTank;
+
 public class SavedScoreManager extends ScoreManager {
     // Fields
-    // private final String scoresFilename;
+    private final String scoresFilename;
+
     // Constructors
     public SavedScoreManager(final int length, final SortedScoreTable.SortOrder sortOrder, final String customTitle,
 	    final String scoresFile) {
 	super(length, sortOrder, customTitle);
-	// this.scoresFilename = scoresFile;
+	this.scoresFilename = scoresFile;
 	try {
 	    this.readScoresFile();
 	} catch (final IOException io) {
@@ -29,7 +36,7 @@ public class SavedScoreManager extends ScoreManager {
 	try {
 	    this.writeScoresFile();
 	} catch (final IOException io) {
-	    // Do nothing
+	    LaserTank.logNonFatalErrorDirectly(io);
 	}
 	return success;
     }
@@ -40,16 +47,20 @@ public class SavedScoreManager extends ScoreManager {
 	try {
 	    this.writeScoresFile();
 	} catch (final IOException io) {
-	    // Do nothing
+	    LaserTank.logNonFatalErrorDirectly(io);
 	}
 	return success;
     }
 
     private void readScoresFile() throws IOException {
-	// TODO: Implement
+	try (GameIOReader gio = new GameIODataReader(this.scoresFilename)) {
+	    this.table = SortedScoreTable.load(gio);
+	}
     }
 
     private void writeScoresFile() throws IOException {
-	// TODO: Implement
+	try (GameIOWriter gio = new GameIODataWriter(this.scoresFilename)) {
+	    this.table.save(gio);
+	}
     }
 }

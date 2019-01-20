@@ -5,8 +5,12 @@
  */
 package com.puttysoftware.lasertank.scoring;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Comparator;
+
+import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.fileio.GameIOWriter;
 
 public final class Score {
     public static class AscendingSorter implements Comparator<Score>, Serializable {
@@ -51,6 +55,13 @@ public final class Score {
 	}
     }
 
+    public static Score load(final GameIOReader gio) throws IOException {
+	String loadName = gio.readString();
+	long loadMoves = gio.readLong();
+	long loadShots = gio.readLong();
+	return new Score(loadMoves, loadShots, loadName);
+    }
+
     // Fields
     private final long moves;
     private final long shots;
@@ -80,5 +91,11 @@ public final class Score {
 
     public long getShots() {
 	return this.shots;
+    }
+
+    public void save(final GameIOWriter gio) throws IOException {
+	gio.writeString(this.name);
+	gio.writeLong(this.moves);
+	gio.writeLong(this.shots);
     }
 }

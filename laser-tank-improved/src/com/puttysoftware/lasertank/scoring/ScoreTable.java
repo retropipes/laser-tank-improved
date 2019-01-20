@@ -5,7 +5,11 @@
  */
 package com.puttysoftware.lasertank.scoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.fileio.GameIOWriter;
 
 public class ScoreTable {
     // Fields
@@ -40,8 +44,25 @@ public class ScoreTable {
     public int getLength() {
 	return this.table.size();
     }
-    
+
     public void add(final Score score) {
 	this.table.add(score);
+    }
+
+    public void save(final GameIOWriter gio) throws IOException {
+	gio.writeInt(this.getLength());
+	for (Score sc : this.table) {
+	    sc.save(gio);
+	}
+    }
+
+    public static ScoreTable load(final GameIOReader gio) throws IOException {
+	int len = gio.readInt();
+	ScoreTable st = new ScoreTable(len);
+	for (int x = 0; x < len; x++) {
+	    Score sc = Score.load(gio);
+	    st.add(sc);
+	}
+	return st;
     }
 }

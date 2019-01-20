@@ -599,7 +599,6 @@ public class MenuManager {
     }
 
     void populateMenuBar() {
-	// TODO: Replace
 	final MenuHandler mhandler = new MenuHandler();
 	JMenu fileMenu = this.buildFileMenu(mhandler);
 	JMenu playMenu = this.buildPlayMenu(mhandler);
@@ -925,17 +924,14 @@ public class MenuManager {
     }
 
     private void disableDirtyCommands() {
-	// TODO: Replace
 	this.fileSave.setEnabled(false);
     }
 
     private void enableDirtyCommands() {
-	// TODO: Replace
 	this.fileSave.setEnabled(true);
     }
 
     private void disableLoadedCommands() {
-	// TODO: Replace
 	this.fileClose.setEnabled(false);
 	this.fileSaveAs.setEnabled(false);
 	this.fileSaveAsProtected.setEnabled(false);
@@ -944,7 +940,6 @@ public class MenuManager {
     }
 
     private void enableLoadedCommands() {
-	// TODO: Replace
 	final Application app = LaserTank.getApplication();
 	if (app.isInGUIMode()) {
 	    this.fileClose.setEnabled(false);
@@ -964,7 +959,6 @@ public class MenuManager {
     }
 
     void activateEditorCommands() {
-	// TODO: Replace
 	this.fileNew.setEnabled(false);
 	this.fileOpen.setEnabled(false);
 	this.fileOpenDefault.setEnabled(false);
@@ -1007,7 +1001,6 @@ public class MenuManager {
     }
 
     void activateGameCommands() {
-	// TODO: Replace
 	this.fileNew.setEnabled(false);
 	this.fileOpen.setEnabled(false);
 	this.fileOpenDefault.setEnabled(false);
@@ -1057,7 +1050,6 @@ public class MenuManager {
     }
 
     void activateGUICommands() {
-	// TODO: Replace
 	this.fileNew.setEnabled(true);
 	this.fileOpen.setEnabled(true);
 	this.fileOpenDefault.setEnabled(true);

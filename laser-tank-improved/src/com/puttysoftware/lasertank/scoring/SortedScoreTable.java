@@ -5,8 +5,12 @@
  */
 package com.puttysoftware.lasertank.scoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import com.puttysoftware.fileio.GameIOReader;
+import com.puttysoftware.fileio.GameIOWriter;
 
 public class SortedScoreTable extends ScoreTable {
     public static enum SortOrder {
@@ -67,5 +71,25 @@ public class SortedScoreTable extends ScoreTable {
 	    // Determine if highest score would be removed
 	    return !Collections.max(temp, new Score.AscendingSorter()).equals(newEntry);
 	}
+    }
+    
+    @Override
+    public void save(final GameIOWriter gio) throws IOException {
+	gio.writeInt(this.getLength());
+	gio.writeString(this.sortOrder.toString());
+	for (Score sc : this.table) {
+	    sc.save(gio);
+	}
+    }
+
+    public static SortedScoreTable load(final GameIOReader gio) throws IOException {
+	int len = gio.readInt();
+	SortOrder so = SortOrder.valueOf(gio.readString());
+	SortedScoreTable sst = new SortedScoreTable(len, so);
+	for (int x = 0; x < len; x++) {
+	    Score sc = Score.load(gio);
+	    sst.add(sc);
+	}
+	return sst;
     }
 }
