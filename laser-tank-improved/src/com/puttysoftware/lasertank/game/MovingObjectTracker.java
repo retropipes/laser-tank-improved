@@ -136,7 +136,7 @@ final class MovingObjectTracker {
 			    && jumper.isOfType(TypeConstants.TYPE_ANTI)) {
 			// Handle anti-tank on anti-tank mover
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;
@@ -145,7 +145,7 @@ final class MovingObjectTracker {
 			// Handle box on box mover
 			this.jumpOnMover = true;
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;
@@ -153,7 +153,7 @@ final class MovingObjectTracker {
 			    && this.movingObj.isOfType(TypeConstants.TYPE_MOVABLE_MIRROR)) {
 			// Handle mirror on mirror mover
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;
@@ -249,7 +249,7 @@ final class MovingObjectTracker {
 			    && this.movingObj.isOfType(TypeConstants.TYPE_ANTI)) {
 			// Handle anti-tank on anti-tank mover
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;
@@ -257,7 +257,7 @@ final class MovingObjectTracker {
 			    && this.movingObj.isOfType(TypeConstants.TYPE_BOX)) {
 			// Handle box on box mover
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;
@@ -265,7 +265,7 @@ final class MovingObjectTracker {
 			    && this.movingObj.isOfType(TypeConstants.TYPE_MOVABLE_MIRROR)) {
 			// Handle mirror on mirror mover
 			final Direction dir = this.belowUpper.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.objIncX = unres[0];
 			this.objIncY = unres[1];
 			this.objectCheck = true;

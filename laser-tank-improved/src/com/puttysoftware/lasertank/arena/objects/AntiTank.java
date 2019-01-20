@@ -83,7 +83,7 @@ public class AntiTank extends AbstractMovableObject {
 	    SoundManager.playSound(SoundConstants.SOUND_STUN);
 	    return Direction.NONE;
 	} else {
-	    final Direction sourceDir = DirectionResolver.resolveRelativeDirectionInvert(dirX, dirY);
+	    final Direction sourceDir = DirectionResolver.resolveRelativeInvert(dirX, dirY);
 	    if (sourceDir == baseDir) {
 		// Kill
 		final GameManager gm = LaserTank.getApplication().getGameManager();
@@ -108,7 +108,7 @@ public class AntiTank extends AbstractMovableObject {
     public void timerExpiredAction(final int locX, final int locY) {
 	if (this.getSavedObject().isOfType(TypeConstants.TYPE_ANTI_MOVER)) {
 	    final Direction moveDir = this.getSavedObject().getDirection();
-	    final int[] unres = DirectionResolver.unresolveRelativeDirection(moveDir);
+	    final int[] unres = DirectionResolver.unresolveRelative(moveDir);
 	    if (GameManager.canObjectMove(locX, locY, unres[0], unres[1])) {
 		if (this.autoMove) {
 		    this.autoMove = false;

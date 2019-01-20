@@ -58,7 +58,7 @@ public class CrystalBlock extends AbstractReactionWall {
 	    return Direction.NONE;
 	} else if (laserType == LaserTypeConstants.LASER_TYPE_BLUE) {
 	    // Reflect laser
-	    return DirectionResolver.resolveRelativeDirectionInvert(dirX, dirY);
+	    return DirectionResolver.resolveRelativeInvert(dirX, dirY);
 	} else if (laserType == LaserTypeConstants.LASER_TYPE_DISRUPTOR) {
 	    // Disrupt crystal block
 	    SoundManager.playSound(SoundConstants.SOUND_DISRUPTED);
@@ -67,14 +67,14 @@ public class CrystalBlock extends AbstractReactionWall {
 	    return Direction.NONE;
 	} else {
 	    // Pass laser through
-	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	    return DirectionResolver.resolveRelative(dirX, dirY);
 	}
     }
 
     @Override
     public Direction laserExitedAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType) {
-	return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	return DirectionResolver.resolveRelative(dirX, dirY);
     }
 
     @Override

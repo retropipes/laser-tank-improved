@@ -1121,8 +1121,8 @@ public final class CurrentArenaData extends AbstractArenaData {
 			try {
 			    final AbstractArenaObject obj = this.getCell(arena, xFix, u, zFix, w);
 			    if (obj.isOfType(TypeConstants.TYPE_ANTI)) {
-				final int[] unres = DirectionResolver.unresolveRelativeDirection(obj.getDirection());
-				final Direction invert = DirectionResolver.resolveRelativeDirectionInvert(unres[0],
+				final int[] unres = DirectionResolver.unresolveRelative(obj.getDirection());
+				final Direction invert = DirectionResolver.resolveRelativeInvert(unres[0],
 					unres[1]);
 				if (d == invert) {
 				    this.foundX = xFix;
@@ -1150,8 +1150,8 @@ public final class CurrentArenaData extends AbstractArenaData {
 			try {
 			    final AbstractArenaObject obj = this.getCell(arena, xFix, u, zFix, w);
 			    if (obj.isOfType(TypeConstants.TYPE_ANTI)) {
-				final int[] unres = DirectionResolver.unresolveRelativeDirection(obj.getDirection());
-				final Direction invert = DirectionResolver.resolveRelativeDirectionInvert(unres[0],
+				final int[] unres = DirectionResolver.unresolveRelative(obj.getDirection());
+				final Direction invert = DirectionResolver.resolveRelativeInvert(unres[0],
 					unres[1]);
 				if (d == invert) {
 				    this.foundX = xFix;
@@ -1179,8 +1179,8 @@ public final class CurrentArenaData extends AbstractArenaData {
 			try {
 			    final AbstractArenaObject obj = this.getCell(arena, u, yFix, zFix, w);
 			    if (obj.isOfType(TypeConstants.TYPE_ANTI)) {
-				final int[] unres = DirectionResolver.unresolveRelativeDirection(obj.getDirection());
-				final Direction invert = DirectionResolver.resolveRelativeDirectionInvert(unres[0],
+				final int[] unres = DirectionResolver.unresolveRelative(obj.getDirection());
+				final Direction invert = DirectionResolver.resolveRelativeInvert(unres[0],
 					unres[1]);
 				if (d == invert) {
 				    this.foundX = u;
@@ -1208,8 +1208,8 @@ public final class CurrentArenaData extends AbstractArenaData {
 			try {
 			    final AbstractArenaObject obj = this.getCell(arena, u, yFix, zFix, w);
 			    if (obj.isOfType(TypeConstants.TYPE_ANTI)) {
-				final int[] unres = DirectionResolver.unresolveRelativeDirection(obj.getDirection());
-				final Direction invert = DirectionResolver.resolveRelativeDirectionInvert(unres[0],
+				final int[] unres = DirectionResolver.unresolveRelative(obj.getDirection());
+				final Direction invert = DirectionResolver.resolveRelativeInvert(unres[0],
 					unres[1]);
 				if (d == invert) {
 				    this.foundX = u;

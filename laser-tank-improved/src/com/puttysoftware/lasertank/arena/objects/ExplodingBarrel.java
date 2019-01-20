@@ -91,7 +91,7 @@ public class ExplodingBarrel extends AbstractReactionWall {
 	ExplodingBarrel.laserEnteredActionInnerP2(locX, locY, locZ, this.getLayer());
 	if (laserType == LaserTypeConstants.LASER_TYPE_POWER) {
 	    // Laser keeps going
-	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	    return DirectionResolver.resolveRelative(dirX, dirY);
 	} else {
 	    // Laser stops
 	    return Direction.NONE;

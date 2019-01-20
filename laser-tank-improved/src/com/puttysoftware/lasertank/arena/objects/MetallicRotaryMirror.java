@@ -36,7 +36,7 @@ public class MetallicRotaryMirror extends AbstractReactionWall {
     @Override
     public Direction laserEnteredActionHook(final int locX, final int locY, final int locZ, final int dirX,
 	    final int dirY, final int laserType, final int forceUnits) {
-	final Direction dir = DirectionResolver.resolveRelativeDirectionInvert(dirX, dirY);
+	final Direction dir = DirectionResolver.resolveRelativeInvert(dirX, dirY);
 	if (AbstractArenaObject.hitReflectiveSide(dir)) {
 	    // Reflect laser
 	    return this.getDirection();
@@ -53,7 +53,7 @@ public class MetallicRotaryMirror extends AbstractReactionWall {
 	    final int laserType) {
 	// Finish reflecting laser
 	SoundManager.playSound(SoundConstants.SOUND_REFLECT);
-	final Direction oldlaser = DirectionResolver.resolveRelativeDirectionInvert(locX, locY);
+	final Direction oldlaser = DirectionResolver.resolveRelativeInvert(locX, locY);
 	final Direction currdir = this.getDirection();
 	if (oldlaser == Direction.NORTH) {
 	    if (currdir == Direction.NORTHWEST) {

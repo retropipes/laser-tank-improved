@@ -31,7 +31,7 @@ public class RollingBarrelHorizontal extends AbstractMovableObject {
     @Override
     public Direction laserEnteredAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType, final int forceUnits) {
-	final Direction dir = DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	final Direction dir = DirectionResolver.resolveRelative(dirX, dirY);
 	if (dir == Direction.EAST || dir == Direction.WEST) {
 	    // Roll
 	    return super.laserEnteredAction(locX, locY, locZ, dirX, dirY, laserType, forceUnits);
@@ -50,7 +50,7 @@ public class RollingBarrelHorizontal extends AbstractMovableObject {
 	    }
 	    if (laserType == LaserTypeConstants.LASER_TYPE_POWER) {
 		// Laser keeps going
-		return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+		return DirectionResolver.resolveRelative(dirX, dirY);
 	    } else {
 		// Laser stops
 		return Direction.NONE;

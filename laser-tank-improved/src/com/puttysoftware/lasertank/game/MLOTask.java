@@ -535,7 +535,7 @@ final class MLOTask extends Thread {
 		    uoo.postMoveAction(px, py, pz);
 		    if (ugo.isOfType(TypeConstants.TYPE_MOVER)) {
 			final Direction dir = ugo.getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.sx = unres[0];
 			this.sy = unres[1];
 			this.mover = true;
@@ -569,7 +569,7 @@ final class MLOTask extends Thread {
 			    plMgr.getPlayerLocationZ());
 		    if (gm.getTank().getSavedObject().isOfType(TypeConstants.TYPE_MOVER)) {
 			final Direction dir = gm.getTank().getSavedObject().getDirection();
-			final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+			final int[] unres = DirectionResolver.unresolveRelative(dir);
 			this.sx = unres[0];
 			this.sy = unres[1];
 			this.mover = true;

@@ -465,7 +465,7 @@ public class GameManager {
 	    final int py = gm.getPlayerManager().getPlayerLocationY();
 	    final int destX = (int) Math.signum(x / ImageManager.getGraphicSize() - px);
 	    final int destY = (int) Math.signum(y / ImageManager.getGraphicSize() - py);
-	    return DirectionResolver.resolveRelativeDirection(destX, destY);
+	    return DirectionResolver.resolveRelative(destX, destY);
 	}
 
 	@Override
@@ -939,7 +939,7 @@ public class GameManager {
 	    final AbstractArena a = LaserTank.getApplication().getArenaManager().getArena();
 	    if (!a.isMoveShootAllowed() && !this.laserActive || a.isMoveShootAllowed()) {
 		this.laserActive = true;
-		final int[] currDirection = DirectionResolver.unresolveRelativeDirection(shooter.getDirection());
+		final int[] currDirection = DirectionResolver.unresolveRelative(shooter.getDirection());
 		final int x = currDirection[0];
 		final int y = currDirection[1];
 		if (this.mlot == null) {
@@ -1501,7 +1501,7 @@ public class GameManager {
 		this.fireLaser(px, py, this.tank);
 	    } else {
 		final Direction currDir = this.tank.getDirection();
-		final Direction newDir = DirectionResolver.resolveRelativeDirection(x, y);
+		final Direction newDir = DirectionResolver.resolveRelative(x, y);
 		if (currDir != newDir) {
 		    this.tank.setDirection(newDir);
 		    SoundManager.playSound(SoundConstants.SOUND_TURN);
@@ -1967,7 +1967,7 @@ public class GameManager {
 	    }
 	}
 	final Direction dir = this.getTank().getDirection();
-	final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+	final int[] unres = DirectionResolver.unresolveRelative(dir);
 	final int x = unres[0];
 	final int y = unres[1];
 	this.mlot.activateFrozenMovement(x, y);

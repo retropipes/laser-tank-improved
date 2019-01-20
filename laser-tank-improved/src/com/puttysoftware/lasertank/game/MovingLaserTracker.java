@@ -276,13 +276,13 @@ final class MovingLaserTracker {
 	    Direction laserDir;
 	    this.l = MovingLaserTracker.createLaserForType(this.lt);
 	    if (this.lt == LaserTypeConstants.LASER_TYPE_MISSILE) {
-		final Direction suffix = DirectionResolver.resolveRelativeDirection(this.incX, this.incY);
+		final Direction suffix = DirectionResolver.resolveRelative(this.incX, this.incY);
 		this.l.setDirection(suffix);
 	    } else if (this.lt == LaserTypeConstants.LASER_TYPE_STUNNER
 		    || this.lt == LaserTypeConstants.LASER_TYPE_DISRUPTOR) {
 		// Do nothing
 	    } else {
-		final Direction suffix = DirectionResolver.resolveRelativeDirectionHV(this.incX, this.incY);
+		final Direction suffix = DirectionResolver.resolveRelativeHV(this.incX, this.incY);
 		this.l.setDirection(suffix);
 	    }
 	    final int oldincX = this.incX;
@@ -323,10 +323,10 @@ final class MovingLaserTracker {
 		}
 		return;
 	    }
-	    resolved = DirectionResolver.unresolveRelativeDirection(dir);
+	    resolved = DirectionResolver.unresolveRelative(dir);
 	    int resX = resolved[0];
 	    int resY = resolved[1];
-	    laserDir = DirectionResolver.resolveRelativeDirectionHV(resX, resY);
+	    laserDir = DirectionResolver.resolveRelativeHV(resX, resY);
 	    this.l.setDirection(laserDir);
 	    this.incX = resX;
 	    this.incY = resY;
@@ -344,10 +344,10 @@ final class MovingLaserTracker {
 		}
 		return;
 	    }
-	    resolved = DirectionResolver.unresolveRelativeDirection(dir);
+	    resolved = DirectionResolver.unresolveRelative(dir);
 	    resX = resolved[0];
 	    resY = resolved[1];
-	    laserDir = DirectionResolver.resolveRelativeDirectionHV(resX, resY);
+	    laserDir = DirectionResolver.resolveRelativeHV(resX, resY);
 	    this.l.setDirection(laserDir);
 	    this.incX = resX;
 	    this.incY = resY;
@@ -407,7 +407,7 @@ final class MovingLaserTracker {
 	if (!this.res && this.laser) {
 	    if (gm.getTank().getSavedObject().isOfType(TypeConstants.TYPE_MOVER)) {
 		final Direction dir = gm.getTank().getSavedObject().getDirection();
-		final int[] unres = DirectionResolver.unresolveRelativeDirection(dir);
+		final int[] unres = DirectionResolver.unresolveRelative(dir);
 		sx = unres[0];
 		sy = unres[1];
 		mover = true;

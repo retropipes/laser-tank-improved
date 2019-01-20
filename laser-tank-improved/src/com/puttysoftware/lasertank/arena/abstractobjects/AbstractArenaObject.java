@@ -19,7 +19,6 @@ import com.puttysoftware.lasertank.resourcemanagers.SoundManager;
 import com.puttysoftware.lasertank.strings.CommonString;
 import com.puttysoftware.lasertank.strings.StringLoader;
 import com.puttysoftware.lasertank.strings.global.GlobalLoader;
-import com.puttysoftware.lasertank.utilities.ArenaConstants;
 import com.puttysoftware.lasertank.utilities.Direction;
 import com.puttysoftware.lasertank.utilities.DirectionResolver;
 import com.puttysoftware.lasertank.utilities.FrameResolver;
@@ -48,8 +47,8 @@ public abstract class AbstractArenaObject extends CloneableObject {
 
     public static boolean hitReflectiveSide(final Direction dir) {
 	Direction trigger1, trigger2;
-	trigger1 = ArenaConstants.previousDir(dir);
-	trigger2 = ArenaConstants.nextDir(dir);
+	trigger1 = DirectionResolver.previous(dir);
+	trigger2 = DirectionResolver.next(dir);
 	return dir == trigger1 || dir == trigger2;
     }
 
@@ -314,7 +313,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 
     private final String getDirectionSuffix() {
 	if (this.hasDirection()) {
-	    return DirectionResolver.resolveDirectionConstantToImageSuffix(this.direction);
+	    return DirectionResolver.resolveConstantToImageSuffix(this.direction);
 	} else {
 	    return StringLoader.loadCommon(CommonString.EMPTY);
 	}
@@ -473,7 +472,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
 	    }
 	    return Direction.NONE;
 	} else {
-	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	    return DirectionResolver.resolveRelative(dirX, dirY);
 	}
     }
 
@@ -489,7 +488,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
      */
     public Direction laserExitedAction(final int locX, final int locY, final int locZ, final int dirX, final int dirY,
 	    final int laserType) {
-	return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	return DirectionResolver.resolveRelative(dirX, dirY);
     }
 
     /**
@@ -847,7 +846,7 @@ public abstract class AbstractArenaObject extends CloneableObject {
     }
 
     public final void toggleDirection() {
-	this.direction = ArenaConstants.nextDirOrtho(this.direction);
+	this.direction = DirectionResolver.nextOrthogonal(this.direction);
     }
 
     public final void toggleFrameNumber() {

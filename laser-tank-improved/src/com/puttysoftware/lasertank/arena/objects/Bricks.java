@@ -33,7 +33,7 @@ public class Bricks extends AbstractReactionWall {
 	LaserTank.getApplication().getGameManager().morph(new Empty(), locX, locY, locZ, this.getLayer());
 	if (laserType == LaserTypeConstants.LASER_TYPE_POWER) {
 	    // Laser keeps going
-	    return DirectionResolver.resolveRelativeDirection(dirX, dirY);
+	    return DirectionResolver.resolveRelative(dirX, dirY);
 	} else {
 	    // Laser stops
 	    return Direction.NONE;

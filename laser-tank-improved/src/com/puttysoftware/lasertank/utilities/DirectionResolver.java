@@ -8,11 +8,11 @@ package com.puttysoftware.lasertank.utilities;
 import com.puttysoftware.lasertank.strings.global.GlobalLoader;
 
 public class DirectionResolver {
-    public static String resolveDirectionConstantToImageSuffix(final Direction dir) {
+    public static String resolveConstantToImageSuffix(final Direction dir) {
 	return GlobalLoader.loadDirection(dir.getInternalValue());
     }
 
-    public static Direction resolveRelativeDirection(final int dX, final int dY) {
+    public static Direction resolveRelative(final int dX, final int dY) {
 	final int dirX = (int) Math.signum(dX);
 	final int dirY = (int) Math.signum(dY);
 	if (dirX == 0 && dirY == 0) {
@@ -38,7 +38,7 @@ public class DirectionResolver {
 	}
     }
 
-    public static Direction resolveRelativeDirectionHV(final int dX, final int dY) {
+    public static Direction resolveRelativeHV(final int dX, final int dY) {
 	final int dirX = (int) Math.signum(dX);
 	final int dirY = (int) Math.signum(dY);
 	if (dirX == 0 && dirY == 0) {
@@ -64,7 +64,7 @@ public class DirectionResolver {
 	}
     }
 
-    public static Direction resolveRelativeDirectionInvert(final int dX, final int dY) {
+    public static Direction resolveRelativeInvert(final int dX, final int dY) {
 	final int dirX = (int) Math.signum(dX);
 	final int dirY = (int) Math.signum(dY);
 	if (dirX == 0 && dirY == 0) {
@@ -90,7 +90,7 @@ public class DirectionResolver {
 	}
     }
 
-    public static int[] unresolveRelativeDirection(final Direction dir) {
+    public static int[] unresolveRelative(final Direction dir) {
 	int[] res = new int[2];
 	if (dir == Direction.NONE) {
 	    res[0] = 0;
@@ -123,6 +123,130 @@ public class DirectionResolver {
 	    res = null;
 	}
 	return res;
+    }
+    
+    public static Direction next(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.NORTHEAST;
+	case NORTHEAST:
+	    return Direction.EAST;
+	case EAST:
+	    return Direction.SOUTHEAST;
+	case SOUTHEAST:
+	    return Direction.SOUTH;
+	case SOUTH:
+	    return Direction.SOUTHWEST;
+	case SOUTHWEST:
+	    return Direction.WEST;
+	case WEST:
+	    return Direction.NORTHWEST;
+	case NORTHWEST:
+	    return Direction.NORTH;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
+    }
+
+    public static Direction nextOrthogonal(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.EAST;
+	case NORTHEAST:
+	    return Direction.SOUTHEAST;
+	case EAST:
+	    return Direction.SOUTH;
+	case SOUTHEAST:
+	    return Direction.SOUTHWEST;
+	case SOUTH:
+	    return Direction.WEST;
+	case SOUTHWEST:
+	    return Direction.NORTHWEST;
+	case WEST:
+	    return Direction.NORTH;
+	case NORTHWEST:
+	    return Direction.NORTHEAST;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
+    }
+
+    public static Direction previous(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.NORTHWEST;
+	case NORTHEAST:
+	    return Direction.NORTH;
+	case EAST:
+	    return Direction.NORTHEAST;
+	case SOUTHEAST:
+	    return Direction.EAST;
+	case SOUTH:
+	    return Direction.SOUTHEAST;
+	case SOUTHWEST:
+	    return Direction.SOUTH;
+	case WEST:
+	    return Direction.SOUTHWEST;
+	case NORTHWEST:
+	    return Direction.WEST;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
+    }
+
+    public static Direction previousOrthogonal(final Direction input) {
+	switch (input) {
+	case INVALID:
+	    return Direction.INVALID;
+	case NONE:
+	    return Direction.NONE;
+	case NORTH:
+	    return Direction.WEST;
+	case NORTHEAST:
+	    return Direction.NORTHWEST;
+	case EAST:
+	    return Direction.NORTH;
+	case SOUTHEAST:
+	    return Direction.NORTHEAST;
+	case SOUTH:
+	    return Direction.EAST;
+	case SOUTHWEST:
+	    return Direction.SOUTHEAST;
+	case WEST:
+	    return Direction.SOUTH;
+	case NORTHWEST:
+	    return Direction.SOUTHWEST;
+	case HORIZONTAL:
+	    return Direction.VERTICAL;
+	case VERTICAL:
+	    return Direction.HORIZONTAL;
+	default:
+	    return Direction.INVALID;
+	}
     }
 
     private DirectionResolver() {
