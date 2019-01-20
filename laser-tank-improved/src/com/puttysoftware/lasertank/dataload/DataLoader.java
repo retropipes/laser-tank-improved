@@ -14,6 +14,7 @@ public class DataLoader {
     private static Class<?> LOAD_CLASS = DataLoader.class;
     private static ArrayList<Properties> CACHE;
     private static ArrayList<Properties> SOLID_CACHE;
+    private static final String LIST_SPLIT = ",";
 
     public static void initialize() {
 	final int files = DataFileNames.getFileCount();
@@ -23,6 +24,13 @@ public class DataLoader {
 	}
 	DataLoader.cacheFile(DataFile.SOLID);
 	DataLoader.cacheFile(DataFile.SOLID_ATTRIBUTE);
+	DataLoader.cacheFile(DataFile.DIRECTION);
+	DataLoader.cacheFile(DataFile.FRAME);
+	DataLoader.cacheFile(DataFile.FRICTION);
+	DataLoader.cacheFile(DataFile.INDEX);
+	DataLoader.cacheFile(DataFile.MOVABLE);
+	DataLoader.cacheFile(DataFile.SHOOT);
+	DataLoader.cacheFile(DataFile.WEIGHT);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_BLUE_LASER);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_GREEN_LASER);
 	DataLoader.cacheSolidFile(SolidDataFile.SOLID_HEAT_LASER);
@@ -68,13 +76,54 @@ public class DataLoader {
 	return DataLoader.SOLID_CACHE.get(fileID);
     }
 
-    public static String loadSolid(final int objID) {
+    public static boolean loadSolid(final int objID) {
 	SolidDataFile sdf = SolidDataFileNames
 		.getFile(DataLoader.getFromCache(DataFile.SOLID).getProperty(Integer.toString(objID)));
-	return DataLoader.getFromSolidCache(sdf).getProperty(Integer.toString(objID));
+	return Boolean.parseBoolean(DataLoader.getFromSolidCache(sdf).getProperty(Integer.toString(objID)));
     }
 
-    public static String loadAttributeSolid(final int attrID) {
-	return DataLoader.getFromCache(DataFile.SOLID_ATTRIBUTE).getProperty(Integer.toString(attrID));
+    public static boolean loadAttributeSolid(final int attrID) {
+	return Boolean
+		.parseBoolean(DataLoader.getFromCache(DataFile.SOLID_ATTRIBUTE).getProperty(Integer.toString(attrID)));
+    }
+
+    public static int[] loadDirection(final int objID) {
+	String rawList = DataLoader.getFromCache(DataFile.DIRECTION).getProperty(Integer.toString(objID));
+	String[] rawSplit = rawList.split(DataLoader.LIST_SPLIT);
+	int[] data = new int[rawSplit.length];
+	for (int x = 0; x < data.length; x++) {
+	    data[x] = Integer.parseInt(rawSplit[x]);
+	}
+	return data;
+    }
+
+    public static int loadFrame(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.FRAME).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadFriction(final int objID) {
+	return Boolean.parseBoolean(DataLoader.getFromCache(DataFile.FRICTION).getProperty(Integer.toString(objID)));
+    }
+
+    public static int[] loadIndex(final int objID) {
+	String rawList = DataLoader.getFromCache(DataFile.INDEX).getProperty(Integer.toString(objID));
+	String[] rawSplit = rawList.split(DataLoader.LIST_SPLIT);
+	int[] data = new int[rawSplit.length];
+	for (int x = 0; x < data.length; x++) {
+	    data[x] = Integer.parseInt(rawSplit[x]);
+	}
+	return data;
+    }
+
+    public static boolean loadMovable(final int objID) {
+	return Boolean.parseBoolean(DataLoader.getFromCache(DataFile.MOVABLE).getProperty(Integer.toString(objID)));
+    }
+
+    public static boolean loadShoot(final int objID) {
+	return Boolean.parseBoolean(DataLoader.getFromCache(DataFile.SHOOT).getProperty(Integer.toString(objID)));
+    }
+
+    public static int loadWeight(final int objID) {
+	return Integer.parseInt(DataLoader.getFromCache(DataFile.WEIGHT).getProperty(Integer.toString(objID)));
     }
 }

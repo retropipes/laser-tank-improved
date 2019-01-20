@@ -275,6 +275,18 @@ public class LaserTankLevel {
 	return levelData;
     }
 
+    public static int getRows() {
+	return LaserTankLevel.ILVL_OBJECT_DATA_ROWS;
+    }
+
+    public static int getColumns() {
+	return LaserTankLevel.ILVL_OBJECT_DATA_COLS;
+    }
+
+    public static int getFloors() {
+	return LaserTankLevel.ILVL_OBJECT_DATA_FLOORS;
+    }
+
     // Fields
     private int levelCount;
     private final ArrayList<StringStorage> metaData;
