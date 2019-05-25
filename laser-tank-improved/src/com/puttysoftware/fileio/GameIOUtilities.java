@@ -133,11 +133,6 @@ public class GameIOUtilities {
 
 	    public abstract Coords imageSizeInPixels();
 
-	    public int[] readColorTable(final DataInputStreamLittleEndian reader) {
-		// todo
-		return new int[] {};
-	    }
-
 	    public abstract DIBHeader readFromStream(DataInputStreamLittleEndian reader);
 	}
 
@@ -270,7 +265,7 @@ public class GameIOUtilities {
 	    try (DataInputStreamLittleEndian reader = new DataInputStreamLittleEndian(new DataInputStream(is))) {
 		final FileHeader fileHeader = FileHeader.readFromStream(reader);
 		final DIBHeader dibHeader = DIBHeader.buildFromStream(reader);
-		final int[] colorTable = dibHeader.readColorTable(reader);
+		final int[] colorTable = new int[] {};
 		final int numberOfBytesInPixelData = dibHeader.imageSizeInBytes();
 		final byte[] pixelData = new byte[numberOfBytesInPixelData];
 		reader.read(pixelData);
