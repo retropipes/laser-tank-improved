@@ -21,7 +21,14 @@ def main(inpath, outpath, lang):
 		for in_line in infile:
 			is_section = False
 			# Remove leading/trailing whitespace
-			in_line = in_line.strip().replace('"', '\\"')
+			in_line = in_line.strip()
+			# Double up backslashes
+			in_line = in_line.replace('\\', '\\\\')
+			# Fix valid escape sequences
+			in_line = in_line.replace('\\\\n', '\\n')
+			in_line = in_line.replace('\\\\t', '\\t')
+			# Escape double quotes
+			in_line = in_line.replace('"', r'\"')
 			# Ignore empty lines
 			if len(in_line) == 0:
 				continue
