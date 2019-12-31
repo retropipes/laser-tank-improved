@@ -3,7 +3,7 @@ return {
 		items = 2,
 		item_0 = {
 			title = "game",
-			items = 1,
+			items = 2,
 			item_0 = {
 				title = "menu_file",
 				items = 19,
@@ -26,6 +26,15 @@ return {
 				item_16 = "menu_file_print",
 				item_17 = "__SEPARATOR__",
 				item_18 = "menu_file_exit"
+			},
+			item_1 = {
+				title = "move",
+				items = 5,
+				item_0 = "menu_game_restart",
+				item_1 = "menu_game_undo",
+				item_2 = "menu_game_save_position",
+				item_3 = "menu_game_restore_position",
+				item_4 = "menu_game_replay"
 			}
 		},
 		item_1 = {
