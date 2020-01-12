@@ -2,7 +2,8 @@
 local assets = {
     images = {
         attributes = {},
-        objects = {}
+        objects = {},
+        ui = {}
     },
     sounds = {}
 }
@@ -15,7 +16,7 @@ function love.load()
     -- Set up screen
     local gameWidth, gameHeight = 1080, 720
     local windowWidth, windowHeight = love.window.getDesktopDimensions()
-    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true, resizable = true, highdpi = true, pixelperfect = false, canvas = false, stretched = true})
+    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true, resizable = false, highdpi = true, pixelperfect = true, canvas = false, stretched = false})
     -- Set up joysticks
     local joysticks = love.joystick.getJoysticks()
     local joycount = love.joystick.getJoystickCount()
@@ -26,6 +27,8 @@ function love.load()
     luven.init()
     luven.camera:init(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
     luven.camera:setScale(1)
+    -- Cache logo image
+    assets.images.ui.logo = love.graphics.newImage("assets/images/ui/logo.png")
 end
 
 function love.resize(w, h)
@@ -37,9 +40,10 @@ function love.draw()
     luven.drawBegin()
     -- everything drawn here will be affected by lights and Luven's camera setup
     luven.drawEnd()
-    love.graphics.print({{0, 0, 0, 1}, "Press ESCAPE to quit"}, 400, 340)
+    love.graphics.draw(assets.images.ui.logo)
+    love.graphics.print({{0, 0, 0, 1}, "Press ESCAPE to quit"}, 60, 350)
     if joystick then
-        love.graphics.print({{0, 0, 0, 1}, "Joystick detected; button 9 also quits"}, 400, 360)
+        love.graphics.print({{0, 0, 0, 1}, "Joystick detected; button 9 also quits"}, 60, 370)
     end
     loveframes.draw()
     push:finish()
