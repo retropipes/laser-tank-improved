@@ -38,7 +38,7 @@ return {
 			},
 			item_2 = {
 				title = "menu_options",
-				num_items = 10
+				num_items = 10,
 				item_0 = "menu_options_animation",
 				item_1 = "menu_options_sound",
 				item_2 = "menu_options_remember_last_level",
@@ -47,9 +47,9 @@ return {
 				item_5 = "menu_options_disable_warnings",
 				item_6 = "__SEPARATOR__",
 				item_7 = "menu_options_size",
-				item_7_has_subitems = true
+				item_7_has_subitems = true,
 				item_7_subitems = {
-					num_items = 3
+					num_items = 3,
 					item_0 = "menu_options_size_small",
 					item_1 = "menu_options_size_medium",
 					item_2 = "menu_options_size_large"
@@ -63,7 +63,7 @@ return {
 			},
 			item_4 = {
 				title = "menu_help",
-				num_items = 6
+				num_items = 6,
 				item_0 = "menu_help_hint",
 				item_1 = "__SEPARATOR__",
 				item_2 = "menu_help_quick",
@@ -74,10 +74,10 @@ return {
 		},
 		item_1 = {
 			title = "editor",
-			num_items = 6
+			num_items = 6,
 			item_0 = {
 				title = "editor_menu_editor",
-				num_items = 5
+				num_items = 5,
 				item_0 = "editor_menu_editor_clear",
 				item_1 = "editor_menu_editor_load",
 				item_2 = "editor_menu_editor_save",
@@ -90,7 +90,7 @@ return {
 			},
 			item_2 = {
 				title = "editor_menu_shift",
-				num_items = 4
+				num_items = 4,
 				item_0 = "editor_menu_shift_right",
 				item_1 = "editor_menu_shift_left",
 				item_2 = "editor_menu_shift_up",
@@ -102,7 +102,7 @@ return {
 			},
 			item_4 = {
 				title = "editor_menu_difficulty",
-				num_items = 5
+				num_items = 5,
 				item_0 = "editor_menu_difficulty_kids",
 				item_1 = "editor_menu_difficulty_easy",
 				item_2 = "editor_menu_difficulty_medium",
@@ -111,7 +111,7 @@ return {
 			},
 			item_5 = {
 				title = "editor_menu_help",
-				num_items = 3
+				num_items = 3,
 				item_0 = "editor_menu_help_editor",
 				item_1 = "editor_menu_help_creating_levels",
 				item_2 = "editor_menu_help_about"

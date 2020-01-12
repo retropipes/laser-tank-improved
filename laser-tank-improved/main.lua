@@ -1,5 +1,7 @@
 -- assets
 local assets = {
+    data = {},
+    fonts = {},
     images = {
         attributes = {},
         objects = {},
@@ -9,26 +11,10 @@ local assets = {
 }
 
 function love.load()
-    -- load libraries
-    push = require "lib.push"
-    loveframes = require "lib.loveframes"
-    luven = require "lib.luven.luven"
-    -- Set up screen
-    local gameWidth, gameHeight = 1080, 720
-    local windowWidth, windowHeight = love.window.getDesktopDimensions()
-    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true, resizable = false, highdpi = true, pixelperfect = true, canvas = false, stretched = false})
-    -- Set up joysticks
-    local joysticks = love.joystick.getJoysticks()
-    local joycount = love.joystick.getJoystickCount()
-    if joycount >= 1 then
-        joystick = joysticks[1]
-    end
-    -- Initialize lights and camera
-    luven.init()
-    luven.camera:init(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
-    luven.camera:setScale(1)
-    -- Cache logo image
-    assets.images.ui.logo = love.graphics.newImage("assets/images/ui/logo.png")
+    -- Initialize game
+    initGame()
+    -- Populate asset cache
+    populateAssetCache()
 end
 
 function love.resize(w, h)
@@ -37,9 +23,6 @@ end
 
 function love.draw()
     push:start()
-    luven.drawBegin()
-    -- everything drawn here will be affected by lights and Luven's camera setup
-    luven.drawEnd()
     love.graphics.draw(assets.images.ui.logo)
     love.graphics.print({{0, 0, 0, 1}, "Press ESCAPE to quit"}, 60, 350)
     if joystick then
@@ -58,7 +41,6 @@ function love.update(dt)
             quitGame()
         end
     end
-    luven.update(dt)
     loveframes.update(dt)
 end
 
@@ -80,6 +62,64 @@ end
 
 function quitGame()
     love.audio.stop()
-    luven.dispose()
     love.event.quit(0)
+end
+
+function initGame()
+    -- load libraries
+    loadLibraries()
+    -- Set up screen
+    setupScreen()
+    -- Set up joysticks
+    setupJoysticks()
+    -- Set up locales (BROKEN)
+    --setupLocales()
+end
+
+function loadLibraries()
+    i18n = require "lib.i18n"
+    push = require "lib.push"
+    loveframes = require "lib.loveframes"
+end
+
+function setupScreen()
+    local gameWidth, gameHeight = 1080, 720
+    local windowWidth, windowHeight = love.window.getDesktopDimensions()
+    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true, resizable = false, highdpi = true, pixelperfect = true, canvas = false, stretched = false})
+end
+
+function setupJoysticks()
+    local joysticks = love.joystick.getJoysticks()
+    local joycount = love.joystick.getJoystickCount()
+    if joycount >= 1 then
+        joystick = joysticks[1]
+    end
+end
+
+function setupLocales()
+    -- Load all the translation data files
+    local dir = love.filesystem.getSource()
+    i18n.loadFile(dir.."/assets/locale/de.lua")
+    i18n.loadFile(dir.."/assets/locale/en.lua")
+    i18n.loadFile(dir.."/assets/locale/es.lua")
+    i18n.loadFile(dir.."/assets/locale/fr.lua")
+    i18n.loadFile(dir.."/assets/locale/hr.lua")
+    i18n.loadFile(dir.."/assets/locale/nl.lua")
+    i18n.loadFile(dir.."/assets/locale/pt.lua")
+    i18n.loadFile(dir.."/assets/locale/sr.lua")
+    i18n.loadFile(dir.."/assets/locale/sv.lua")
+    i18n.loadFile(dir.."/assets/locale/tr.lua")
+    i18n.loadFile(dir.."/assets/locale/zc.lua")
+    i18n.loadFile(dir.."/assets/locale/zh.lua")
+    -- Set the default locale
+    i18n.setLocale("en")
+end
+
+function populateAssetCache()
+    assets.data.menus = require "assets.data.menus"
+    assets.fonts.normal = love.graphics.newFont("assets/fonts/DejaVuLGCSansMono.ttf")
+    assets.fonts.bold = love.graphics.newFont("assets/fonts/DejaVuLGCSansMonoBold.ttf")
+    assets.fonts.boldOblique = love.graphics.newFont("assets/fonts/DejaVuLGCSansMonoBoldOblique.ttf")
+    assets.fonts.oblique = love.graphics.newFont("assets/fonts/DejaVuLGCSansMonoOblique.ttf")
+    assets.images.ui.logo = love.graphics.newImage("assets/images/ui/logo.png")
 end
