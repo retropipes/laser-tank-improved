@@ -1,5 +1,3 @@
 # LaserTank Improved
 
-[LaserTank, the puzzle game](https://laser-tank.com), only better!
-
-In development.
+Replaced by [LaserTank Extended](https://github.com/wrldwzrd89/laser-tank-extended).
