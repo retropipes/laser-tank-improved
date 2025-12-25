@@ -1,0 +1,16 @@
+0=LaserTank Error
+1=Perhaps a bug is to blame for this error message. Include the log with your bug report at https://github.com/PuttySoftware/laser-tank-improved/issues/new.
+2=Tank location NOT found!
+3=Couldn't create temporary folder!
+4=The code entered is not a valid cheat code!
+5=Replay File Loading Failed!
+6=No Previous Level!
+7=No Solution File Exists!
+8=Graphics File Loading Failed!
+9=Printing Failed!
+10=Unknown level format version!
+11=Unknown object encountered.
+12=Incorrect Protection Key!
+13=Protection
+14=LaserTank Warning
+15=Whoops! Something went wrong with that last action. The details have been logged.
